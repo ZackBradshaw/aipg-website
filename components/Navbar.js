@@ -30,6 +30,12 @@ export default function Navbar() {
       >
         <a onClick={() => setIsOpen(false)}>About</a>
       </Link>
+      <Link
+        class="font-medium text-white hover:text-gray-200 sm:py-6 md:py-6 pb-2 border-b-2 border-transparent dark:hover:text-gray-300 text-center sm:text-left"
+        href="/chat"
+      >
+        <a onClick={() => setIsOpen(false)}>Chat</a>
+      </Link>
       <button onClick={() => setShowDropdown('pools')} className="font-medium text-white hover:text-gray-200 sm:py-6 md:py-6 pb-2 border-b-2 border-transparent dark:hover:text-gray-300 text-center sm:text-left">
         Pools
       </button>

@@ -18,7 +18,7 @@ const Timeline = () => {
           contentArrowStyle={{ borderRight: "7px solid  #0f172a" }}
           iconStyle={{ background: "#ADD8E6", color: "#1E40AF" }}
           icon={<img src="/aipg logo V3 All White_232x240.png" alt="AIPG Logo" style={{ width: '100%', height: 'auto' }} />}
-          visible={inView}
+          visible
         >
           <h3 className="vertical-timeline-element-title" style={{ color: "#fff" }}>
             Current - Developing a PoUW model
@@ -37,7 +37,7 @@ const Timeline = () => {
           contentArrowStyle={{ borderRight: "7px solid  #0f172a" }}
           iconStyle={{ background: "#ADD8E6", color: "#1E40AF" }} // Changed to light blue
           icon={<img src="/aipg logo V3 All White_232x240.png" alt="AIPG Logo" style={{ width: '100%', height: 'auto' }} />}
-          visible={inView}
+          visible
         >
           <h3 className="vertical-timeline-element-title" style={{ color: "#fff" }}>
             Q1 2024 - Scaling Up and Enhancing Experiences
@@ -58,7 +58,7 @@ const Timeline = () => {
           contentArrowStyle={{ borderRight: "7px solid  #0f172a" }}
           iconStyle={{ background: "#ADD8E6", color: "#1E40AF" }} // Changed to light blue
           icon={<img src="/aipg logo V3 All White_232x240.png" alt="AIPG Logo" style={{ width: '100%', height: 'auto' }} />}
-          visible={inView}
+          visible
         >
           <h3 className="vertical-timeline-element-title" style={{ color: "#fff" }}>
             Q3 2024 - Transition to Proof of Useful Work (PoUW)
@@ -79,7 +79,7 @@ const Timeline = () => {
           contentArrowStyle={{ borderRight: "7px solid  #0f172a" }}
           iconStyle={{ background: "#ADD8E6", color: "#1E40AF" }} // Changed to light blue
           icon={<img src="/aipg logo V3 All White_232x240.png" alt="AIPG Logo" style={{ width: '100%', height: 'auto' }} />}
-          visible={inView}
+          visible
         >
           <h3 className="vertical-timeline-element-title" style={{ color: "#fff" }}>
             Q4 2024 - Adding trusted nodes and API functionality
@@ -97,7 +97,7 @@ const Timeline = () => {
           contentArrowStyle={{ borderRight: "7px solid  #0f172a" }}
           iconStyle={{ background: "#ADD8E6", color: "#1E40AF" }} // Changed to light blue
           icon={<img src="/aipg logo V3 All White_232x240.png" alt="AIPG Logo" style={{ width: '100%', height: 'auto' }} />}
-          visible={inView}
+          visible
         >
           <h3 className="vertical-timeline-element-title" style={{ color: "#fff" }}>
             Q2 2025 - Interchain AI Service Protocol Layer

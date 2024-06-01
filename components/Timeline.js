@@ -9,7 +9,7 @@ import "./customTimelineStyles.css";
 
 const Timeline = () => {
   return (
-    <div class="container mx-auto w-full h-full p-8">
+    <div className="container mx-auto w-full h-full p-8">
       <VerticalTimeline>
         <VerticalTimelineElement
           className="vertical-timeline-element--work"

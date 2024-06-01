@@ -1,8 +1,21 @@
+"use client";
+import React, { useEffect, useState } from "react";
 import "./chat.css";
 
 export default function Chat() {
 
-	const urlParams = new URLSearchParams(window.location.search);
+	const [localFlag, setLocalFlag] = useState(null);
+
+	useEffect(() => {
+		const urlParams = new URLSearchParams(window.location.search);
+		const localflag = urlParams.get('local');
+		setLocalFlag(localflag);
+	}, []);
+
+	if (localFlag === null) {
+		return null; // or some loading indicator
+	}
+
 	const localflag = urlParams.get('local');
 	const STORAGE_PREFIX = (localflag?"e_":"")+"kaihordewebui_";
 	const aipg_logo = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAAXNSR0IB2cksfwAAAAlwSFlzAAALEwAACxMBAJqcGAAAADxQTFRFS2Si+X5+pmBfHyApLjZSS2SjP057Vzw5EA4Sf1ZT+9Sv1WpqnYx/7qaYw7vUAAAAS2Sj9PPzgnrLS2SjAzrF9gAAABR0Uk5T///////w////////////AKj//yMlHqVpAAAD3klEQVR4nKWXi7KjIAyGFSgxEjhV3/9d90+8onZPd810prWSDwi50fyoTNP7/X79g2D4NJlqo+rvV/Mf8npPM2B6/4+6ihKaB/pGaH4e6IPw00y3+48xhBC3J32Id+NeUzN9UPfer4RoD/eIqbnuwLS7zncLAfqdPvvDmvY9XAE6vuuImEAw8fNT1/kr4Qqw+YhdIocfJl0glxyTvyG8m7MNY1B9diAkmgGUODnH7Km7AF53AGEjUJtWYdUPzn0LyC6AQO0qCUCi1PKXAM5tCwXeAC0ROf36AqA2VACmbQ8yP9DVimeA6lPKkLaW3EPylXAARBXV701OhOVPI6hcAXH1mTyP7e8AMyEc4mQDzP7XrfOfl5D7ndAdfXID6NwMyXACEpEbgPTCLJn1hEGoAep/OKheQiCEEhj1HgBQX1ZxQMPLlyVsABwejkp8EGEQAkxRA4RgIRYhTxme1fkKoBZwAHjLA+b/cgLQ8gZ4gZ+tVtgAnboaa+Lg0IwRhBqAmX0cI0WFqHN3FUAXAOPpzIWhPzZYQgUAu4ljiaKTaKwtZtwAIdv8XkocR9+UYM5/BMTRxzJKsWEu+RPAAsBxKSWWgTHS18cofiwhlCJD4cApUb0CNWKA/5dhwAqKD2UIXAEoFgUMkIJTCCcjzkGE890BQhXA685WQNqD6ujKWDRhhI7EdKUCtKSGxd8ASEr+6sqNApKPeD/iFEpT6nAUcAMgMmBzqwVPgJCd80X3AIlDDcjSzH8PJbD7AGiT020WjfcCN0jI5WwJGk5axP4eikeyvQd4HE5i7I4xEpWANKg0m2p0OUIcQKJnd7uCaABMRebOSOoB1WUVYACzaGSs012NaI5gAC0GcPWD9iLI6/qVdGeXY7R6xu1M0FAhG7s865ctw97Zoz85kuXi5T2EbaZatLileQA+VifrYGrT7ruL+lbZ0orYcXQJpry/tl+26l1s8sOy+BxMqKjr23nf7mhFnktbOgJOGQmnVG0ZVve06VvDUFmEztGIhHAy2YHA+qsCuFNS1T0Edf41AOZ1b7uwH1tYYFA4p3U1owiOOu+AsyxrQ3AIXwrLXtryL4BPpW0rrvMaPgHSx+K6l3cj3Oin1lH6S3nfd+KDa51lAjJhE6ddz7XRu29xUH51O95SgNOahDTB3PPvLc7cZPWYEVlVlp5AkGtJK/63XZoq0jBsvUrPeNDvr/tE1SnD3qxIEVuNfAsY0J9w4Ux2ZKizHPLHFdw127r7HIS2ZpvFTHHbbN+3+2Qm29p9NvXv2v3twkHHCwd9vnA8vvI8vnQ9vvY9v3g+vvo+v3w/u/7/AZoAPJwrbZ1IAAAAAElFTkSuQmCC";
@@ -1322,7 +1335,7 @@ export default function Chat() {
 			return `<pre><code>${code}</code></pre>`;
 		};
 		const convertMarkdownTableToHtml = (t) => {
-			let hsep = /^[\s]*\|(?:[\s]*[-:]+[-:|\s]*)+\|[\s]*$/gm;let l=/^[\s]*\|(.*)\|[\s]*$/gm,r=t.split(/\r?\n|\r/),e="<table class='tablelines'>";for(let o of r){let hs=o.match(hsep);if(hs){continue;}let d=o.match(l);if(d){let i=d[0].split("|").map(t=>t.trim());e+=`<tr class='tablelines'><td class='tablelines'>${i.join("</td><td class='tablelines'>")}</td></tr>`}}return e+"</table>"
+			let hsep = /^[\s]*\|(?:[\s]*[-:]+[-:|\s]*)+\|[\s]*$/gm;let l=/^[\s]*\|(.*)\|[\s]*$/gm,r=t.split(/\r?\n|\r/),e="<table className='tablelines'>";for(let o of r){let hs=o.match(hsep);if(hs){continue;}let d=o.match(l);if(d){let i=d[0].split("|").map(t=>t.trim());e+=`<tr className='tablelines'><td className='tablelines'>${i.join("</td><td className='tablelines'>")}</td></tr>`}}return e+"</table>"
 		};
 		const formatMarkdown = (md) => {
 			md = md.replace(/^###### (.*?)\s*#*$/gm, "<h6>$1</h6>")
@@ -2153,7 +2166,7 @@ export default function Chat() {
 			document.getElementById("customkoboldendpoint").value = protocol + localmodehost + ":" + localmodeport + sublocalpathname;
 			connect_custom_endpoint();
 			document.getElementById("lastreq").innerHTML = document.getElementById("lastreq2").innerHTML =
-			`<span class=color_gray>You're using Kobold Lite Embedded.</span>`;
+			`<span className=color_gray>You're using Kobold Lite Embedded.</span>`;
 
 			read_url_params_data();
 		}
@@ -2198,7 +2211,7 @@ export default function Chat() {
 
 				}
 				else {
-					msgbox("Failed to connect to AI Horde Service!\nPlease check your network connection.<br/><br/>You may still be able to connect to an alternative service, <a href='#' class='color_blueurl' onclick='display_endpoint_container()'>click here to view options</a>.","Error Encountered",true);
+					msgbox("Failed to connect to AI Horde Service!\nPlease check your network connection.<br/><br/>You may still be able to connect to an alternative service, <a href='#' className='color_blueurl' onclick='display_endpoint_container()'>click here to view options</a>.","Error Encountered",true);
 					document.body.classList.remove("connected");
 					document.getElementById("connectstatus").innerHTML = "Offline Mode";
 					document.getElementById("connectstatus").classList.add("color_orange");
@@ -3020,8 +3033,8 @@ export default function Chat() {
 				reader.onload = function (e) {
 					reader2.readAsDataURL(file2);
 					reader2.onload = function (e) {
-						msgbox(`<button type="button" class="btn btn-primary" id="ios_save" onclick="savenowfn()">Click to Save</button>
-						<br/><h5>Apple devices are known to have issues saving. If the above button does not work, try opening or right-click / long press one of the below links, and select (Save As)</h5><h4><li><a href=` + reader.result + ` class='color_blueurl' target='_blank' download="`+newfilename+`">Raw File Data</a></li><li><a href=` + reader2.result + ` class='color_blueurl' target='_blank' download="`+newfilename+`">JSON File Data</a></li><li><a href=` + datblob + ` class='color_blueurl' download="`+newfilename+`">JSON URL Blob</a></li></h4>`, "Save Story", true)
+						msgbox(`<button type="button" className="btn btn-primary" id="ios_save" onclick="savenowfn()">Click to Save</button>
+						<br/><h5>Apple devices are known to have issues saving. If the above button does not work, try opening or right-click / long press one of the below links, and select (Save As)</h5><h4><li><a href=` + reader.result + ` className='color_blueurl' target='_blank' download="`+newfilename+`">Raw File Data</a></li><li><a href=` + reader2.result + ` className='color_blueurl' target='_blank' download="`+newfilename+`">JSON File Data</a></li><li><a href=` + datblob + ` className='color_blueurl' download="`+newfilename+`">JSON URL Blob</a></li></h4>`, "Save Story", true)
 					}
 				}
 				reader.readAsDataURL(file);
@@ -3245,7 +3258,7 @@ export default function Chat() {
 							}
 							else {
 								if (selectedFilename.endsWith(".txt")) {
-									msgboxYesNo("Could not load selected file!<br/><span class=\"color_red\">It appears to be invalid or corrupted!</span><br/><br/>Do you still want to import it as plaintext?", "Loading Failed",
+									msgboxYesNo("Could not load selected file!<br/><span className=\"color_red\">It appears to be invalid or corrupted!</span><br/><br/>Do you still want to import it as plaintext?", "Loading Failed",
 										() => {
 											//raw text import
 											restart_new_game(false);
@@ -4414,14 +4427,14 @@ export default function Chat() {
 		temp_scenario = null;
 		document.getElementById("quickstartcontainer").classList.remove("hidden");
 
-		let scenarios = `<button type="button" name="" class="scenarioitem purple btn btn-primary" onclick="get_aetherroom_scenario()">Import from<br/>aetherroom.club</button>`+
-		`<button type="button" name="" class="scenarioitem purple btn btn-primary" onclick="get_chubai_scenario()">Import from<br/>characterhub.org / chub.ai</button>` +
-		`<button type="button" name="" class="scenarioitem purple btn btn-primary" onclick="get_pygchat_scenario()">Import from<br/>pygmalion.chat</button>`;
+		let scenarios = `<button type="button" name="" className="scenarioitem purple btn btn-primary" onclick="get_aetherroom_scenario()">Import from<br/>aetherroom.club</button>`+
+		`<button type="button" name="" className="scenarioitem purple btn btn-primary" onclick="get_chubai_scenario()">Import from<br/>characterhub.org / chub.ai</button>` +
+		`<button type="button" name="" className="scenarioitem purple btn btn-primary" onclick="get_pygchat_scenario()">Import from<br/>pygmalion.chat</button>`;
 		for(let i=0;i<scenario_db.length;++i)
 		{
 			let curr = scenario_db[i];
 			let bcolor = (curr.opmode==1?"blue":(curr.opmode==2?"green":(curr.opmode==3?"red":"yellow")));
-			let entry = `<button type="button" name="`+i+`" class="scenarioitem `+bcolor+` btn btn-primary" onclick="return click_scenario(`+i+`)">`+curr.title+`</button>`;
+			let entry = `<button type="button" name="`+i+`" className="scenarioitem `+bcolor+` btn btn-primary" onclick="return click_scenario(`+i+`)">`+curr.title+`</button>`;
 			scenarios += entry;
 		}
 
@@ -4623,7 +4636,7 @@ export default function Chat() {
 			let workerNameHtml = escapeHtml(elem.name.substring(0, 40));
 			if(elem.info && elem.info!="")
 			{
-				workerNameHtml = "<a class=\"color_blueurl\" href=\"#\" onclick=\"msgbox(\'"+escapeHtml(replaceAll(elem.info,"\'","\\\'"))+"\','Worker Info',false,false,hide_msgbox)\">"+workerNameHtml+"</a>";
+				workerNameHtml = "<a className=\"color_blueurl\" href=\"#\" onclick=\"msgbox(\'"+escapeHtml(replaceAll(elem.info,"\'","\\\'"))+"\','Worker Info',false,false,hide_msgbox)\">"+workerNameHtml+"</a>";
 			}
 			let allmdls = "";
 			for (let n = 0; n < elem.models.length; ++n) {
@@ -4670,7 +4683,7 @@ export default function Chat() {
 						let brokenstyle = (elem.maintenance_mode ? "style=\"color:#ee4444;\"" : "");
 						let workerNameHtml = escapeHtml(elem.name.substring(0, 32));
 						let eleminfo = ((elem.info && elem.info!="")?elem.info:"");
-						str += "<tr><td>" + workerNameHtml + "</td><td><input class='' style='color:#000000;' id='mwc_desc_"+i+"' placeholder='Worker Description' value='"+eleminfo+"''></td><td "+brokenstyle+">" + format_uptime(elem.uptime) + "<br/>(" + elem.requests_fulfilled + " jobs)</td><td><span "+style+">" + elem.kudos_rewards.toFixed(0) + "</span><br/>"+(elem.online?"<span class='color_green'>Online</span>":"Offline")+"</td><td><input type='checkbox' id='mwc_maint_"+i+"' "+(elem.maintenance_mode?"checked":"")+"></td><td><button type=\"button\" class=\"btn btn-danger widelbtn\" onclick=\"delete_my_worker("+i+");\">X</button></td></tr>";
+						str += "<tr><td>" + workerNameHtml + "</td><td><input className='' style='color:#000000;' id='mwc_desc_"+i+"' placeholder='Worker Description' value='"+eleminfo+"''></td><td "+brokenstyle+">" + format_uptime(elem.uptime) + "<br/>(" + elem.requests_fulfilled + " jobs)</td><td><span "+style+">" + elem.kudos_rewards.toFixed(0) + "</span><br/>"+(elem.online?"<span className='color_green'>Online</span>":"Offline")+"</td><td><input type='checkbox' id='mwc_maint_"+i+"' "+(elem.maintenance_mode?"checked":"")+"></td><td><button type=\"button\" className=\"btn btn-danger widelbtn\" onclick=\"delete_my_worker("+i+");\">X</button></td></tr>";
 					}
 					document.getElementById("myownworkertable").innerHTML = str;
 
@@ -5821,9 +5834,9 @@ export default function Chat() {
 		let filetable = ``;
 
 		let entry = `<div style="display:flex">
-				<button type="button" style="font-size:12px; margin:2px;width:33%" name="localsave" class="btn btn-primary" onclick="hide_popups();save_file_button()">`+"💾<br>Download File"+`</button>
-				<button type="button" style="font-size:12px; margin:2px;width:33%" name="localload" class="btn btn-primary" onclick="hide_popups();load_file_button()">`+"📁<br>Open File"+`</button>
-				<button type="button" style="font-size:12px; margin:2px;width:34%" name="shareurl" class="btn btn-primary" onclick="hide_popups();share_story_button()">`+"🌐<br>Share"+`</button>
+				<button type="button" style="font-size:12px; margin:2px;width:33%" name="localsave" className="btn btn-primary" onclick="hide_popups();save_file_button()">`+"💾<br>Download File"+`</button>
+				<button type="button" style="font-size:12px; margin:2px;width:33%" name="localload" className="btn btn-primary" onclick="hide_popups();load_file_button()">`+"📁<br>Open File"+`</button>
+				<button type="button" style="font-size:12px; margin:2px;width:34%" name="shareurl" className="btn btn-primary" onclick="hide_popups();share_story_button()">`+"🌐<br>Share"+`</button>
 				</div>
 				<div style="margin-top:3px; text-align: center; align-self: center; width: calc(100% - 184px);">
 				<span style="font-weight:bold;text-decoration: underline;">Temporary Browser Storage</span>
@@ -5840,10 +5853,10 @@ export default function Chat() {
 					`+(testslot?`[ Slot `+(i+1)+` - `+testslot+` ]`:`[ Slot `+(i+1)+` - Empty ]`)+`
 					</div>
 					<div style="text-align: right; align-self: center; width: 184px;">
-					<button type="button" name="slc`+i+`" class="btn btn-primary" onclick="save_to_slot(`+i+`)"><img class="btnicon-save"/></button>
-					<button type="button" name="slc`+i+`" class="btn btn-primary" onclick="load_from_slot(`+i+`)" `+(testslot?"":"disabled")+`><img class="btnicon-load"/></button>
-					<button type="button" name="slc`+i+`" class="btn btn-primary bg_green" onclick="download_from_slot(`+i+`)" `+(testslot?"":"disabled")+`><img class="btnicon-download"/></button>
-					<button type="button" name="slc`+i+`" class="btn btn-primary bg_red" onclick="delete_from_slot(`+i+`)" `+(testslot?"":"disabled")+`><img class="btnicon-delete"/></button>
+					<button type="button" name="slc`+i+`" className="btn btn-primary" onclick="save_to_slot(`+i+`)"><img className="btnicon-save"/></button>
+					<button type="button" name="slc`+i+`" className="btn btn-primary" onclick="load_from_slot(`+i+`)" `+(testslot?"":"disabled")+`><img className="btnicon-load"/></button>
+					<button type="button" name="slc`+i+`" className="btn btn-primary bg_green" onclick="download_from_slot(`+i+`)" `+(testslot?"":"disabled")+`><img className="btnicon-download"/></button>
+					<button type="button" name="slc`+i+`" className="btn btn-primary bg_red" onclick="delete_from_slot(`+i+`)" `+(testslot?"":"disabled")+`><img className="btnicon-delete"/></button>
 					</div></div>`;
 				filetable += entry;
 			}
@@ -6165,7 +6178,7 @@ export default function Chat() {
 		if(lastValidFoundUserWorkers && lastValidFoundUserWorkers.length>index)
 		{
 			let elem = lastValidFoundUserWorkers[index];
-			msgboxYesNo(`Are you sure you want to delete the worker <span class='color_orange'>`+elem.name+`</span> with the ID <span class='color_orange'>`+elem.id+`</span>?<br><br><b>This action is irreversible!</b>`,"Confirm Delete Worker",
+			msgboxYesNo(`Are you sure you want to delete the worker <span className='color_orange'>`+elem.name+`</span> with the ID <span className='color_orange'>`+elem.id+`</span>?<br><br><b>This action is irreversible!</b>`,"Confirm Delete Worker",
 			()=>{
 				let newapikey = document.getElementById("apikey").value;
 				let parentcluster = find_text_horde(lastValidFoundCluster);
@@ -6277,13 +6290,13 @@ export default function Chat() {
 						let uname = lastValidFoundUserData.username;
 						let parentcluster = find_text_horde(desired_new_home_cluster);
 						let clustertag = ((parentcluster&&parentcluster.tag!="")?""+parentcluster.tag+" ":"");
-						let unameurl = "<a class='color_blueurl' href='#' onclick='show_my_own_workers()'>"+uname+"</a>";
+						let unameurl = "<a className='color_blueurl' href='#' onclick='show_my_own_workers()'>"+uname+"</a>";
 						if (kuds < 0) {
 							document.getElementById("kudos_bal").innerHTML = clustertag + unameurl + "<br>Kudos Balance: 0";
 							if(uname.toLowerCase()=="anonymous#0")
 							{
 								document.getElementById("kudos_bal").innerHTML = clustertag + uname + "<br>"+
-								"<a class='color_blueurl' href='https://aihorde.net/register'>(Register New User)</a>";
+								"<a className='color_blueurl' href='https://aihorde.net/register'>(Register New User)</a>";
 							}else{
 								document.getElementById("showownworkerslink").classList.remove("hidden");
 							}
@@ -6294,12 +6307,12 @@ export default function Chat() {
 
 					}
 					else {
-						document.getElementById("kudos_bal").innerHTML = "API Key Error<br><a class='color_blueurl' href='https://aihorde.net/register'>(Register New User)</a>";
+						document.getElementById("kudos_bal").innerHTML = "API Key Error<br><a className='color_blueurl' href='https://aihorde.net/register'>(Register New User)</a>";
 					}
 				}
 				else {
 					console.log("Error: " + errArr);
-					document.getElementById("kudos_bal").innerHTML = "API Key Error<br><a class='color_blueurl' href='https://aihorde.net/register'>(Register New User)</a>";
+					document.getElementById("kudos_bal").innerHTML = "API Key Error<br><a className='color_blueurl' href='https://aihorde.net/register'>(Register New User)</a>";
 				}
 			});
 		}
@@ -7309,7 +7322,7 @@ export default function Chat() {
 	function apply_user_mod()
 	{
 		let currmod = localStorage.getItem(STORAGE_PREFIX + "savedusermod", "");
-		inputBoxOkCancel("Here, you can apply third-party mod scripts shared by other users.<br><br><span class='color_red'>Caution: This mod will have full access to your story and API keys, so only run third-party mods that you trust! For security, mods must always be manually applied every time.</span><br><br>Want to start modding? <a href='#' class='color_blueurl' onclick='simplemodexample()'>Click here</a> to load a simple example mod.","Apply Third-Party Mod",currmod,"Paste Mod Script Here",()=>{
+		inputBoxOkCancel("Here, you can apply third-party mod scripts shared by other users.<br><br><span className='color_red'>Caution: This mod will have full access to your story and API keys, so only run third-party mods that you trust! For security, mods must always be manually applied every time.</span><br><br>Want to start modding? <a href='#' className='color_blueurl' onclick='simplemodexample()'>Click here</a> to load a simple example mod.","Apply Third-Party Mod",currmod,"Paste Mod Script Here",()=>{
 			let userinput = getInputBoxValue().trim();
 			localStorage.setItem(STORAGE_PREFIX + "savedusermod", userinput);
 			if(userinput!="" && userinput.trim()!="")
@@ -9676,24 +9689,24 @@ export default function Chat() {
 			let visionstatus = "";
 			if(savedmeta.visionmode==3)
 			{
-				visionstatus = ((!savedmeta.visionmode || savedmeta.visionmode==0)?`<span class="color_red">Inactive</span>`:(hasllava?`<span class="color_green">Active</span>`:`<span class="color_yellow">Unsupported</span>`));
+				visionstatus = ((!savedmeta.visionmode || savedmeta.visionmode==0)?`<span className="color_red">Inactive</span>`:(hasllava?`<span className="color_green">Active</span>`:`<span className="color_yellow">Unsupported</span>`));
 			}
 			else
 			{
-				visionstatus = ((!savedmeta.visionmode || savedmeta.visionmode==0)?`<span class="color_red">Inactive</span>`:(savedmeta.desc?`<span class="color_green">Active</span>`:`<span class="color_yellow">Analyzing</span>`));
+				visionstatus = ((!savedmeta.visionmode || savedmeta.visionmode==0)?`<span className="color_red">Inactive</span>`:(savedmeta.desc?`<span className="color_green">Active</span>`:`<span className="color_yellow">Analyzing</span>`));
 			}
 
-			let togglebtn = `<select class="form-control" id="aivisionmode" style="display:inline;height:24px;width: 134px; padding: 2px; margin: 3px; font-size:12px;" onchange="toggle_ai_vision(\'`+imghash+`\')">
+			let togglebtn = `<select className="form-control" id="aivisionmode" style="display:inline;height:24px;width: 134px; padding: 2px; margin: 3px; font-size:12px;" onchange="toggle_ai_vision(\'`+imghash+`\')">
 								<option value="0">Disabled</option>
 								<option value="1">Interrogate (Horde)</option>
 								<option value="2">Interrogate (A1111)</option>
 								<option value="3">Multimodal (LLaVA)</option>
 							</select>`;
 			document.getElementById("zoomedimgdesc").innerHTML = `
-			AI Vision: `+visionstatus+` <span class="helpicon">?<span class="helptext">This allows the AI to visually recognize this image and react to it. On KoboldCpp, LLaVA models can be used. Otherwise, uses Horde or Local A1111 for image interrogation if enabled.</span></span>
+			AI Vision: `+visionstatus+` <span className="helpicon">?<span className="helptext">This allows the AI to visually recognize this image and react to it. On KoboldCpp, LLaVA models can be used. Otherwise, uses Horde or Local A1111 for image interrogation if enabled.</span></span>
 			`+togglebtn+`
-			<br><button type="button" class="btn btn-primary" style="width: 140px; padding: 2px; margin: 3px; font-size:12px;" onclick="show_orig_prompt()">View Original Prompt</button>
-			<button type="button" class="btn btn-primary" style="width: 110px; padding: 2px; margin: 3px; font-size:12px;" onclick="add_img2img()">Create Img2Img</button>
+			<br><button type="button" className="btn btn-primary" style="width: 140px; padding: 2px; margin: 3px; font-size:12px;" onclick="show_orig_prompt()">View Original Prompt</button>
+			<button type="button" className="btn btn-primary" style="width: 110px; padding: 2px; margin: 3px; font-size:12px;" onclick="add_img2img()">Create Img2Img</button>
 			`;
 			document.getElementById("aivisionmode").value = savedmeta.visionmode;
 		}
@@ -9775,7 +9788,7 @@ export default function Chat() {
 				console.log("Cannot render " + pend_txt);
 			}
 
-			return prefix + `<div class="`+siclass+reinvertcolor+`" contenteditable="false"><img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDABsSFBcUERsXFhceHBsgKEIrKCUlKFE6PTBCYFVlZF9VXVtqeJmBanGQc1tdhbWGkJ6jq62rZ4C8ybqmx5moq6T/2wBDARweHigjKE4rK06kbl1upKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKT/wAARCAEAAQADASIAAhEBAxEB/8QAGQABAQEBAQEAAAAAAAAAAAAAAAEDAgQF/8QAIBABAAIBBQEBAQEAAAAAAAAAAAECEgMRMVKRIWFBof/EABQBAQAAAAAAAAAAAAAAAAAAAAD/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwD7AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABETPENNPT3je3jUHm22HpmInljqUx+xwDgAAAAAAAAAAAAAAAAAAAAAAAAABaxvaIRaztaJB6AAEmN4mFSZ2iZB5wAAAAAAAAAAAAAAAAAAAAAAAAAAAaaeptG1vWrzETMcSD0zMRyx1L5fI4cb7gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA7rpzNd/HAAAAAAAAAAAAAAAAAAAAAAAAAAAAADTT09/s8Gnp7/Z4agONSmX2OXYDzDbUpl9jliAAAAAAAAAAAAAAAAAAAsVmd9o4KVm0/jeIiI2gHnGupp/2vjIAABpp6e/2TT09/s8NQAAAAHGpTL7HLsB5htqUy+xyxAAAAAAAAAAAAAAAWlZtP4UrNp/G8RFY2gCIiI2hQAZ6mn/a+NAHmaaenv8AZ4dzp1m2/wDjoAAAAAAAABxqUy+xy7AeYbalMvscsQAAAAAAAAAAFpWbT+FKzafxvEREbQBEREbQoAAAAAAAAAAAAAAAAAONSmX2OXYDzDbUpl9jliAAAAAAAtKzafxaVm0/jaIiI2gCIiI2hQAAAAAAAAAAAAAAAAAAAAAcalMvscuwHmG2pTL7HLEAAAAFi0xxMwZW7T6gC5W7T6ZW7T6gC5W7T6ZW7T6gC5W7T6ZW7T6gC5W7T6ZW7T6gC5W7T6ZW7T6gC5W7T6ZW7T6gC5W7T6ZW7T6gC5W7T6ZW7T6gC5W7T6ZW7T6gC5W7T6ZW7T6gC5W7T6ZW7T6gC5W7T6ZW7T6gC5W7T6kzvyAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/Z" width=` + dim + ` height=` + dim + ` style="border-radius: 6%;" title="`+alttxt+`" alt="` + pend_txt + `"><div class=\"loader2\"></div><div class=\"imagelabel\">` + waittime + `</div></div>` + suffix;
+			return prefix + `<div className="`+siclass+reinvertcolor+`" contenteditable="false"><img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDABsSFBcUERsXFhceHBsgKEIrKCUlKFE6PTBCYFVlZF9VXVtqeJmBanGQc1tdhbWGkJ6jq62rZ4C8ybqmx5moq6T/2wBDARweHigjKE4rK06kbl1upKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKSkpKT/wAARCAEAAQADASIAAhEBAxEB/8QAGQABAQEBAQEAAAAAAAAAAAAAAAEDAgQF/8QAIBABAAIBBQEBAQEAAAAAAAAAAAECEgMRMVKRIWFBof/EABQBAQAAAAAAAAAAAAAAAAAAAAD/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwD7AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABETPENNPT3je3jUHm22HpmInljqUx+xwDgAAAAAAAAAAAAAAAAAAAAAAAAABaxvaIRaztaJB6AAEmN4mFSZ2iZB5wAAAAAAAAAAAAAAAAAAAAAAAAAAAaaeptG1vWrzETMcSD0zMRyx1L5fI4cb7gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA7rpzNd/HAAAAAAAAAAAAAAAAAAAAAAAAAAAAADTT09/s8Gnp7/Z4agONSmX2OXYDzDbUpl9jliAAAAAAAAAAAAAAAAAAAsVmd9o4KVm0/jeIiI2gHnGupp/2vjIAABpp6e/2TT09/s8NQAAAAHGpTL7HLsB5htqUy+xyxAAAAAAAAAAAAAAAWlZtP4UrNp/G8RFY2gCIiI2hQAZ6mn/a+NAHmaaenv8AZ4dzp1m2/wDjoAAAAAAAABxqUy+xy7AeYbalMvscsQAAAAAAAAAAFpWbT+FKzafxvEREbQBEREbQoAAAAAAAAAAAAAAAAAONSmX2OXYDzDbUpl9jliAAAAAAAtKzafxaVm0/jaIiI2gCIiI2hQAAAAAAAAAAAAAAAAAAAAAcalMvscuwHmG2pTL7HLEAAAAFi0xxMwZW7T6gC5W7T6ZW7T6gC5W7T6ZW7T6gC5W7T6ZW7T6gC5W7T6ZW7T6gC5W7T6ZW7T6gC5W7T6ZW7T6gC5W7T6ZW7T6gC5W7T6ZW7T6gC5W7T6ZW7T6gC5W7T6ZW7T6gC5W7T6ZW7T6gC5W7T6ZW7T6gC5W7T6kzvyAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP/Z" width=` + dim + ` height=` + dim + ` style="border-radius: 6%;" title="`+alttxt+`" alt="` + pend_txt + `"><div className=\"loader2\"></div><div className=\"imagelabel\">` + waittime + `</div></div>` + suffix;
 		} else {
 			let imghash = cyrb_hash(data).trim();
 			if (completed_imgs_meta[imghash] != null) {
@@ -9791,7 +9804,7 @@ export default function Chat() {
 					dimH *= 0.9;
 				}
 			}
-			return prefix + `<div class="`+siclass+reinvertcolor+`"><img src="` + data + `" width=` + dimW + ` height=` + dimH + ` title="`+alttxt+`" style="border-radius: 6%; cursor: pointer;" onclick="return click_image(this,\'`+imghash+`\');"></div>` + suffix;
+			return prefix + `<div className="`+siclass+reinvertcolor+`"><img src="` + data + `" width=` + dimW + ` height=` + dimH + ` title="`+alttxt+`" style="border-radius: 6%; cursor: pointer;" onclick="return click_image(this,\'`+imghash+`\');"></div>` + suffix;
 		}
 	}
 
@@ -10042,7 +10055,7 @@ export default function Chat() {
 		{
 			shownotify();
 		}
-		let lastreq = "<a href=\"#\" onclick=\"show_last_req()\">Last request</a> served by <a href=\"#\" onclick=\"get_and_show_workers()\">" + genworker + "</a> using <span class=\"color_darkgreen\">"+genmdl+ "</span>"+(genkudos>0?(" for " + genkudos + " kudos"):"")+" in " + getTimeTaken() + " seconds.";
+		let lastreq = "<a href=\"#\" onclick=\"show_last_req()\">Last request</a> served by <a href=\"#\" onclick=\"get_and_show_workers()\">" + genworker + "</a> using <span className=\"color_darkgreen\">"+genmdl+ "</span>"+(genkudos>0?(" for " + genkudos + " kudos"):"")+" in " + getTimeTaken() + " seconds.";
 		document.getElementById("lastreq").innerHTML = lastreq;
 		document.getElementById("lastreq2").innerHTML = lastreq;
 	}
@@ -10646,8 +10659,8 @@ export default function Chat() {
 
 				//strip chunks (optimize for firefox by not constantly modifying dom)
 				let htmlstr = gametext_elem.innerHTML;
-				htmlstr = htmlstr.replace(/<span class="(.+?)">(.+?)<\/span>/g, "$2");
-				htmlstr = htmlstr.replace(/<span class="(.+?)">(.+?)<\/span>/g, "$2");
+				htmlstr = htmlstr.replace(/<span className="(.+?)">(.+?)<\/span>/g, "$2");
+				htmlstr = htmlstr.replace(/<span className="(.+?)">(.+?)<\/span>/g, "$2");
 				htmlstr = replaceAll(htmlstr,"<div><br><br><br></div>", "<br><br><br>");
 				htmlstr = replaceAll(htmlstr,"<div><br><br></div>", "<br><br>");
 				htmlstr = replaceAll(htmlstr,"<div><br></div>", "<br>");
@@ -10889,7 +10902,7 @@ export default function Chat() {
 				document.getElementById("btnsend").classList.add("wait");
 				document.getElementById("btnsend").classList.remove("btn-primary");
 				let oldspinnerhtml = document.getElementById("btnsend").innerHTML;
-				let newspinnerhtml = "<div class=\"outerloader\"><div id=\"outerloadernum\" class=\"outerloadernum\"></div><div id=\"maintxtloader\" class=\"innerloader\"></div></div>";
+				let newspinnerhtml = "<div className=\"outerloader\"><div id=\"outerloadernum\" className=\"outerloadernum\"></div><div id=\"maintxtloader\" className=\"innerloader\"></div></div>";
 				if (oldspinnerhtml != newspinnerhtml) {
 					//prevent resetting animation
 					document.getElementById("btnsend").innerHTML = newspinnerhtml;
@@ -10956,15 +10969,15 @@ export default function Chat() {
 			if (perfdata == null) {
 				if(document.getElementById("connectstatus").innerHTML == "Offline Mode")
 				{
-					document.getElementById("gametext").innerHTML = "Welcome to <span class=\"color_cyan\">KoboldAI Lite</span>!<br>You are in <span class=\"color_red\">Offline Mode</span>.<br>You will still be able to load and edit stories, but not generate new text."
+					document.getElementById("gametext").innerHTML = "Welcome to <span className=\"color_cyan\">KoboldAI Lite</span>!<br>You are in <span className=\"color_red\">Offline Mode</span>.<br>You will still be able to load and edit stories, but not generate new text."
 				}else{
-					document.getElementById("gametext").innerHTML = "Welcome to <span class=\"color_cyan\">KoboldAI Lite</span>!<br><span class=\"color_orange\">Attempting to Connect...</span>"
+					document.getElementById("gametext").innerHTML = "Welcome to <span className=\"color_cyan\">KoboldAI Lite</span>!<br><span className=\"color_orange\">Attempting to Connect...</span>"
 				}
 			} else {
 				let whorun = "";
 
 				if (custom_kobold_endpoint != "") {
-					whorun = "<br>You're using the custom KoboldAI endpoint at <span class=\"color_orange\">"+custom_kobold_endpoint+"</span>";
+					whorun = "<br>You're using the custom KoboldAI endpoint at <span className=\"color_orange\">"+custom_kobold_endpoint+"</span>";
 				}
 				else if(custom_oai_key!="")
 				{
@@ -10983,7 +10996,7 @@ export default function Chat() {
 					whorun = "<br>You're using the Cohere API";
 				}
 				else {
-					whorun = "<br>There are <span class=\"color_orange\">" + selected_models.reduce((s, a) => s + a.count, 0) + "</span> <a class=\"color_green\" href=\"#\" onclick=\"get_and_show_workers()\">volunteer(s)</a> running selected models with a total queue length of <span class=\"color_orange\">"+ selected_models.reduce((s, a) => s + a.queued, 0) + "</span> tokens";
+					whorun = "<br>There are <span className=\"color_orange\">" + selected_models.reduce((s, a) => s + a.count, 0) + "</span> <a className=\"color_green\" href=\"#\" onclick=\"get_and_show_workers()\">volunteer(s)</a> running selected models with a total queue length of <span className=\"color_orange\">"+ selected_models.reduce((s, a) => s + a.queued, 0) + "</span> tokens";
 				}
 				let nowmode = (localsettings.opmode==1?"Story Mode":(localsettings.opmode==2?"Adventure Mode":(localsettings.opmode==3?"Chat Mode":"Instruct Mode")));
 				let selmodelstr = "";
@@ -10996,9 +11009,9 @@ export default function Chat() {
 					selmodelstr = selected_models.reduce((s, a) => s + (s == "" ? "" : ", ") + a.name, "");
 				}
 
-				document.getElementById("gametext").innerHTML = "Welcome to <span class=\"color_cyan\">KoboldAI Lite</span>!<br>You are using the models <span class=\"color_green\">"
+				document.getElementById("gametext").innerHTML = "Welcome to <span className=\"color_cyan\">KoboldAI Lite</span>!<br>You are using the models <span className=\"color_green\">"
 					+ selmodelstr + "</span>" + (selected_workers.length == 0 ? "" : (" (Pinned to " + selected_workers.length + " worker IDs)"))
-					+ "." + whorun +".<br><br><b><span class=\"color_orange\">"+ nowmode +" Selected</span></b> - Enter a prompt below to begin!" + "<br>Or, <a href=\"#\" class=\"color_blueurl\" onclick=\"document.getElementById('loadfileinput').click()\">load a <b>JSON File</b> or a <b>Character Card</b> here.</a>" + "<br>Or, <a href=\"#\" class=\"color_blueurl\" onclick=\"display_scenarios()\">select a <b>Quick Start Scenario</b> here.</a><br>"+
+					+ "." + whorun +".<br><br><b><span className=\"color_orange\">"+ nowmode +" Selected</span></b> - Enter a prompt below to begin!" + "<br>Or, <a href=\"#\" className=\"color_blueurl\" onclick=\"document.getElementById('loadfileinput').click()\">load a <b>JSON File</b> or a <b>Character Card</b> here.</a>" + "<br>Or, <a href=\"#\" className=\"color_blueurl\" onclick=\"display_scenarios()\">select a <b>Quick Start Scenario</b> here.</a><br>"+
 					(welcome!=""?("<br><em>"+escapeHtml(welcome)+"</em>"):"");
 			}
 
@@ -11044,8 +11057,8 @@ export default function Chat() {
 					fulltxt = simpleMarkdown(fulltxt);
 				}
 
-				fulltxt = replaceAll(fulltxt, `%SpcStg%`, `<hr class="hr_instruct"><span class="color_cyan"><img src="`+human_square+`" style="height:38px;width:auto;padding:3px 6px 3px 3px;border-radius: 8%;"/>`);
-				fulltxt = replaceAll(fulltxt, `%SpcEtg%`, `</span><hr class="hr_instruct"><img src="`+niko_square+`" style="height:38px;width:auto;padding:3px 6px 3px 3px;border-radius: 8%;"/>`);
+				fulltxt = replaceAll(fulltxt, `%SpcStg%`, `<hr className="hr_instruct"><span className="color_cyan"><img src="`+human_square+`" style="height:38px;width:auto;padding:3px 6px 3px 3px;border-radius: 8%;"/>`);
+				fulltxt = replaceAll(fulltxt, `%SpcEtg%`, `</span><hr className="hr_instruct"><img src="`+niko_square+`" style="height:38px;width:auto;padding:3px 6px 3px 3px;border-radius: 8%;"/>`);
 				//apply stylization to time tags
 				if(localsettings.inject_timestamps_instruct && localsettings.instruct_has_markdown)
 				{
@@ -11067,8 +11080,8 @@ export default function Chat() {
 			}
 
 			//this is a hacky fix to handle instruct tags that use arrow brackets only
-			fulltxt = replaceAll(fulltxt, `%SpnStg%`, `<span class=\"txtchunk\">`);
-			fulltxt = replaceAll(fulltxt, `%SclStg%`,`<span class=\"color_gray\">`);
+			fulltxt = replaceAll(fulltxt, `%SpnStg%`, `<span className=\"txtchunk\">`);
+			fulltxt = replaceAll(fulltxt, `%SclStg%`,`<span className=\"color_gray\">`);
 			fulltxt = replaceAll(fulltxt, `%SpnEtg%`, `</span>`);
 
 			if(localsettings.opmode==3)
@@ -11092,23 +11105,23 @@ export default function Chat() {
 						colormap[onametrim] = GetUniqueColor(colidx);
 						++colidx;
 					}
-					return `<span class="`+colormap[onametrim]+`">` + oname + `</span>`;
+					return `<span className="`+colormap[onametrim]+`">` + oname + `</span>`;
 				});
-				fulltxt = replaceAll(fulltxt,m_name, `<span class="color_blue">` + escapeHtml(m_name) + `</span>`);
+				fulltxt = replaceAll(fulltxt,m_name, `<span className="color_blue">` + escapeHtml(m_name) + `</span>`);
 
 			}
 
 			//for adventure mode, highlight our actions in green
 			if (localsettings.opmode == 2) {
 				fulltxt = fulltxt.replace(/\n\n\> .+?\n/g, function (m) {
-					return `<span class="color_green">` + m + `</span>`;
+					return `<span className="color_green">` + m + `</span>`;
 				});
 			}
 
 			//streaming display
 			if(synchro_pending_stream!="")
 			{
-				fulltxt += "<span class=\"color_yellow pending_text\">" + escapeHtml(pending_context_preinjection) + escapeHtml(synchro_pending_stream) + "</span>";
+				fulltxt += "<span className=\"color_yellow pending_text\">" + escapeHtml(pending_context_preinjection) + escapeHtml(synchro_pending_stream) + "</span>";
 			}
 
 			if(!inEditMode)
@@ -11132,13 +11145,13 @@ export default function Chat() {
 			else
 			{
 				fulltxt = fulltxt.replace(/\[<\|p\|.+?\|p\|>\]/g, function (m) {
-					return `<span class=\"color_pink\">`+m+`</span>`;
+					return `<span className=\"color_pink\">`+m+`</span>`;
 				});
 				fulltxt = fulltxt.replace(/\[<\|d\|.+?\|d\|>\]/g, function (m) {
 					let inner = m.substring(5, m.length - 5);
 					let imghash = cyrb_hash(inner);
 					img_hash_to_b64_lookup[imghash] = m;
-					return `<span class=\"color_pink\">{{[IMG_${imghash}_REF]}}</span>`;
+					return `<span className=\"color_pink\">{{[IMG_${imghash}_REF]}}</span>`;
 				});
 			}
 
@@ -11219,8 +11232,8 @@ export default function Chat() {
 			document.getElementById("fvico").href = favivon_normal;
 		}
 		else if (selected_models.length == 0 && selected_workers.length == 0) {
-			let perfinfo = "There are <span class=\"color_orange\">" + perfdata.worker_count + "</span> total <a class=\"color_green\" href=\"#\" onclick=\"get_and_show_workers()\">volunteer(s)</a> in the AI Horde, and <span class=\"color_orange\">" + perfdata.queued_requests + "</span> request(s) in queues.<br>A total of <span class=\"color_orange\">" + perfdata.past_minute_tokens + "</span> tokens were generated in the last minute.<br><br>";
-			document.getElementById("gametext").innerHTML = "Welcome to <span class=\"color_cyan\">KoboldAI Lite</span>!<br><br>" + perfinfo + "<a href=\"#\" class=\"color_blueurl\" onclick=\"display_endpoint_container()\">Please select an AI service to use!</a><br>";
+			let perfinfo = "There are <span className=\"color_orange\">" + perfdata.worker_count + "</span> total <a className=\"color_green\" href=\"#\" onclick=\"get_and_show_workers()\">volunteer(s)</a> in the AI Horde, and <span className=\"color_orange\">" + perfdata.queued_requests + "</span> request(s) in queues.<br>A total of <span className=\"color_orange\">" + perfdata.past_minute_tokens + "</span> tokens were generated in the last minute.<br><br>";
+			document.getElementById("gametext").innerHTML = "Welcome to <span className=\"color_cyan\">KoboldAI Lite</span>!<br><br>" + perfinfo + "<a href=\"#\" className=\"color_blueurl\" onclick=\"display_endpoint_container()\">Please select an AI service to use!</a><br>";
 			document.getElementById("fvico").href = favivon_normal;
 		}
 		else if (pending_response_id == "") {
@@ -11462,7 +11475,7 @@ export default function Chat() {
 			if(curr.myturn)
 			{
 				let namepart = (curr.name!=""?`<span style="font-weight: bolder;color:#15e4c8b9;">`+escapeHtml(curr.name)+`</span><br>`:"");
-				newbodystr += `<div class="chat_outgoing_msg"><div class="chat_sent_msg"><p>`+namepart+curr.msg+`</p></div></div>`;
+				newbodystr += `<div className="chat_outgoing_msg"><div className="chat_sent_msg"><p>`+namepart+curr.msg+`</p></div></div>`;
 			}else{
 				let oname = escapeHtml(curr.name);
 				let onametrim = oname.trim();
@@ -11471,14 +11484,14 @@ export default function Chat() {
 					colormap[onametrim] = GetUniqueColor(colidx);
 					++colidx;
 				}
-				let namepart = (curr.name!=""?`<span class='`+colormap[onametrim]+`' style="font-weight: bolder;">`+oname+`</span><br>`:"");
-				newbodystr += `<div class="incoming_msg"><div class="chat_received_msg"><div class="chat_received_withd_msg"><p>`+namepart+curr.msg+`</p></div></div></div>`;
+				let namepart = (curr.name!=""?`<span className='`+colormap[onametrim]+`' style="font-weight: bolder;">`+oname+`</span><br>`:"");
+				newbodystr += `<div className="incoming_msg"><div className="chat_received_msg"><div className="chat_received_withd_msg"><p>`+namepart+curr.msg+`</p></div></div></div>`;
 			}
 
 		}
 		if(synchro_pending_stream!="")
 		{
-			newbodystr += `<div class="incoming_msg"><div class="chat_received_msg"><div class="chat_received_withd_msg"><p>`+"<span class=\"color_yellow pending_text\">" + escapeHtml(pending_context_preinjection) + escapeHtml(synchro_pending_stream) + "</span>"+`</p></div></div></div>`;
+			newbodystr += `<div className="incoming_msg"><div className="chat_received_msg"><div className="chat_received_withd_msg"><p>`+"<span className=\"color_yellow pending_text\">" + escapeHtml(pending_context_preinjection) + escapeHtml(synchro_pending_stream) + "</span>"+`</p></div></div></div>`;
 		}
 
 		chatbody.innerHTML = newbodystr;
@@ -11670,9 +11683,9 @@ export default function Chat() {
 	{
 		let regextablehtml = `
 		<tr>
-		<th>Pattern <span class="helpicon">?<span class="helptext">The regex pattern to match against any incoming text. Leave blank to disable.</span></span></th>
-		<th>Replacement <span class="helpicon">?<span class="helptext">The string to replace matches with. Capture groups are allowed (e.g. $1). To remove all matches, leave this blank.</span></span></th>
-		<th>Both Ways <span class="helpicon">?<span class="helptext">If enabled, regex applies for both inputs and outputs, otherwise output only.</span></span></th>
+		<th>Pattern <span className="helpicon">?<span className="helptext">The regex pattern to match against any incoming text. Leave blank to disable.</span></span></th>
+		<th>Replacement <span className="helpicon">?<span className="helptext">The string to replace matches with. Capture groups are allowed (e.g. $1). To remove all matches, leave this blank.</span></span></th>
+		<th>Both Ways <span className="helpicon">?<span className="helptext">If enabled, regex applies for both inputs and outputs, otherwise output only.</span></span></th>
 		</tr>`;
 		let regextable = document.getElementById("regex_replace_table");
 
@@ -11680,8 +11693,8 @@ export default function Chat() {
 		{
 			regextablehtml += `
 			<tr>
-			<td><input class="settinglabel miniinput" type="text" placeholder="(Inactive)" value="" id="regexreplace_pattern${i}"></td/>
-			<td><input class="settinglabel miniinput" type="text" placeholder="(Remove)" value="" id="regexreplace_replacement${i}"></td/>
+			<td><input className="settinglabel miniinput" type="text" placeholder="(Inactive)" value="" id="regexreplace_pattern${i}"></td/>
+			<td><input className="settinglabel miniinput" type="text" placeholder="(Remove)" value="" id="regexreplace_replacement${i}"></td/>
 			<td><input type="checkbox" id="regexreplace_bothways${i}" style="margin:0px 0 0;"></td/>
 			</tr>
 			`;
@@ -11715,8 +11728,8 @@ export default function Chat() {
 	{
 		let regextablehtml = `
 		<tr>
-		<th>Placeholder <span class="helpicon">?<span class="helptext">The placeholder to match against</span></span></th>
-		<th>Replacement <span class="helpicon">?<span class="helptext">The text to substitude on display. Actual context is unchanged.</span></span></th>
+		<th>Placeholder <span className="helpicon">?<span className="helptext">The placeholder to match against</span></span></th>
+		<th>Replacement <span className="helpicon">?<span className="helptext">The text to substitude on display. Actual context is unchanged.</span></span></th>
 		</tr>`;
 		let regextable = document.getElementById("placeholder_replace_table");
 
@@ -11728,7 +11741,7 @@ export default function Chat() {
 			regextablehtml += `
 			<tr>
 			<td>${hardcoded1[i]}</td>
-			<td><input class="settinglabel miniinput" type="text" placeholder="" value="${hardcoded2[i]}" id="placeholder_replace_hc${i}"></td/>
+			<td><input className="settinglabel miniinput" type="text" placeholder="" value="${hardcoded2[i]}" id="placeholder_replace_hc${i}"></td/>
 			</tr>
 			`;
 		}
@@ -11737,8 +11750,8 @@ export default function Chat() {
 		{
 			regextablehtml += `
 			<tr>
-			<td><input class="settinglabel miniinput" type="text" placeholder="(Inactive)" value="" id="placeholder_pattern${i}"></td/>
-			<td><input class="settinglabel miniinput" type="text" placeholder="(Remove)" value="" id="placeholder_replace${i}"></td/>
+			<td><input className="settinglabel miniinput" type="text" placeholder="(Inactive)" value="" id="placeholder_pattern${i}"></td/>
+			<td><input className="settinglabel miniinput" type="text" placeholder="(Remove)" value="" id="placeholder_replace${i}"></td/>
 			</tr>
 			`;
 		}
@@ -11896,21 +11909,21 @@ export default function Chat() {
 
 			let probarr = [100,90,75,50,25,10,5,1];
 
-			selectionhtml += `<tr class='`+ (ishidden?"hidden":"") +`' id="wirow` + i + `"><td class="col-8" style="font-size: 10px;">`
-			+`<button type="button" class="btn btn-danger widelbtn" id="widel` + i + `" onclick="return del_wi(` + i + `)">X</button></td>`
-			+`<td><button type="button" class="btn btn-primary wiarrowbtn" id="wiup` + i + `" onclick="return up_wi(` + i + `)">▲</button>`
-			+`<button type="button" class="btn btn-primary wiarrowbtn" id="widown` + i + `" onclick="return down_wi(` + i + `)">▼</button></td>` +
-			`<td class="col-6 wiinputkeycol">
-			<input class="form-control wiinputkey" id="wikey`+ i + `" placeholder="Key(s)" value="` + winame + `"/>
-			<input class="form-control wiinputkey `+ (curr.selective ? `` : `hidden`) + `" id="wikeysec` + i + `" placeholder="Sec. Key(s)" value="` + wisec + `"/>` + `
-			<input class="form-control wiinputkey `+ (curr.selective ? `` : `hidden`) + `" id="wikeyanti` + i + `" placeholder="Anti Key(s)" value="` + wianti + `"/>` + `</td>
-			<td class="col-10 wiinputvalcol">
-			<textarea class="form-control wiinputval" style="line-height:1.1" id="wival`+ i + `" placeholder="What To Remember" rows="4">` + witxt + `</textarea>
+			selectionhtml += `<tr className='`+ (ishidden?"hidden":"") +`' id="wirow` + i + `"><td className="col-8" style="font-size: 10px;">`
+			+`<button type="button" className="btn btn-danger widelbtn" id="widel` + i + `" onclick="return del_wi(` + i + `)">X</button></td>`
+			+`<td><button type="button" className="btn btn-primary wiarrowbtn" id="wiup` + i + `" onclick="return up_wi(` + i + `)">▲</button>`
+			+`<button type="button" className="btn btn-primary wiarrowbtn" id="widown` + i + `" onclick="return down_wi(` + i + `)">▼</button></td>` +
+			`<td className="col-6 wiinputkeycol">
+			<input className="form-control wiinputkey" id="wikey`+ i + `" placeholder="Key(s)" value="` + winame + `"/>
+			<input className="form-control wiinputkey `+ (curr.selective ? `` : `hidden`) + `" id="wikeysec` + i + `" placeholder="Sec. Key(s)" value="` + wisec + `"/>` + `
+			<input className="form-control wiinputkey `+ (curr.selective ? `` : `hidden`) + `" id="wikeyanti` + i + `" placeholder="Anti Key(s)" value="` + wianti + `"/>` + `</td>
+			<td className="col-10 wiinputvalcol">
+			<textarea className="form-control wiinputval" style="line-height:1.1" id="wival`+ i + `" placeholder="What To Remember" rows="4">` + witxt + `</textarea>
 			</td>
 			<td>
-			<a id="wiskt`+ i + `" href="#" class=` + (curr.selective ? "witoggleron" : "witoggleroff") + ` title="Toggle Selective Key mode (if enabled, this world info entry will be included in memory only if at least one PRIMARY KEY and at least one SECONDARY KEY are both present in the story)" onclick="return toggle_wi_sk(` + i + `)">📑</a>
-			<a id="wickt`+ i + `" href="#" class=` + (curr.constant ? "witoggleron" : "witoggleroff") + ` title="Toggle Constant Key mode (if enabled, this world info entry will always be included in memory)" onclick="return toggle_wi_ck(` + i + `)">📌</a>
-			<select id="wirng`+i+`" style="padding:1px; height:auto; width: 30px; appearance: none; font-size: 7pt;" class="form-control" title="Chance to trigger if allowed">`;
+			<a id="wiskt`+ i + `" href="#" className=` + (curr.selective ? "witoggleron" : "witoggleroff") + ` title="Toggle Selective Key mode (if enabled, this world info entry will be included in memory only if at least one PRIMARY KEY and at least one SECONDARY KEY are both present in the story)" onclick="return toggle_wi_sk(` + i + `)">📑</a>
+			<a id="wickt`+ i + `" href="#" className=` + (curr.constant ? "witoggleron" : "witoggleroff") + ` title="Toggle Constant Key mode (if enabled, this world info entry will always be included in memory)" onclick="return toggle_wi_ck(` + i + `)">📌</a>
+			<select id="wirng`+i+`" style="padding:1px; height:auto; width: 30px; appearance: none; font-size: 7pt;" className="form-control" title="Chance to trigger if allowed">`;
 
 			let opts = "";
 			for(let n=0;n<probarr.length;++n)
@@ -11924,7 +11937,7 @@ export default function Chat() {
 		`;
 		}
 		if (current_wi.length == 0) {
-			selectionhtml = "<div class=\"aidgpopuplistheader anotelabel\">No world info.<br>Click [+Add] to add a new entry.</div>"
+			selectionhtml = "<div className=\"aidgpopuplistheader anotelabel\">No world info.<br>Click [+Add] to add a new entry.</div>"
 		}
 
 		selectionhtml += "</table>"
@@ -12065,7 +12078,7 @@ export default function Chat() {
 				for (let i = 0; i < grouplist.length; ++i) {
 					let show = !groupchat_removals.includes(grouplist[i]);
 					gs += `<tr><td width='184px'><span style="vertical-align: middle;">` + grouplist[i] + `</span></td>`
-						+`<td width='24px'><button type="button" class="btn btn-primary widelbtn" id="widel0" onclick="impersonate_message(`+i+`)">+</button></td>`
+						+`<td width='24px'><button type="button" className="btn btn-primary widelbtn" id="widel0" onclick="impersonate_message(`+i+`)">+</button></td>`
 						+`<td width='24px'><input type="checkbox" id="groupselectitem_` + i + `" style=" vertical-align: top;" ` + (show ? "checked" : "") + `></td></tr>`;
 				}
 				gs += `</table>`;
@@ -12073,15 +12086,15 @@ export default function Chat() {
 			else if(localsettings.chatopponent != "")
 			{
 				gs = `You're having a one-on-one chat with <b>`+localsettings.chatopponent+`</b>.<br><br>`
-				+`<a href='#' class='color_blueurl' onclick='hide_popups();display_settings()'>Turn it into a <b>group chat</b> by <b>adding more AI characters</b> (one per line)</a>.<br><br>`
-				+ `<a href='#' class='color_blueurl' onclick='impersonate_message(0)'>Impersonate `+localsettings.chatopponent+` speaking as them</a>`;
+				+`<a href='#' className='color_blueurl' onclick='hide_popups();display_settings()'>Turn it into a <b>group chat</b> by <b>adding more AI characters</b> (one per line)</a>.<br><br>`
+				+ `<a href='#' className='color_blueurl' onclick='impersonate_message(0)'>Impersonate `+localsettings.chatopponent+` speaking as them</a>`;
 			}
 		}else{
 			gs = `You're in Instruct Mode.<br><br>`
-				+ `<a href='#' class='color_blueurl' onclick='impersonate_message(0)'>Impersonate the AI Assistant</a>`;
+				+ `<a href='#' className='color_blueurl' onclick='impersonate_message(0)'>Impersonate the AI Assistant</a>`;
 		}
 
-		gs += `<br><a href='#' class='color_blueurl' onclick='impersonate_user()'>Make the AI write a response as me (for 1 turn)</a>`;
+		gs += `<br><a href='#' className='color_blueurl' onclick='impersonate_user()'>Make the AI write a response as me (for 1 turn)</a>`;
 
 		document.getElementById("groupselectitems").innerHTML = gs;
 	}
@@ -12552,9 +12565,9 @@ export default function Chat() {
 					input = input.replaceAll(mynameregex3, '{{userplaceholder}}');
 					if(as.show_chat_names)
 					{
-						input = input.replaceAll("{{userplaceholder}}", `{{userplaceholder}}<p class='aui_nametag'>`+localsettings.chatname+`</p>`);
+						input = input.replaceAll("{{userplaceholder}}", `{{userplaceholder}}<p className='aui_nametag'>`+localsettings.chatname+`</p>`);
 						input = input.replaceAll(othernamesregex, function(match) {
-							return "{{botplaceholder}}<p class='aui_nametag'>" + match.substring(0,match.length-2).trim() + "</p>";
+							return "{{botplaceholder}}<p className='aui_nametag'>" + match.substring(0,match.length-2).trim() + "</p>";
 						});
 					}
 					else
@@ -12569,8 +12582,8 @@ export default function Chat() {
 				{
 					let m_name = localsettings.chatname + ": ";
 					let m_opp = localsettings.chatopponent + ": ";
-					input = replaceAll(input, m_name, `<p class='aui_nametag'>` + escapeHtml(localsettings.chatname) + `</p>`);
-					input = replaceAll(input, m_opp, `<p class='aui_nametag'>` + escapeHtml(localsettings.chatopponent) + `</p>`);
+					input = replaceAll(input, m_name, `<p className='aui_nametag'>` + escapeHtml(localsettings.chatname) + `</p>`);
+					input = replaceAll(input, m_opp, `<p className='aui_nametag'>` + escapeHtml(localsettings.chatopponent) + `</p>`);
 				}
 
 				let portraitsStyling = // Also, implement portraits as css classes. Now chat entries can reuse them instead of recreating them.
@@ -12650,7 +12663,7 @@ export default function Chat() {
 				function image(role) {
 					if (!as[`${role}_portrait`] || as.border_style == 'None' || role == 'sys') { return ''; }
 					let reinvertcolor = localsettings.invert_colors?" invert_colors":"";
-					return `<div class='${role}-portrait-image${classSuffixStr}${reinvertcolor}' style='width:${as.portraitSize(role).width}px; height:${as.portraitSize(role).height}px; border-radius: ${as.portraitRadius()}'></div>`;
+					return `<div className='${role}-portrait-image${classSuffixStr}${reinvertcolor}' style='width:${as.portraitSize(role).width}px; height:${as.portraitSize(role).height}px; border-radius: ${as.portraitRadius()}'></div>`;
 				}
 				function applyStylizedCodeBlocks() {
 					let blocks = newbodystr.split(/(```[\s\S]*?\n[\s\S]*?```)/g);
@@ -12694,7 +12707,7 @@ export default function Chat() {
 				}
 				function getStreamingText() {
 					let isChatBotReply = (localsettings.opmode==3 && pending_context_preinjection.startsWith("\n") && pending_context_preinjection.endsWith(":"));
-					return `${(input.endsWith(bot) || isChatBotReply) ? style('AI') + `${bot.endsWith('*') ? '*' : ''}` + `${bot.endsWith('"') ? '"' : ''}` : ''}` + `<span class='pending_text'>`+ escapeHtml(pending_context_preinjection) + escapeHtml(synchro_pending_stream) + `</span`;
+					return `${(input.endsWith(bot) || isChatBotReply) ? style('AI') + `${bot.endsWith('*') ? '*' : ''}` + `${bot.endsWith('"') ? '"' : ''}` : ''}` + `<span className='pending_text'>`+ escapeHtml(pending_context_preinjection) + escapeHtml(synchro_pending_stream) + `</span`;
 				}
 			}
 
@@ -12705,7 +12718,7 @@ export default function Chat() {
 				{
 					preview = replaceAll(preview,'\n[USER_REPLY]\n', "{{userplaceholder}}");
 					if(aestheticInstructUISettings.show_chat_names){
-						preview = replaceAll(preview,'\n[AI_REPLY]\n', "{{botplaceholder}}<p class='aui_nametag'>Bot</p>");
+						preview = replaceAll(preview,'\n[AI_REPLY]\n', "{{botplaceholder}}<p className='aui_nametag'>Bot</p>");
 					}else{
 						preview = replaceAll(preview,'\n[AI_REPLY]\n', "{{botplaceholder}}");
 					}
@@ -12724,51 +12737,51 @@ export default function Chat() {
 			}
 			
 	return (
-		<body id="outerbody" class="">
-			<div id="maincontainer" class="adaptivecontainer maincontainer">
+		<body id="outerbody" className="">
+			<div id="maincontainer" className="adaptivecontainer maincontainer">
 				<div id="outerbodybg"></div>
-				<div class="" id="topmenu">
+				<div className="" id="topmenu">
 					<div id="menuitems">
-						<div class="navcontainer">
-							<nav class="navbar" id="navbar">
-								<button class="navbar-toggler" type="button" onclick="toggleNavWithoutBootstrapJS()">
-									<span class="navbar-button-bar"></span>
-									<span class="navbar-button-bar"></span>
-									<span class="navbar-button-bar"></span>
+						<div className="navcontainer">
+							<nav className="navbar" id="navbar">
+								<button className="navbar-toggler" type="button" onclick="toggleNavWithoutBootstrapJS()">
+									<span className="navbar-button-bar"></span>
+									<span className="navbar-button-bar"></span>
+									<span className="navbar-button-bar"></span>
 								</button>
-								<div class="navbar-collapse collapse" id="navbarNavDropdown">
-									<ul class="nav navbar-nav">
+								<div className="navbar-collapse collapse" id="navbarNavDropdown">
+									<ul className="nav navbar-nav">
 
-										<li class="nav-item hidden" id="topbtn_reconnect">
-											<a class="nav-link" href="#" onclick="attempt_connect()">Reconnect</a>
+										<li className="nav-item hidden" id="topbtn_reconnect">
+											<a className="nav-link" href="#" onclick="attempt_connect()">Reconnect</a>
 										</li>
 
-										<li class="nav-item hidden" id="topbtn_customendpt">
-											<a class="nav-link" href="#" onclick="display_endpoint_container()">Custom Endpoint</a>
+										<li className="nav-item hidden" id="topbtn_customendpt">
+											<a className="nav-link" href="#" onclick="display_endpoint_container()">Custom Endpoint</a>
 										</li>
 
-										<li class="nav-item hidden" id="topbtn_ai">
-											<a class="nav-link" href="#" onclick="display_endpoint_container()">AI</a>
+										<li className="nav-item hidden" id="topbtn_ai">
+											<a className="nav-link" href="#" onclick="display_endpoint_container()">AI</a>
 										</li>
 
-										<li class="nav-item hidden" id="topbtn_newgame">
-											<a class="nav-link" href="#" onclick="display_newgame()">New Session</a>
+										<li className="nav-item hidden" id="topbtn_newgame">
+											<a className="nav-link" href="#" onclick="display_newgame()">New Session</a>
 										</li>
 
-										<li class="nav-item hidden" id="topbtn_scenarios">
-											<a class="nav-link" href="#" onclick="display_scenarios()">Scenarios</a>
+										<li className="nav-item hidden" id="topbtn_scenarios">
+											<a className="nav-link" href="#" onclick="display_scenarios()">Scenarios</a>
 										</li>
-										<li class="nav-item hidden" id="topbtn_quickplay">
-											<a class="nav-link" href="#" onclick="display_scenarios()">Quick Start</a>
+										<li className="nav-item hidden" id="topbtn_quickplay">
+											<a className="nav-link" href="#" onclick="display_scenarios()">Quick Start</a>
 										</li>
 
-										<li class="nav-item hidden" id="topbtn_save_load">
+										<li className="nav-item hidden" id="topbtn_save_load">
 											<a id="tempfile" href="#" style="display:none;"></a>
 											<input type="file" id="loadfileinput" accept="text/json,application/json,image/png,image/webp,.kaistory,.webp,.png,.json,.txt,*.*,*" onchange="load_file(event)" style="display:none;"/>
-											<a class="nav-link" href="#" onclick="display_saveloadcontainer()">Save / Load</a>
+											<a className="nav-link" href="#" onclick="display_saveloadcontainer()">Save / Load</a>
 										</li>
-										<li class="nav-item hidden" id="topbtn_settings">
-											<a class="nav-link" href="#" id="btn_settings"
+										<li className="nav-item hidden" id="topbtn_settings">
+											<a className="nav-link" href="#" id="btn_settings"
 												onclick="display_settings()">Settings</a>
 										</li>
 
@@ -12776,121 +12789,121 @@ export default function Chat() {
 								</div>
 							</nav>
 						</div>
-						<div id="connectstatusdiv" class="flex-row-container">
-							<span id="connectstatus" class="color_orange flex-row">Waiting for Connection</span>
-							<div class="layer-container status-container flex-push-left" style="color: #FFFFFF;" id="runtime">
+						<div id="connectstatusdiv" className="flex-row-container">
+							<span id="connectstatus" className="color_orange flex-row">Waiting for Connection</span>
+							<div className="layer-container status-container flex-push-left" style="color: #FFFFFF;" id="runtime">
 							</div>
-							<div class="layer-container status-container flex-push-right">
-								<div class="layer-top statusiconlabel" id="usiconlabel"></div>
+							<div className="layer-container status-container flex-push-right">
+								<div className="layer-top statusiconlabel" id="usiconlabel"></div>
 							</div>
 
 						</div>
 					</div>
 				</div>
 				<div id="normalinterface">
-				<div id="maineditbody" class="layer-container">
-					<div class="layer-bottom gamescreenbgnormal normal_viewport_height" id="gamescreen">
+				<div id="maineditbody" className="layer-container">
+					<div className="layer-bottom gamescreenbgnormal normal_viewport_height" id="gamescreen">
 						<span id="gametext" contenteditable="false" onclick="click_gametext()" onblur="merge_edit_field()">
 							<p id="tempgtloadtxt">Loading...</p>
 							{/* <noscript><style>#tempgtloadtxt { display: none; } #gametext { white-space: normal!important; }</style><p>Sorry, Kobold Lite requires Javascript to function.</p></noscript> */}
 						</span>
-						<div class="hidden" id="wimenu">
+						<div className="hidden" id="wimenu">
 						</div>
 					</div>
-					<div id="curtain" class="layer-top hidden"></div>
+					<div id="curtain" className="layer-top hidden"></div>
 				</div>
 
-				<div class="flex" id="actionmenu">
+				<div className="flex" id="actionmenu">
 					<div id="actionmenuitems">
-						<button type="button" class="btn btn-primary" id="btn_actmem" onclick="btn_memory()">Context</button>
-						<button type="button" class="btn btn-primary" id="btn_actundo" onpointerdown="btn_back_longpress_start()" onpointerleave="btn_back_longpress_end()" onpointerup="btn_back_longpress_end()" onclick="btn_back()">Back</button>
-						<button type="button" class="btn btn-primary" id="btn_actredo" onpointerdown="btn_redo_longpress_start()" onpointerleave="btn_redo_longpress_end()" onpointerup="btn_redo_longpress_end()" onclick="btn_redo()">Redo</button>
-						<button type="button" class="btn btn-primary" id="btn_actretry" onclick="btn_retry()">Retry</button>
-						<button type="button" class="btn btn-primary bg_green" id="btn_genimg" onclick="add_img_btn_menu()">Add Img</button>
+						<button type="button" className="btn btn-primary" id="btn_actmem" onclick="btn_memory()">Context</button>
+						<button type="button" className="btn btn-primary" id="btn_actundo" onpointerdown="btn_back_longpress_start()" onpointerleave="btn_back_longpress_end()" onpointerup="btn_back_longpress_end()" onclick="btn_back()">Back</button>
+						<button type="button" className="btn btn-primary" id="btn_actredo" onpointerdown="btn_redo_longpress_start()" onpointerleave="btn_redo_longpress_end()" onpointerup="btn_redo_longpress_end()" onclick="btn_redo()">Redo</button>
+						<button type="button" className="btn btn-primary" id="btn_actretry" onclick="btn_retry()">Retry</button>
+						<button type="button" className="btn btn-primary bg_green" id="btn_genimg" onclick="add_img_btn_menu()">Add Img</button>
 					</div>
-					<div class="box flex flex-push-right">
+					<div className="box flex flex-push-right">
 						<input type="checkbox" id="entersubmit" onclick="toggle_entersends()" checked/>
-						<div class="box-label"><label class="unstyled" for="entersubmit">Enter Sends</label></div>
+						<div className="box-label"><label className="unstyled" for="entersubmit">Enter Sends</label></div>
 						<input type="checkbox" id="allowediting"  onclick="toggle_editable()"/>
-						<div class="box-label"><label class="unstyled" for="allowediting">Allow Editing</label></div>
+						<div className="box-label"><label className="unstyled" for="allowediting">Allow Editing</label></div>
 					</div>
 				</div>
-				<div class="">
-					<div id="inputrow" class="">
+				<div className="">
+					<div id="inputrow" className="">
 						<div id="inputrowmode" style="padding-right: 4px;">
-							<button type="button" class="btn btn-primary btn-secondary hidden" style="line-height: 1.4;" id="btnmode_adventure" onclick="btn_adventure_mode()">
-								<img id="adventure_mode_img" class="input_story"/>
+							<button type="button" className="btn btn-primary btn-secondary hidden" style="line-height: 1.4;" id="btnmode_adventure" onclick="btn_adventure_mode()">
+								<img id="adventure_mode_img" className="input_story"/>
 								<br/><b id="adventure_mode_txt" style="font-size: 10px;">Story</b>
 							</button>
-							<button type="button" class="btn btn-primary btn-secondary" style="line-height: 1;" id="btnmode_chat" onclick="show_groupchat_select()">
-								<img class="input_chat"/>
+							<button type="button" className="btn btn-primary btn-secondary" style="line-height: 1;" id="btnmode_chat" onclick="show_groupchat_select()">
+								<img className="input_chat"/>
 								<br/><b style="font-size: 10px;">Chat<br/>Select</b>
 							</button>
 						</div>
-						<div id="inputrowleft" class="tokens-in-box">
-							<textarea class="form-control" id="input_text" oninput="update_submit_button()" onkeypress="return handle_typing(event)" placeholder="Enter text here"></textarea>
-							<span id="token-budget" class="token-budget"></span>
+						<div id="inputrowleft" className="tokens-in-box">
+							<textarea className="form-control" id="input_text" oninput="update_submit_button()" onkeypress="return handle_typing(event)" placeholder="Enter text here"></textarea>
+							<span id="token-budget" className="token-budget"></span>
 						</div>
 						<div id="inputrowright" style="padding-right: 2px;">
-							<button type="button" class="btn btn-secondary wait" id="btnsend" disabled
+							<button type="button" className="btn btn-secondary wait" id="btnsend" disabled
 								onclick="submit_generation()">Loading</button>
-								<a href="#" id="abortgen" class="hidden bg_black" style="text-align: center;color: #ffaaaa;" onclick="abort_generation()"><b style="display: block;">[ABORT]</b></a>
+								<a href="#" id="abortgen" className="hidden bg_black" style="text-align: center;color: #ffaaaa;" onclick="abort_generation()"><b style="display: block;">[ABORT]</b></a>
 						</div>
 					</div>
 				</div>
-				<div class="lastreq" id="lastreq" style="color:#999999"><span class="color_gray">KoboldAI Lite - A frontend for self hosted and third party API services</span></div>
+				<div className="lastreq" id="lastreq" style="color:#999999"><span className="color_gray">KoboldAI Lite - A frontend for self hosted and third party API services</span></div>
 				</div>
 
-				<div id="enhancedchatinterface" class="chat_mesgs hidden">
-					<div id="enhancedchatinterface_inner" class="chat_mesgs_inner">
-						<div id="chat_msg_body" class="chat_msg_history aesthetic_viewport_height"></div>
-						<div class="hidden" id="chatistyping" style="text-align:right;font-size:13px;color:#999999; padding-bottom: 3px;"><div style="padding-bottom: 2px;" id="chataityping">The AI is typing...</div><div style="padding-top:2px;text-align:right;" class="dot-flashing flex flex-push-right"></div></div>
+				<div id="enhancedchatinterface" className="chat_mesgs hidden">
+					<div id="enhancedchatinterface_inner" className="chat_mesgs_inner">
+						<div id="chat_msg_body" className="chat_msg_history aesthetic_viewport_height"></div>
+						<div className="hidden" id="chatistyping" style="text-align:right;font-size:13px;color:#999999; padding-bottom: 3px;"><div style="padding-bottom: 2px;" id="chataityping">The AI is typing...</div><div style="padding-top:2px;text-align:right;" className="dot-flashing flex flex-push-right"></div></div>
 
 						{/* <!-- A greatly simplified action menu for this mode --> */}
-						<div class="flex hidden" id="actionmenu2">
-							<div id="actionmenuitems2" class="box flex-push-right" style="margin-bottom: 2px;">
-								<button type="button" class="btn btn-primary" id="btn_actmem2" onclick="btn_memory()">Context</button>
-								<button type="button" class="btn btn-primary" id="btn_actundo2" onpointerdown="btn_back_longpress_start()" onpointerleave="btn_back_longpress_end()" onpointerup="btn_back_longpress_end()" onclick="btn_back()">Back</button>
-								<button type="button" class="btn btn-primary" id="btn_actredo2" onpointerdown="btn_redo_longpress_start()" onpointerleave="btn_redo_longpress_end()" onpointerup="btn_redo_longpress_end()" onclick="btn_redo()">Redo</button>
-								<button type="button" class="btn btn-primary" id="btn_actretry2" onclick="btn_retry()">Retry</button>
-								<button type="button" class="btn btn-primary bg_green" id="btn_genimg2" onclick="add_img_btn_menu()">Add Img</button>
-								<button type="button" class="btn btn-primary" id="btn_editmode" onclick="btn_editmode()">Edit</button>
+						<div className="flex hidden" id="actionmenu2">
+							<div id="actionmenuitems2" className="box flex-push-right" style="margin-bottom: 2px;">
+								<button type="button" className="btn btn-primary" id="btn_actmem2" onclick="btn_memory()">Context</button>
+								<button type="button" className="btn btn-primary" id="btn_actundo2" onpointerdown="btn_back_longpress_start()" onpointerleave="btn_back_longpress_end()" onpointerup="btn_back_longpress_end()" onclick="btn_back()">Back</button>
+								<button type="button" className="btn btn-primary" id="btn_actredo2" onpointerdown="btn_redo_longpress_start()" onpointerleave="btn_redo_longpress_end()" onpointerup="btn_redo_longpress_end()" onclick="btn_redo()">Redo</button>
+								<button type="button" className="btn btn-primary" id="btn_actretry2" onclick="btn_retry()">Retry</button>
+								<button type="button" className="btn btn-primary bg_green" id="btn_genimg2" onclick="add_img_btn_menu()">Add Img</button>
+								<button type="button" className="btn btn-primary" id="btn_editmode" onclick="btn_editmode()">Edit</button>
 
 							</div>
 						</div>
 
-						<div class="cht_inp_hold_outer">
-							<div class="cht_inp_hold">
-							<button onclick="show_groupchat_select()" id="chat_btnmode_chat" class="chat_btnmode_chat hidden" type="button"></button>
-							<button onclick="btn_adventure_mode()" id="chat_btnmode_adventure" class="chat_btnmode_adventure actionmode hidden" type="button"></button>
-							<div id="cht_inp_bg" class="cht_inp_bg">
-							<div class="cht_inp_bg_inner" id="cht_inp_lengthtester" style="white-space: nowrap; visibility: hidden; height: 0px; position:absolute; width: auto;"></div>
-							<textarea class="cht_inp_bg_inner" id="cht_inp" type="text" name="chtchtinp"  role="presentation" autocomplete="noppynop" spellcheck="true" rows="1" wrap="on" placeholder="Type a message" value="" oninput="update_submit_button();chat_resize_input();" onkeypress="return chat_handle_typing(event)"/>
+						<div className="cht_inp_hold_outer">
+							<div className="cht_inp_hold">
+							<button onclick="show_groupchat_select()" id="chat_btnmode_chat" className="chat_btnmode_chat hidden" type="button"></button>
+							<button onclick="btn_adventure_mode()" id="chat_btnmode_adventure" className="chat_btnmode_adventure actionmode hidden" type="button"></button>
+							<div id="cht_inp_bg" className="cht_inp_bg">
+							<div className="cht_inp_bg_inner" id="cht_inp_lengthtester" style="white-space: nowrap; visibility: hidden; height: 0px; position:absolute; width: auto;"></div>
+							<textarea className="cht_inp_bg_inner" id="cht_inp" type="text" name="chtchtinp"  role="presentation" autocomplete="noppynop" spellcheck="true" rows="1" wrap="on" placeholder="Type a message" value="" oninput="update_submit_button();chat_resize_input();" onkeypress="return chat_handle_typing(event)"/>
 							</div>
-							<button onclick="chat_submit_generation()" id="chat_msg_send_btn" class="chat_msg_send_btn" type="button"></button>
-							<button onclick="abort_generation()" id="chat_msg_send_btn_abort" class="hidden chat_msg_send_btn_abort" type="button"></button>
-							<button type="button" class="chat_msg_cust_btn" id="btn_chat_cust" onclick="chat_toggle_actionmenu()"></button>
+							<button onclick="chat_submit_generation()" id="chat_msg_send_btn" className="chat_msg_send_btn" type="button"></button>
+							<button onclick="abort_generation()" id="chat_msg_send_btn_abort" className="hidden chat_msg_send_btn_abort" type="button"></button>
+							<button type="button" className="chat_msg_cust_btn" id="btn_chat_cust" onclick="chat_toggle_actionmenu()"></button>
 							</div>
 						</div>
 
-						<div class="lastreq" id="lastreq2" style="padding-top: 2px; color:#999999"><span class="color_gray">KoboldAI Lite - A frontend for self hosted and third party API services.</span></div>
+						<div className="lastreq" id="lastreq2" style="padding-top: 2px; color:#999999"><span className="color_gray">KoboldAI Lite - A frontend for self hosted and third party API services.</span></div>
 					</div>
 				</div>
 			</div>
 
-			<div class="popupcontainer flex hidden" id="quickstartcontainer">
-				<div class="popupbg flex"></div>
-				<div class="scenariopopup">
-					<div class="popuptitlebar">
-						<div class="popuptitletext">Quick Start - Select A Scenario</div>
+			<div className="popupcontainer flex hidden" id="quickstartcontainer">
+				<div className="popupbg flex"></div>
+				<div className="scenariopopup">
+					<div className="popuptitlebar">
+						<div className="popuptitletext">Quick Start - Select A Scenario</div>
 					</div>
 
 					<div style="overflow: auto;">
 
-						<div class="scenariosearch">
-						<input class="scenariosearchbox1 form-control" type="text" placeholder="Quick Search" value=""
+						<div className="scenariosearch">
+						<input className="scenariosearchbox1 form-control" type="text" placeholder="Quick Search" value=""
 							id="scenariosearch" oninput="scenario_search()"/>
-							<select class="scenariosearchbox2 form-control" id="scenariosearchdropdown" onchange="scenario_search()">
+							<select className="scenariosearchbox2 form-control" id="scenariosearchdropdown" onchange="scenario_search()">
 								<option value="0">All</option>
 								<option value="1">Story</option>
 								<option value="2">Adventure</option>
@@ -12898,47 +12911,47 @@ export default function Chat() {
 								<option value="4">Instruct</option>
 							</select>
 						</div>
-						<div id="scenarioautopickbox" class="justifyleft anotelabel" style="padding-left: 8px;">
-							Automatically select AI model <span class="helpicon">?
-								<span class="helptext">This option picks a suitable AI model based on the selected scenario. If no text model is currently selected, an appropriate one will be automatically picked for you.</span>
+						<div id="scenarioautopickbox" className="justifyleft anotelabel" style="padding-left: 8px;">
+							Automatically select AI model <span className="helpicon">?
+								<span className="helptext">This option picks a suitable AI model based on the selected scenario. If no text model is currently selected, an appropriate one will be automatically picked for you.</span>
 							</span>
 							<input type="checkbox" id="scenarioautopickai" onchange="togglescenarioallownsfw()" checked/>
 							<span id="scenarioallownsfwbox"><br/>
-								Allow NSFW Models <span class="helpicon">?
-									<span class="helptext">If disabled, NSFW only models like Erebus will never be selected</span>
+								Allow NSFW Models <span className="helpicon">?
+									<span className="helptext">If disabled, NSFW only models like Erebus will never be selected</span>
 								</span>
 								<input type="checkbox" id="scenarioallownsfw" checked/>
 							</span>
 						</div>
 
-						<div id="scenariogrid" class="justifyleft anotelabel scenariogrid">
+						<div id="scenariogrid" className="justifyleft anotelabel scenariogrid">
 						</div>
-						<div id="scenariodesc" class="scenariodesc">
+						<div id="scenariodesc" className="scenariodesc">
 						</div>
 
-						<div class="popupfooter">
-							<button type="button" class="btn btn-primary" id=""
+						<div className="popupfooter">
+							<button type="button" className="btn btn-primary" id=""
 								onclick="confirm_scenario_verify()">Ok</button>
-							<button type="button" class="btn btn-primary" id=""
+							<button type="button" className="btn btn-primary" id=""
 								onclick="hide_popups()">Cancel</button>
 						</div>
 					</div>
 				</div>
 			</div>
 
-			<div class="popupcontainer flex hidden" id="saveloadcontainer">
-				<div class="popupbg flex"></div>
-				<div class="saveloadpopup">
-					<div class="popuptitlebar">
-						<div class="popuptitletext">Save File / Load File / Export File</div>
+			<div className="popupcontainer flex hidden" id="saveloadcontainer">
+				<div className="popupbg flex"></div>
+				<div className="saveloadpopup">
+					<div className="popuptitlebar">
+						<div className="popuptitletext">Save File / Load File / Export File</div>
 					</div>
 
 					<div style="overflow: auto;">
-						<div id="saveloadentries" class="justifyleft anotelabel saveloadgrid">
+						<div id="saveloadentries" className="justifyleft anotelabel saveloadgrid">
 						</div>
-						<div class="justifyleft anotelabel"><p style="padding:6px;font-size: 10px;" class="color_red">Caution: Storage Slots are saved to a tempoary cache and can be deleted by your browser. To avoid losing data, use the download file button.</p></div>
-						<div class="popupfooter">
-							<button type="button" class="btn btn-primary" id=""
+						<div className="justifyleft anotelabel"><p style="padding:6px;font-size: 10px;" className="color_red">Caution: Storage Slots are saved to a tempoary cache and can be deleted by your browser. To avoid losing data, use the download file button.</p></div>
+						<div className="popupfooter">
+							<button type="button" className="btn btn-primary" id=""
 								onclick="hide_popups()">Back</button>
 						</div>
 					</div>
@@ -12947,14 +12960,14 @@ export default function Chat() {
 
 
 
-			<div class="popupcontainer flex hidden" id="customendpointcontainer">
-				<div class="popupbg flex"></div>
-				<div class="nspopup flexsize evenhigher">
-					<div class="popuptitlebar">
-						<div class="popuptitletext">Select your AI provider</div>
+			<div className="popupcontainer flex hidden" id="customendpointcontainer">
+				<div className="popupbg flex"></div>
+				<div className="nspopup flexsize evenhigher">
+					<div className="popuptitlebar">
+						<div className="popuptitletext">Select your AI provider</div>
 					</div>
 					<div style="padding: 4px;">
-					<select style="padding:4px;" class="form-control" id="customapidropdown" onchange="customapi_dropdown()">
+					<select style="padding:4px;" className="form-control" id="customapidropdown" onchange="customapi_dropdown()">
 						<option value="0">AI Horde</option>
 						<option value="1">KoboldAI Remote API</option>
 						<option value="2">OpenAI API</option>
@@ -12965,72 +12978,72 @@ export default function Chat() {
 					</select>
 					</div>
 
-					<div class="aidgpopuplistheader anotelabel" id="hordeloadmodelcontainer">
-						The AI Horde is a service that generates text using crowdsourced GPUs run by independent volunteer workers. Avoid sending privacy sensitive information. <a href="#" class="color_blueurl" onclick="explain_horde()">Click here for more info</a>
-						<div class="justifyleft anotelabel">
+					<div className="aidgpopuplistheader anotelabel" id="hordeloadmodelcontainer">
+						The AI Horde is a service that generates text using crowdsourced GPUs run by independent volunteer workers. Avoid sending privacy sensitive information. <a href="#" className="color_blueurl" onclick="explain_horde()">Click here for more info</a>
+						<div className="justifyleft anotelabel">
 							<span style="float:left; text-align: left;">
-							Your AI Horde API Key <span class="helpicon">?
-								<span class="helptext">You need an API key to use AI Horde to generate text. Get one at
+							Your AI Horde API Key <span className="helpicon">?
+								<span className="helptext">You need an API key to use AI Horde to generate text. Get one at
 									https://aihorde.net/register or use the anonymous key 0000000000.</span>
 							</span>
-							<br/><a href="#" id="showownworkerslink" class="color_blueurl hidden" onclick="show_my_own_workers()">[Manage My Workers]</a></span>
-							<span class="color_green" style="float:right; text-align: right;" id="kudos_bal">
-								Need a Key?<br/><a class='color_blueurl' href='https://aihorde.net/register'>(Register New User)</a>
+							<br/><a href="#" id="showownworkerslink" className="color_blueurl hidden" onclick="show_my_own_workers()">[Manage My Workers]</a></span>
+							<span className="color_green" style="float:right; text-align: right;" id="kudos_bal">
+								Need a Key?<br/><a className='color_blueurl' href='https://aihorde.net/register'>(Register New User)</a>
 							</span>
 						</div>
-						<input class="form-control" type="password" placeholder="Enter API Key (or use 0000000000)" value=""
+						<input className="form-control" type="password" placeholder="Enter API Key (or use 0000000000)" value=""
 							id="apikey" onfocus="focus_api_keys()" onblur="fetch_kudo_balance();blur_api_keys()"/>
 
-						<div class="justifyleft anotelabel">
-							Select AI Horde Model <span class="helpicon">?
-								<span class="helptext">These are the models currently provided by AI Horde volunteers.</span>
+						<div className="justifyleft anotelabel">
+							Select AI Horde Model <span className="helpicon">?
+								<span className="helptext">These are the models currently provided by AI Horde volunteers.</span>
 							</span>
 							<span style="float:right;">
-							<a href="#" class="color_green" onclick="get_and_show_workers()">[See Current Volunteers] </a>
+							<a href="#" className="color_green" onclick="get_and_show_workers()">[See Current Volunteers] </a>
 							</span>
-							<select class="form-control" id="pickedmodel" size="7" multiple></select>
+							<select className="form-control" id="pickedmodel" size="7" multiple></select>
 						</div>
 
-						<div class="justifyleft anotelabel">
-							Select By Worker <span class="helpicon">?
-								<span class="helptext">This option explicitly assigns worker IDs, fixed based on the current workers available at model selection time.</span>
+						<div className="justifyleft anotelabel">
+							Select By Worker <span className="helpicon">?
+								<span className="helptext">This option explicitly assigns worker IDs, fixed based on the current workers available at model selection time.</span>
 							</span>
 							<input type="checkbox" id="manualworker" onclick="display_endpoint_container()"/>
 
 							<span style="float:right;">
-								<input class="settinglabel miniinput" style="margin: 3px; width: 90px;" type="text" placeholder="Quick Search" value="" id="modelquicksearch" oninput="model_quick_search()"/>
+								<input className="settinglabel miniinput" style="margin: 3px; width: 90px;" type="text" placeholder="Quick Search" value="" id="modelquicksearch" oninput="model_quick_search()"/>
 							</span>
 						</div>
 
 					</div>
 
-					<div id="koboldcustom" class="aidgpopuplistheader anotelabel">
-						You can use this to connect to a KoboldAI instance running via a remote tunnel such as <span class="color_orange" style="font-weight: bold;">trycloudflare, localtunnel, ngrok</span>.<br/><br/>
-						Localhost IPs require host mode enabled. You can use the remote address displayed in the <span class="color_orange" style="font-weight: bold;">remote-play.bat</span> window or <span class="color_orange" style="font-weight: bold;">colab window</span>, note that the model must be loaded first.<br/><br/>
-						<span class="color_green" style="font-weight: bold;">Please input URL of the KoboldAI instance.</span><br/><br/>
-						<input class="form-control" id="customkoboldendpoint" placeholder="https://sample-remote-address.trycloudflare.com" value=""/>
-						<input class="form-control" type="password" id="customkoboldkey" placeholder="Kobold API Key (Optional)" value="" onfocus="focus_api_keys()" onblur="blur_api_keys()"/><br/>
-						<div class="box flex flex-push-right">
+					<div id="koboldcustom" className="aidgpopuplistheader anotelabel">
+						You can use this to connect to a KoboldAI instance running via a remote tunnel such as <span className="color_orange" style="font-weight: bold;">trycloudflare, localtunnel, ngrok</span>.<br/><br/>
+						Localhost IPs require host mode enabled. You can use the remote address displayed in the <span className="color_orange" style="font-weight: bold;">remote-play.bat</span> window or <span className="color_orange" style="font-weight: bold;">colab window</span>, note that the model must be loaded first.<br/><br/>
+						<span className="color_green" style="font-weight: bold;">Please input URL of the KoboldAI instance.</span><br/><br/>
+						<input className="form-control" id="customkoboldendpoint" placeholder="https://sample-remote-address.trycloudflare.com" value=""/>
+						<input className="form-control" type="password" id="customkoboldkey" placeholder="Kobold API Key (Optional)" value="" onfocus="focus_api_keys()" onblur="blur_api_keys()"/><br/>
+						<div className="box flex flex-push-right">
 							<input type="checkbox" id="remoteconsolelog"/>
-							<div class="box-label" title="Will display outputs to the remote endpoint's console logs, useful for debugging.">Show Console Logging</div>
+							<div className="box-label" title="Will display outputs to the remote endpoint's console logs, useful for debugging.">Show Console Logging</div>
 						</div>
 					</div>
-					<div id="oaicustom" class="aidgpopuplistheader anotelabel hidden">
+					<div id="oaicustom" className="aidgpopuplistheader anotelabel hidden">
 						<span id="oaidesc">
 						Entering your OpenAI API key will allow you to use KoboldAI Lite with their API.<br/><br/>
 						Note that KoboldAI Lite takes no responsibility for your usage or consequences of this feature. Your API key is used directly with the OpenAI API and is not transmitted to us.<br/>Only Temperature, Top-P and Repetition Penalty samplers are used.<br/><br/>
-						<span class="color_green" style="font-weight: bold;">Please input OpenAI API URL and Key.</span><br/><br/>
+						<span className="color_green" style="font-weight: bold;">Please input OpenAI API URL and Key.</span><br/><br/>
 						</span>
-						<span id="openrouterdesc" class="hidden">
+						<span id="openrouterdesc" className="hidden">
 						Entering your OpenRouter API key will allow you to use KoboldAI Lite with their API.<br/><br/>
 						Note that KoboldAI Lite takes no responsibility for your usage or consequences of this feature. Your API key is used directly with the OpenRouter API and is not transmitted to us.<br/>Only Temperature, Top-P and Repetition Penalty samplers are used.<br/><br/>
-						<span class="color_green" style="font-weight: bold;">Please input OpenRouter Key.</span><br/><br/>
+						<span className="color_green" style="font-weight: bold;">Please input OpenRouter Key.</span><br/><br/>
 						</span>
 
-						<input class="form-control" type="text" id="custom_oai_endpoint" placeholder="OpenAI API URL" value=""/>
-						<input class="form-control" type="password" id="custom_oai_key" placeholder="OpenAI API Key" value="" onfocus="focus_api_keys()" onblur="blur_api_keys()"/><br/>
+						<input className="form-control" type="text" id="custom_oai_endpoint" placeholder="OpenAI API URL" value=""/>
+						<input className="form-control" type="password" id="custom_oai_key" placeholder="OpenAI API Key" value="" onfocus="focus_api_keys()" onblur="blur_api_keys()"/><br/>
 						Model Choice:<br/>
-						<select style="padding:4px;display:inline;width:calc(100% - 220px)" class="form-control" id="custom_oai_model" onchange="oai_model_change()">
+						<select style="padding:4px;display:inline;width:calc(100% - 220px)" className="form-control" id="custom_oai_model" onchange="oai_model_change()">
 							<option value="gpt-3.5-turbo-instruct" selected="selected">gpt-3.5-turbo-instruct</option>
 							<option value="davinci-002">davinci-002</option>
 							<option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
@@ -13041,7 +13054,7 @@ export default function Chat() {
 							<option value="gpt-4-32k">gpt-4-32k</option>
 							<option style="display:none;" id="custom_oai_model_option" value="custom">[Custom]</option>
 						</select>
-						<select style="padding:4px;display:inline;width:calc(100% - 220px)" class="form-control hidden" id="custom_openrouter_model" onchange="oai_model_change()">
+						<select style="padding:4px;display:inline;width:calc(100% - 220px)" className="form-control hidden" id="custom_openrouter_model" onchange="oai_model_change()">
 							<option value="openai/gpt-3.5-turbo">openai/gpt-3.5-turbo</option>
 							<option value="openai/gpt-4">openai/gpt-4</option>
 							<option value="openai/gpt-3.5-turbo-instruct">openai/gpt-3.5-turbo-instruct</option>
@@ -13051,43 +13064,43 @@ export default function Chat() {
 							<option value="anthropic/claude-2">anthropic/claude-2</option>
 							<option style="display:none;" id="custom_openrouter_model_option" value="custom">[Custom]</option>
 						</select>
-						<button type="button" class="btn btn-primary" style="display:inline;width:105px;" id="oaifetchlist" onclick="oai_fetch_models()">Fetch List</button>
-						<button type="button" class="btn btn-primary" style="display:inline;width:105px;" id="oaiusecustom" onclick="select_custom_oai_model()">Use Custom</button>
+						<button type="button" className="btn btn-primary" style="display:inline;width:105px;" id="oaifetchlist" onclick="oai_fetch_models()">Fetch List</button>
+						<button type="button" className="btn btn-primary" style="display:inline;width:105px;" id="oaiusecustom" onclick="select_custom_oai_model()">Use Custom</button>
 						<input type="checkbox" id="oaiaddversion" onchange="" checked/>
-						<div class="box-label" title="Add endpoint version">Add Endpoint Version</div>
+						<div className="box-label" title="Add endpoint version">Add Endpoint Version</div>
 						<input type="checkbox" id="useoaichatcompl" onchange="toggleoaichatcompl()"/>
-						<div class="box-label" id="useoaichatcompllabel" title="">Use ChatCompletions API</div>
+						<div className="box-label" id="useoaichatcompllabel" title="">Use ChatCompletions API</div>
 
-						<span id="useoaichatcomplbox" class="hidden" onload="toggleoaichatcompl();">
+						<span id="useoaichatcomplbox" className="hidden" onload="toggleoaichatcompl();">
 							<br/>
 							Main Message Role:
-							<select class="form-control" style="height: 25px; font-size:12px; padding:4px;display:inline;width:100px" id="oairoledropdown">
+							<select className="form-control" style="height: 25px; font-size:12px; padding:4px;display:inline;width:100px" id="oairoledropdown">
 								<option value="0" selected>User</option>
 								<option value="1">Assistant</option>
 								<option value="2">System</option>
 							</select>
 							<input type="checkbox" id="jailbreakprompt" onchange="togglejailbreak()"/>
-							<div class="box-label" title="Adds extra text at the start to improve AI response">Add Prefix</div>
+							<div className="box-label" title="Adds extra text at the start to improve AI response">Add Prefix</div>
 							<input type="checkbox" id="jailbreakprompt2" onchange="togglejailbreak2()"/>
-							<div class="box-label" title="Adds extra text to the end to improve AI response">Add Postfix</div>
+							<div className="box-label" title="Adds extra text to the end to improve AI response">Add Postfix</div>
 
 							<div style="display:flex" id="oaijailbreakpromptblock1">
-							<select class="form-control" style="height: 25px; font-size:12px; padding:4px;display:inline;width:100px" id="jailbreakprompttextrole">
+							<select className="form-control" style="height: 25px; font-size:12px; padding:4px;display:inline;width:100px" id="jailbreakprompttextrole">
 								<option value="0">User</option>
 								<option value="1">Assistant</option>
 								<option value="2" selected>System</option>
 							</select>
-							<textarea class="form-control" rows="3" style="resize: vertical; line-height:1.1; padding:4px; display:inline; width: 100%" type="text" id="jailbreakprompttext" placeholder="(Enter System Prefix)"
+							<textarea className="form-control" rows="3" style="resize: vertical; line-height:1.1; padding:4px; display:inline; width: 100%" type="text" id="jailbreakprompttext" placeholder="(Enter System Prefix)"
 							value="" onload="togglejailbreak();"></textarea>
 							</div>
 
 							<div style="display:flex" id="oaijailbreakpromptblock2">
-							<select class="form-control" style="height: 25px; font-size:12px; padding:4px;display:inline;width:100px" id="jailbreakprompttext2role">
+							<select className="form-control" style="height: 25px; font-size:12px; padding:4px;display:inline;width:100px" id="jailbreakprompttext2role">
 								<option value="0">User</option>
 								<option value="1" selected>Assistant</option>
 								<option value="2">System</option>
 							</select>
-							<textarea class="form-control" rows="3" style="resize: vertical; line-height:1.1; padding:4px;  display:inline; width: 100%;" type="text" id="jailbreakprompttext2" placeholder="(Enter Assistant Postfix)"
+							<textarea className="form-control" rows="3" style="resize: vertical; line-height:1.1; padding:4px;  display:inline; width: 100%;" type="text" id="jailbreakprompttext2" placeholder="(Enter Assistant Postfix)"
 							value="" onload="togglejailbreak2();"></textarea>
 							</div>
 
@@ -13095,15 +13108,15 @@ export default function Chat() {
 						</span>
 
 					</div>
-					<div id="claudecustom" class="aidgpopuplistheader anotelabel hidden">
+					<div id="claudecustom" className="aidgpopuplistheader anotelabel hidden">
 						Entering your Claude API key will allow you to use KoboldAI Lite with their API.<br/><br/>
 						Note that KoboldAI Lite takes no responsibility for your usage or consequences of this feature.<br/>Only Temperature, Top-P and Top-K samplers are used.<br/><br/>
-						<span class="color_red">NOTICE: At this time, the official Claude API has CORS restrictions and must be accessed with a CORS proxy. Your connection WILL be proxied.</span><br/><br/>
-						<span class="color_green" style="font-weight: bold;">Please input Claude API URL and Key.</span><br/><br/>
-						<input class="form-control" type="text" id="custom_claude_endpoint" placeholder="Claude API URL" value=""/>
-						<input class="form-control" type="password" id="custom_claude_key" placeholder="Claude API Key" value="" onfocus="focus_api_keys()" onblur="blur_api_keys()"/><br/>
+						<span className="color_red">NOTICE: At this time, the official Claude API has CORS restrictions and must be accessed with a CORS proxy. Your connection WILL be proxied.</span><br/><br/>
+						<span className="color_green" style="font-weight: bold;">Please input Claude API URL and Key.</span><br/><br/>
+						<input className="form-control" type="text" id="custom_claude_endpoint" placeholder="Claude API URL" value=""/>
+						<input className="form-control" type="password" id="custom_claude_key" placeholder="Claude API Key" value="" onfocus="focus_api_keys()" onblur="blur_api_keys()"/><br/>
 						Model Choice:<br/>
-						<select style="padding:4px;" class="form-control" id="custom_claude_model"  onload="toggleclaudemodel()"  onchange="toggleclaudemodel()">
+						<select style="padding:4px;" className="form-control" id="custom_claude_model"  onload="toggleclaudemodel()"  onchange="toggleclaudemodel()">
 							<option value="claude-v1">claude-v1</option>
 							<option value="claude-v1-100k">claude-v1-100k</option>
 							<option value="claude-instant-v1">claude-instant-v1</option>
@@ -13116,65 +13129,65 @@ export default function Chat() {
 							<option value="claude-3-haiku-20240307">claude-3-haiku</option>
 						</select>
 						<input type="checkbox" id="claudeaddversion" onchange="" checked/>
-						<div class="box-label" title="Add endpoint version">Add Endpoint Version</div>
+						<div className="box-label" title="Add endpoint version">Add Endpoint Version</div>
 						<span id="clauderenamecompatdiv">
 						<input type="checkbox" id="clauderenamecompat" onchange="" checked/>
-						<div class="box-label" title="Rename User and Bot tags to work with claude, force inject them otherwise">Claude Compatibility Rename Fix</div>
+						<div className="box-label" title="Rename User and Bot tags to work with claude, force inject them otherwise">Claude Compatibility Rename Fix</div>
 						</span>
 
-						<input class="form-control hidden" type="text" id="claudesystemprompt" placeholder="(Enter System Prompt)"
+						<input className="form-control hidden" type="text" id="claudesystemprompt" placeholder="(Enter System Prompt)"
 						value="" onload=""/>
-						<input class="form-control hidden" type="text" id="claudejailbreakprompt" placeholder="(Enter Assistant Postfix)"
+						<input className="form-control hidden" type="text" id="claudejailbreakprompt" placeholder="(Enter Assistant Postfix)"
 						value="" onload=""/>
 
 					</div>
-					<div id="palmcustom" class="aidgpopuplistheader anotelabel hidden">
+					<div id="palmcustom" className="aidgpopuplistheader anotelabel hidden">
 						Uses Gemini or PaLM Text Bison by Google.<br/><br/>
 						Note that KoboldAI Lite takes no responsibility for your usage or consequences of this feature.<br/><br/>
-						<select style="padding:4px;" class="form-control" id="custom_palm_model" onchange="togglepalmmodel()">
+						<select style="padding:4px;" className="form-control" id="custom_palm_model" onchange="togglepalmmodel()">
 							<option value="gemini-pro" selected="selected">gemini-pro</option>
 							<option value="gemini-1.5-pro-latest">gemini-1.5-pro-latest</option>
 							<option value="gemini-1.5-flash-latest">gemini-1.5-flash-latest</option>
 							<option value="text-bison-001">text-bison-001</option>
 						</select>
-						<span class="color_green" style="font-weight: bold;">Please input Gemini or PaLM API Key.</span><br/><br/>
-						<input class="form-control" type="password" id="custom_palm_key" placeholder="PaLM/Gemini API Key" value="" onfocus="focus_api_keys()" onblur="blur_api_keys()"/><br/>
-						<input class="form-control" type="text" id="gemini_system_instruction" placeholder="(Enter System Instruction)"	value=""/><br/>
+						<span className="color_green" style="font-weight: bold;">Please input Gemini or PaLM API Key.</span><br/><br/>
+						<input className="form-control" type="password" id="custom_palm_key" placeholder="PaLM/Gemini API Key" value="" onfocus="focus_api_keys()" onblur="blur_api_keys()"/><br/>
+						<input className="form-control" type="text" id="gemini_system_instruction" placeholder="(Enter System Instruction)"	value=""/><br/>
 					</div>
-					<div id="coherecustom" class="aidgpopuplistheader anotelabel hidden">
+					<div id="coherecustom" className="aidgpopuplistheader anotelabel hidden">
 						Uses Cohere's models through their own API.<br/><br/>
 						Note that KoboldAI Lite takes no responsibility for your usage or consequences of this feature.<br/><br/>
-						<select style="padding:4px;" class="form-control" id="custom_cohere_model">
+						<select style="padding:4px;" className="form-control" id="custom_cohere_model">
 							<option value="command" selected="selected">command</option>
 							<option value="command-r">command-r</option>
 							<option value="command-r-plus">command-r-plus</option>
 						</select>
-						<span class="color_green" style="font-weight: bold;">Please input Cohere API Key.</span><br/><br/>
-						<input class="form-control" type="password" id="custom_cohere_key" placeholder="Cohere API Key" value="" onfocus="focus_api_keys()" onblur="blur_api_keys()"/><br/>
+						<span className="color_green" style="font-weight: bold;">Please input Cohere API Key.</span><br/><br/>
+						<input className="form-control" type="password" id="custom_cohere_key" placeholder="Cohere API Key" value="" onfocus="focus_api_keys()" onblur="blur_api_keys()"/><br/>
 						<input type="checkbox" id="usecohereweb"/>
-						<div class="box-label" id="usecohereweblabel" title="">Use WebSearch</div>
+						<div className="box-label" id="usecohereweblabel" title="">Use WebSearch</div>
 						<input type="checkbox" id="useocoherepreamble" onchange="togglecoherepreamble()"/>
-						<div class="box-label" id="useocoherepreamblelabel" title="">Use Preamble</div>
+						<div className="box-label" id="useocoherepreamblelabel" title="">Use Preamble</div>
 
-						<span id="useocoherepreamblebox" class="hidden" onload="togglecoherepreamble();">
-							<input class="form-control" type="text" id="cohere_preamble" placeholder="(Enter Preamble)"
+						<span id="useocoherepreamblebox" className="hidden" onload="togglecoherepreamble();">
+							<input className="form-control" type="text" id="cohere_preamble" placeholder="(Enter Preamble)"
 							value=""/>
 						</span>
 					</div>
-					<div class="popupfooter">
-						<button type="button" class="btn btn-primary" onclick="connect_custom_endpoint()">Ok</button>
-						<button type="button" class="btn btn-primary" onclick="dismiss_endpoint_container()">Cancel</button>
+					<div className="popupfooter">
+						<button type="button" className="btn btn-primary" onclick="connect_custom_endpoint()">Ok</button>
+						<button type="button" className="btn btn-primary" onclick="dismiss_endpoint_container()">Cancel</button>
 					</div>
 				</div>
 			</div>
 
-			<div class="popupcontainer flex hidden" id="newgamecontainer">
-				<div class="popupbg flex"></div>
-				<div class="nspopup fixsize">
-					<div class="popuptitlebar">
-						<div class="popuptitletext">Really Start A New Story?</div>
+			<div className="popupcontainer flex hidden" id="newgamecontainer">
+				<div className="popupbg flex"></div>
+				<div className="nspopup fixsize">
+					<div className="popuptitlebar">
+						<div className="popuptitletext">Really Start A New Story?</div>
 					</div>
-					<div class="aidgpopuplistheader anotelabel">
+					<div className="aidgpopuplistheader anotelabel">
 						Unsaved data will be lost.<br/><br/>
 						<div>
 							<div style="vertical-align: middle;">
@@ -13190,20 +13203,20 @@ export default function Chat() {
 						</div>
 						<br/>
 					</div>
-					<div class="popupfooter">
-						<button type="button" class="btn btn-primary" onclick="confirm_newgame()">Ok</button>
-						<button type="button" class="btn btn-primary" onclick="hide_popups()">Cancel</button>
+					<div className="popupfooter">
+						<button type="button" className="btn btn-primary" onclick="confirm_newgame()">Ok</button>
+						<button type="button" className="btn btn-primary" onclick="hide_popups()">Cancel</button>
 					</div>
 				</div>
 			</div>
 
-			<div class="popupcontainer flex hidden" id="advancedloadfile">
-				<div class="popupbg flex"></div>
-				<div class="nspopup fixsize">
-					<div class="popuptitlebar">
-						<div class="popuptitletext">Advanced Load File</div>
+			<div className="popupcontainer flex hidden" id="advancedloadfile">
+				<div className="popupbg flex"></div>
+				<div className="nspopup fixsize">
+					<div className="popuptitlebar">
+						<div className="popuptitletext">Advanced Load File</div>
 					</div>
-					<div class="aidgpopuplistheader anotelabel">
+					<div className="aidgpopuplistheader anotelabel">
 						Select categories to import from saved file. Selected categories will be overwritten. Unselected categories will retain original values.<br/>
 						<br/><div>
 						<table style="width:90%; margin:8px auto;">
@@ -13216,241 +13229,241 @@ export default function Chat() {
 						</table>
 						</div>
 					</div>
-					<div class="popupfooter">
-						<button type="button" class="btn btn-primary" onclick="advload_btnok()">Ok</button>
-						<button type="button" class="btn btn-primary" onclick="hide_popups()">Cancel</button>
+					<div className="popupfooter">
+						<button type="button" className="btn btn-primary" onclick="advload_btnok()">Ok</button>
+						<button type="button" className="btn btn-primary" onclick="hide_popups()">Cancel</button>
 					</div>
 				</div>
 			</div>
 
-			<div class="popupcontainer flex hidden" id="zoomedimgcontainer">
-				<div class="popupbg flex"></div>
-				<div class="nspopup flexsize highest">
-					<div class="popuptitlebar">
-						<div class="popuptitletext">Image Information</div>
+			<div className="popupcontainer flex hidden" id="zoomedimgcontainer">
+				<div className="popupbg flex"></div>
+				<div className="nspopup flexsize highest">
+					<div className="popuptitlebar">
+						<div className="popuptitletext">Image Information</div>
 					</div>
 
-					<div class="zoomedimgdiv">
-						<img class="zoomedimg" id="zoomedimg" src=""/>
+					<div className="zoomedimgdiv">
+						<img className="zoomedimg" id="zoomedimg" src=""/>
 					</div>
 
-					<div class="aidgpopuplistheader anotelabel zoomedimgdesc" id="zoomedimgdesc" style="word-wrap: break-word;">
+					<div className="aidgpopuplistheader anotelabel zoomedimgdesc" id="zoomedimgdesc" style="word-wrap: break-word;">
 						Loading...
 					</div>
 					<br/>
-					<div class="popupfooter">
-						<button type="button" class="bg_red btn btn-primary" style="width: 124px;" onclick="delete_curr_image();hide_popups();">Delete Image</button>
-						<button type="button" class="btn btn-primary" onclick="hide_popups()">Close</button>
+					<div className="popupfooter">
+						<button type="button" className="bg_red btn btn-primary" style="width: 124px;" onclick="delete_curr_image();hide_popups();">Delete Image</button>
+						<button type="button" className="btn btn-primary" onclick="hide_popups()">Close</button>
 					</div>
 				</div>
 			</div>
 
-			<div class="popupcontainer flex hidden" id="settingscontainer">
-				<div class="popupbg flex"></div>
-				<div class="nspopup flexsizevsmall evenhigher">
-					<div class="popuptitlebar">
-						<div class="popuptitletext">Settings</div>
+			<div className="popupcontainer flex hidden" id="settingscontainer">
+				<div className="popupbg flex"></div>
+				<div className="nspopup flexsizevsmall evenhigher">
+					<div className="popuptitlebar">
+						<div className="popuptitletext">Settings</div>
 					</div>
-					<div><ul class="nav nav-tabs settingsnav">
-						<li id="settingsmenubasic_tab" class="active"><a class="" href="#" onclick="display_settings_tab(true)">Basic</a></li>
-						<li id="settingsmenuadvanced_tab" ><a class="" href="#" onclick="display_settings_tab(false)">Advanced</a></li>
+					<div><ul className="nav nav-tabs settingsnav">
+						<li id="settingsmenubasic_tab" className="active"><a className="" href="#" onclick="display_settings_tab(true)">Basic</a></li>
+						<li id="settingsmenuadvanced_tab" ><a className="" href="#" onclick="display_settings_tab(false)">Advanced</a></li>
 					</ul></div>
-					<div class="aidgpopuplistheader">
+					<div className="aidgpopuplistheader">
 
 						{/* <!--basic settings menu top half--> */}
-						<div id="settingsmenubasic1" class="settingsmenu" style="padding-bottom: 0px;" onchange="setting_tweaked()">
-							<div class="settingitem">
-								<div class="settinglabel">
-									<div class="justifyleft settingsmall">Quick Presets <span class="helpicon">?<span class="helptext">Pick from an easy selection of curated generation presets, or configure your own.</span></span></div>
-									<select class="form-control" id="presets" style="height:24px;padding:0;margin:0px 0 0;" onchange="toggle_preset()">
+						<div id="settingsmenubasic1" className="settingsmenu" style="padding-bottom: 0px;" onchange="setting_tweaked()">
+							<div className="settingitem">
+								<div className="settinglabel">
+									<div className="justifyleft settingsmall">Quick Presets <span className="helpicon">?<span className="helptext">Pick from an easy selection of curated generation presets, or configure your own.</span></span></div>
+									<select className="form-control" id="presets" style="height:24px;padding:0;margin:0px 0 0;" onchange="toggle_preset()">
 										<option value="1" title="Known Working Settings">[Default]</option>
 									</select>
 								</div>
 							</div>
-							<div class="settingitem">
-								<div class="settinglabel">
-									<div class="justifyleft settingsmall">Temperature <span class="helpicon">?<span
-												class="helptext">Randomness of sampling. High values can increase creativity but
+							<div className="settingitem">
+								<div className="settinglabel">
+									<div className="justifyleft settingsmall">Temperature <span className="helpicon">?<span
+												className="helptext">Randomness of sampling. High values can increase creativity but
 												may make text less sensible. Lower values will make text more predictable but
 												can become repetitious.</span></span></div>
-									<input inputmode="decimal" class="justifyright flex-push-right settingsmall" id="temperature" value={ 0.5 }
+									<input inputmode="decimal" className="justifyright flex-push-right settingsmall" id="temperature" value={ 0.5 }
 										oninput="
 								document.getElementById('temperature_slide').value = this.value;"/>
 								</div>
-								<div><input type="range" class="form-range airange" min="0.1" max="2" step="0.01"
+								<div><input type="range" className="form-range airange" min="0.1" max="2" step="0.01"
 										id="temperature_slide" oninput="
 								document.getElementById('temperature').value = this.value;"/></div>
-								<div class="settingminmax">
-									<div class="justifyleft">0.1</div>
-									<div class="justifyright">2</div>
+								<div className="settingminmax">
+									<div className="justifyleft">0.1</div>
+									<div className="justifyright">2</div>
 								</div>
 							</div>
 
-							<div class="settingitem">
-								<div class="settinglabel">
-									<div class="justifyleft settingsmall">Max Ctx. Tokens <span class="helpicon">?<span class="helptext">Max
+							<div className="settingitem">
+								<div className="settinglabel">
+									<div className="justifyleft settingsmall">Max Ctx. Tokens <span className="helpicon">?<span className="helptext">Max
 												number of context tokens submitted to the AI. Must exceed Amount to Generate. Can be further increased by editing the textbox. Older models stop at 2048, newer ones can do 4096 or greater.</span></span></div>
-									<input inputmode="numeric" class="justifyright flex-push-right settingsmall widerinput" id="max_context_length"
+									<input inputmode="numeric" className="justifyright flex-push-right settingsmall widerinput" id="max_context_length"
 										value={ 1024 } oninput="
 								document.getElementById('max_context_length_slide').value = this.value;"/>
 								</div>
-								<div><input type="range" class="form-range airange" min="512" max="2048" step="8"
+								<div><input type="range" className="form-range airange" min="512" max="2048" step="8"
 										id="max_context_length_slide" oninput="
 								document.getElementById('max_context_length').value = this.value;"/></div>
-								<div class="settingminmax">
-									<div class="justifyleft">512</div>
-									<div class="justifyright" id="max_context_length_slide_label">2048</div>
+								<div className="settingminmax">
+									<div className="justifyleft">512</div>
+									<div className="justifyright" id="max_context_length_slide_label">2048</div>
 								</div>
-								<div id="auto_ctxlen_panel" class="settinglabel">
-									<div class="justifyleft settingsmall" title="Automatically lowers settings if incompatible with existing workers">Auto-Adjust Limits </div>
+								<div id="auto_ctxlen_panel" className="settinglabel">
+									<div className="justifyleft settingsmall" title="Automatically lowers settings if incompatible with existing workers">Auto-Adjust Limits </div>
 								<input type="checkbox" id="auto_ctxlen" style="margin:0px 0 0;"/>
 								</div>
 							</div>
 
 							<br/>
-							<div class="settingitem">
-								<div class="settinglabel">
-									<div class="justifyleft settingsmall">Amount to Gen. <span class="helpicon">?<span
-												class="helptext">Number of tokens the AI should generate. Higher numbers will
+							<div className="settingitem">
+								<div className="settinglabel">
+									<div className="justifyleft settingsmall">Amount to Gen. <span className="helpicon">?<span
+												className="helptext">Number of tokens the AI should generate. Higher numbers will
 												take longer to generate.</span></span></div>
-									<input inputmode="numeric" class="justifyright flex-push-right settingsmall" id="max_length" value="80"
+									<input inputmode="numeric" className="justifyright flex-push-right settingsmall" id="max_length" value="80"
 										oninput="
 								document.getElementById('max_length_slide').value = this.value;"/>
 								</div>
-								<div><input type="range" class="form-range airange" min="16" max="512" step="2"
+								<div><input type="range" className="form-range airange" min="16" max="512" step="2"
 										id="max_length_slide" oninput="
 								document.getElementById('max_length').value = this.value;"/></div>
-								<div class="settingminmax">
-									<div class="justifyleft">16</div>
-									<div class="justifyright">512</div>
+								<div className="settingminmax">
+									<div className="justifyleft">16</div>
+									<div className="justifyright">512</div>
 								</div>
-								<div id="auto_genamt_panel" class="settinglabel">
-									<div class="justifyleft settingsmall" title="Automatically lowers settings if incompatible with existing workers">Auto-Adjust Limits </div>
+								<div id="auto_genamt_panel" className="settinglabel">
+									<div className="justifyleft settingsmall" title="Automatically lowers settings if incompatible with existing workers">Auto-Adjust Limits </div>
 								<input type="checkbox" id="auto_genamt" style="margin:0px 0 0;"/>
 								</div>
 							</div>
 
-							<div class="settingitem">
-								<div class="settinglabel">
-									<div class="justifyleft settingsmall">Top p Sampling <span class="helpicon">?<span class="helptext">Used
+							<div className="settingitem">
+								<div className="settinglabel">
+									<div className="justifyleft settingsmall">Top p Sampling <span className="helpicon">?<span className="helptext">Used
 												to discard unlikely text in the sampling process. Lower values will make text
 												more predictable but can become repetitious. Set to 1 to deactivate it.</span></span></div>
-									<input inputmode="decimal" class="justifyright flex-push-right settingsmall" id="top_p" value="80" oninput="
+									<input inputmode="decimal" className="justifyright flex-push-right settingsmall" id="top_p" value="80" oninput="
 								document.getElementById('top_p_slide').value = this.value;"/>
 								</div>
-								<div><input type="range" class="form-range airange" min="0" max="1" step="0.01" id="top_p_slide"
+								<div><input type="range" className="form-range airange" min="0" max="1" step="0.01" id="top_p_slide"
 										oninput="
 								document.getElementById('top_p').value = this.value;"/></div>
-								<div class="settingminmax">
-									<div class="justifyleft">0</div>
-									<div class="justifyright">1</div>
+								<div className="settingminmax">
+									<div className="justifyleft">0</div>
+									<div className="justifyright">1</div>
 								</div>
 							</div>
 
 
 
-							<div class="settingitem">
-								<div class="settinglabel">
-									<div class="justifyleft settingsmall">Repetition Penalty <span class="helpicon">?<span
-												class="helptext">Used to penalize words that were already generated or belong to
+							<div className="settingitem">
+								<div className="settinglabel">
+									<div className="justifyleft settingsmall">Repetition Penalty <span className="helpicon">?<span
+												className="helptext">Used to penalize words that were already generated or belong to
 												the context (Going over 1.2 breaks 6B models).</span></span></div>
-									<input inputmode="decimal" class="justifyright flex-push-right settingsmall" id="rep_pen" value="80"
+									<input inputmode="decimal" className="justifyright flex-push-right settingsmall" id="rep_pen" value="80"
 										oninput="
 								document.getElementById('rep_pen_slide').value = this.value;"/>
 								</div>
-								<div><input type="range" class="form-range airange" min="1" max="3" step="0.01"
+								<div><input type="range" className="form-range airange" min="1" max="3" step="0.01"
 										id="rep_pen_slide" oninput="
 								document.getElementById('rep_pen').value = this.value;"/></div>
-								<div class="settingminmax">
-									<div class="justifyleft">1</div>
-									<div class="justifyright">3</div>
+								<div className="settingminmax">
+									<div className="justifyleft">1</div>
+									<div className="justifyright">3</div>
 								</div>
 							</div>
 
 
 						</div>
 						{/* <!-- basic settings menu bottom half--> */}
-						<div id="settingsmenubasic2" class="settingsmenu" style="padding-top: 0px;">
+						<div id="settingsmenubasic2" className="settingsmenu" style="padding-top: 0px;">
 
 
-							<div class="settingitem">
-								<div class="settinglabel">
-									<div class="justifyleft settingsmall">Format <span class="helpicon">?<span class="helptext">Story Mode is best for novel style writing. Adventure Mode is best for Interactive Fiction RPGs. Chat Mode is best for chat conversations with the AI. Instruct mode is for giving the AI ChatGPT styled tasks.</span></span></div>
-									<select class="form-control" id="opmode" style="height:24px;padding:0;margin:0px 0 0;" onchange="toggle_opmode()">
+							<div className="settingitem">
+								<div className="settinglabel">
+									<div className="justifyleft settingsmall">Format <span className="helpicon">?<span className="helptext">Story Mode is best for novel style writing. Adventure Mode is best for Interactive Fiction RPGs. Chat Mode is best for chat conversations with the AI. Instruct mode is for giving the AI ChatGPT styled tasks.</span></span></div>
+									<select className="form-control" id="opmode" style="height:24px;padding:0;margin:0px 0 0;" onchange="toggle_opmode()">
 										<option value="4">Instruct Mode</option>
 										<option value="1">Story Mode</option>
 										<option value="2">Adventure Mode</option>
 										<option value="3">Chat Mode</option>
 									</select>
 
-								<div id="uipicker" class="settinglabel" style="padding-top: 3px;">
-									<div class="settinglabel">
-										<div class="justifyleft settingsmall" title="">UI Style Select <span class="helpicon">?<span class="helptext">Select your preferred UI style, which affects text formatting and display. Some UIs are only available for specific modes.</span></span></div>
-										<select class="form-control" id="gui_type" style="height:24px;padding:0;margin:0px 0 0; width:calc( 100% - 30px );" onchange="toggle_uistyle()">
+								<div id="uipicker" className="settinglabel" style="padding-top: 3px;">
+									<div className="settinglabel">
+										<div className="justifyleft settingsmall" title="">UI Style Select <span className="helpicon">?<span className="helptext">Select your preferred UI style, which affects text formatting and display. Some UIs are only available for specific modes.</span></span></div>
+										<select className="form-control" id="gui_type" style="height:24px;padding:0;margin:0px 0 0; width:calc( 100% - 30px );" onchange="toggle_uistyle()">
 											<option id="uipicker_classic" value="0">Classic</option>
 											<option id="uipicker_messenger" value="1">Messenger</option>
 											<option id="uipicker_aesthetic" value="2">Aesthetic</option>
 										</select>
-										<button type="button" class="btn btn-primary" id="btn_aesthetics" onclick="openAestheticUISettingsMenu()" style="height: 24px; padding: 0px 2px; margin: 0px 0px 0px 3px;">⚙️</button>
+										<button type="button" className="btn btn-primary" id="btn_aesthetics" onclick="openAestheticUISettingsMenu()" style="height: 24px; padding: 0px 2px; margin: 0px 0px 0px 3px;">⚙️</button>
 									</div>
 								</div>
 
-								<div id="chatnamesection1" class="settinglabel hidden" style="padding-top: 3px;">
-									<div class="settinglabel">
-									<div class="justifyleft settingsmall">Chat PrePrompt <span class="helpicon">?<span
-										class="helptext">Modifies the context, injecting tokens to improve chat quality for new chats.</span></span> </div>
+								<div id="chatnamesection1" className="settinglabel hidden" style="padding-top: 3px;">
+									<div className="settinglabel">
+									<div className="justifyleft settingsmall">Chat PrePrompt <span className="helpicon">?<span
+										className="helptext">Modifies the context, injecting tokens to improve chat quality for new chats.</span></span> </div>
 									<input type="checkbox" id="chat_context_mod" style="margin:0px 0 0;"/>
 									</div>
-									<div class="settinglabel">
-										<div class="justifyleft settingsmall">Inject Timestamps <span class="helpicon">?<span
-											class="helptext">Injects timestamps into context, allowing the AI to have a sense of time.</span></span></div>
+									<div className="settinglabel">
+										<div className="justifyleft settingsmall">Inject Timestamps <span className="helpicon">?<span
+											className="helptext">Injects timestamps into context, allowing the AI to have a sense of time.</span></span></div>
 										<input type="checkbox" id="inject_timestamps_chat" style="margin:0px 0 0;"/>
 									</div>
 								</div>
-								<div id="adventuresection1" class="settinglabel hidden" style="padding-top: 3px;">
-									<div class="settinglabel">
-									<div class="justifyleft settingsmall">Adventure PrePrompt <span class="helpicon">?<span
-										class="helptext">Modifies the context, injecting tokens to improve adventure quality for new adventures.</span></span> </div>
+								<div id="adventuresection1" className="settinglabel hidden" style="padding-top: 3px;">
+									<div className="settinglabel">
+									<div className="justifyleft settingsmall">Adventure PrePrompt <span className="helpicon">?<span
+										className="helptext">Modifies the context, injecting tokens to improve adventure quality for new adventures.</span></span> </div>
 									<input type="checkbox" id="adventure_context_mod" style="margin:0px 0 0;"/>
 									</div>
 								</div>
-								<div id="instructsection1" class="settinglabel hidden" style="padding-top: 3px;">
-									<div class="justifyleft settingsmall">Enable Markdown <span class="helpicon">?<span
-										class="helptext">Allows the UI to use markdown formatting such as quotes and code blocks.</span></span>
+								<div id="instructsection1" className="settinglabel hidden" style="padding-top: 3px;">
+									<div className="justifyleft settingsmall">Enable Markdown <span className="helpicon">?<span
+										className="helptext">Allows the UI to use markdown formatting such as quotes and code blocks.</span></span>
 										<input type="checkbox" id="instruct_has_markdown" style="margin:0px 0 0;"/>
 									</div>
-									<div class="settinglabel">
-										<div class="justifyleft settingsmall">Inject Timestamps <span class="helpicon">?<span
-											class="helptext">Injects timestamps into context, allowing the AI to have a sense of time.</span></span></div>
+									<div className="settinglabel">
+										<div className="justifyleft settingsmall">Inject Timestamps <span className="helpicon">?<span
+											className="helptext">Injects timestamps into context, allowing the AI to have a sense of time.</span></span></div>
 										<input type="checkbox" id="inject_timestamps_instruct" style="margin:0px 0 0;"/>
 									</div>
-									<div class="settinglabel">
-										<div class="justifyleft settingsmall">Inject ChatNames <span class="helpicon">?<span
-											class="helptext">Appends chat names after every instruct tag, a hybrid chat mode.</span></span></div>
+									<div className="settinglabel">
+										<div className="justifyleft settingsmall">Inject ChatNames <span className="helpicon">?<span
+											className="helptext">Appends chat names after every instruct tag, a hybrid chat mode.</span></span></div>
 										<input type="checkbox" id="inject_chatnames_instruct" style="margin:0px 0 0;" onchange="toggle_include_chatnames()"/>
 									</div>
-									<div class="settinglabel">
-										<div class="justifyleft settingsmall">Assistant Jailbreak <span class="helpicon">?<span
-											class="helptext">Automatically injects a jailbreak message after every query to make the AI more likely to obey you.</span></span></div>
+									<div className="settinglabel">
+										<div className="justifyleft settingsmall">Assistant Jailbreak <span className="helpicon">?<span
+											className="helptext">Automatically injects a jailbreak message after every query to make the AI more likely to obey you.</span></span></div>
 										<input type="checkbox" id="inject_jailbreak_instruct" style="margin:0px 0 0;"/>
 									</div>
 								</div>
 								</div>
 							</div>
 
-							<div class="settingitem">
-							<div class="settinglabel">
+							<div className="settingitem">
+							<div className="settinglabel">
 
-								<div id="adventuresection2" class="settinglabel hidden" style="padding-top: 3px;">
-									<div class="settinglabel">
-										<div class="justifyleft settingsmall">Multiline Replies <span class="helpicon">?<span
-											class="helptext">Whether to allow multiple lines in AI responses. Disable this if the AI starts generating rubbish.</span></span></div>
+								<div id="adventuresection2" className="settinglabel hidden" style="padding-top: 3px;">
+									<div className="settinglabel">
+										<div className="justifyleft settingsmall">Multiline Replies <span className="helpicon">?<span
+											className="helptext">Whether to allow multiple lines in AI responses. Disable this if the AI starts generating rubbish.</span></span></div>
 										<input type="checkbox" id="multiline_replies_adventure" style="margin:0px 0 0;"/>
 									</div>
 								</div>
-								<div id="instructsection2" class="settinglabel hidden" style="padding-top: 3px;">
-									<div class="justifyleft settingsmall">Instruct Tag Preset <span class="helpicon">?<span class="helptext">Quickly select between common instruct tag formats. Different models are trained with different tags.</span></span></div>
-									<select class="form-control" id="instruct_tag_format" style="font-size:10px;height:18px;padding:0;margin:0px 0 0;" onchange="toggle_instruct_tag_format()">
+								<div id="instructsection2" className="settinglabel hidden" style="padding-top: 3px;">
+									<div className="justifyleft settingsmall">Instruct Tag Preset <span className="helpicon">?<span className="helptext">Quickly select between common instruct tag formats. Different models are trained with different tags.</span></span></div>
+									<select className="form-control" id="instruct_tag_format" style="font-size:10px;height:18px;padding:0;margin:0px 0 0;" onchange="toggle_instruct_tag_format()">
 										<option value="0" selected>[Custom]</option>
 										<option value="1">Alpaca</option>
 										<option value="2">Vicuna</option>
@@ -13462,57 +13475,57 @@ export default function Chat() {
 										<option value="8">CommandR</option>
 										<option value="9">Llama 3 Chat</option>
 									</select>
-									<div class="settingsmall miniinput" style="width:100%;padding:2px">
-									<div class="justifyleft settingsmall">Sys. Prompt <span class="helpicon">?<span class="helptext">A system pre-prompt sent at the very start to guide the AI behavior. Usually NOT needed.</span></span></div>
-									<input class="settinglabel miniinput" type="text" placeholder="(Optional)" value="" id="instruct_sysprompt"/>
+									<div className="settingsmall miniinput" style="width:100%;padding:2px">
+									<div className="justifyleft settingsmall">Sys. Prompt <span className="helpicon">?<span className="helptext">A system pre-prompt sent at the very start to guide the AI behavior. Usually NOT needed.</span></span></div>
+									<input className="settinglabel miniinput" type="text" placeholder="(Optional)" value="" id="instruct_sysprompt"/>
 									</div>
-									<table class="settingsmall text-center" style="border-spacing: 3px 2px;	border-collapse: separate;">
+									<table className="settingsmall text-center" style="border-spacing: 3px 2px;	border-collapse: separate;">
 										<tr>
-											<th>Start Seq.<span class="helpicon">?<span class="helptext">The sequence to start an instruction prompt</span></span></th>
-											<th>End Seq.<span class="helpicon">?<span class="helptext">The sequence to end an instruction prompt</span></span></th>
+											<th>Start Seq.<span className="helpicon">?<span className="helptext">The sequence to start an instruction prompt</span></span></th>
+											<th>End Seq.<span className="helpicon">?<span className="helptext">The sequence to end an instruction prompt</span></span></th>
 										</tr>
 										<tr>
-										<td><input class="settinglabel miniinput" type="text" placeholder="\\n### Instruction:\\n" value="" id="instruct_starttag" onchange="edit_instruct_tag_format()" title="The sequence to start an instruction prompt"/></td>
-										<td><input class="settinglabel miniinput" type="text" placeholder="\\n### Response:\\n" value="" id="instruct_endtag" onchange="edit_instruct_tag_format()" title="The sequence to end an instruction prompt"/></td>
+										<td><input className="settinglabel miniinput" type="text" placeholder="\\n### Instruction:\\n" value="" id="instruct_starttag" onchange="edit_instruct_tag_format()" title="The sequence to start an instruction prompt"/></td>
+										<td><input className="settinglabel miniinput" type="text" placeholder="\\n### Response:\\n" value="" id="instruct_endtag" onchange="edit_instruct_tag_format()" title="The sequence to end an instruction prompt"/></td>
 										</tr>
 									</table>
 								</div>
-								<div id="chatinstructsharedsection2" class="settinglabel hidden" style="padding-top: 3px;">
-									<table class="settingsmall text-center" style="border-spacing: 4px 2px;	border-collapse: separate;">
+								<div id="chatinstructsharedsection2" className="settinglabel hidden" style="padding-top: 3px;">
+									<table className="settingsmall text-center" style="border-spacing: 4px 2px;	border-collapse: separate;">
 										<tr>
 										<th>Your Name</th>
-										<th>AI Name <span class="helpicon">?<span class="helptext">Name of the person(s) you want to chat with. Multiple opponents can be specified, creating a group chat, separate their names using multiple lines.</span></span></th>
+										<th>AI Name <span className="helpicon">?<span className="helptext">Name of the person(s) you want to chat with. Multiple opponents can be specified, creating a group chat, separate their names using multiple lines.</span></span></th>
 										</tr>
 										<tr>
-										<td style="vertical-align: top;"><input class="settinglabel miniinput" style="height:18px;" type="text" placeholder="(Enter Name)" value="" id="chatname" title="The name that you will be chatting as"/></td>
-										<td style="vertical-align: top;"><textarea class="settinglabel miniinput" style="resize: none;overflow:hidden;" id="chatopponent" placeholder="(Auto)" rows="1" wrap="off" title="The name of the person you want to chat with" oninput="handle_bot_name_input()" onchange="handle_bot_name_onchange()"></textarea></td>
+										<td style="vertical-align: top;"><input className="settinglabel miniinput" style="height:18px;" type="text" placeholder="(Enter Name)" value="" id="chatname" title="The name that you will be chatting as"/></td>
+										<td style="vertical-align: top;"><textarea className="settinglabel miniinput" style="resize: none;overflow:hidden;" id="chatopponent" placeholder="(Auto)" rows="1" wrap="off" title="The name of the person you want to chat with" oninput="handle_bot_name_input()" onchange="handle_bot_name_onchange()"></textarea></td>
 										</tr>
 									</table>
 								</div>
-								<div id="chatnamesection2" class="settinglabel hidden" style="padding-top: 3px;">
-									<div class="settinglabel">
-									<div class="justifyleft settingsmall">Multiline Replies <span class="helpicon">?<span
-										class="helptext">Whether to allow multiple lines in AI responses. Disable this if the AI starts generating rubbish.</span></span> </div>
+								<div id="chatnamesection2" className="settinglabel hidden" style="padding-top: 3px;">
+									<div className="settinglabel">
+									<div className="justifyleft settingsmall">Multiline Replies <span className="helpicon">?<span
+										className="helptext">Whether to allow multiple lines in AI responses. Disable this if the AI starts generating rubbish.</span></span> </div>
 									<input type="checkbox" id="multiline_replies" style="margin:0px 0 0;"/>
 									</div>
-									<div class="settinglabel">
-									<div class="justifyleft settingsmall">Continue Bot Replies <span class="helpicon">?<span
-										class="helptext">Allow incomplete AI chat replies, which can be continued by pressing submit again. Not recommended for newbies.</span></span></div>
+									<div className="settinglabel">
+									<div className="justifyleft settingsmall">Continue Bot Replies <span className="helpicon">?<span
+										className="helptext">Allow incomplete AI chat replies, which can be continued by pressing submit again. Not recommended for newbies.</span></span></div>
 									<input type="checkbox" id="allow_continue_chat" style="margin:0px 0 0;"/>
 									</div>
-									<button type="button" class="btn btn-primary" style="padding:2px 3px;margin-top:2px;font-size:11px;" onclick="add_another_participant()">Add Another Participant</button>
+									<button type="button" className="btn btn-primary" style="padding:2px 3px;margin-top:2px;font-size:11px;" onclick="add_another_participant()">Add Another Participant</button>
 								</div>
 							</div>
 							</div>
 						</div>
 
 						{/* <!--advanced settings menu top--> */}
-						<div id="settingsmenuadvanced1" class="settingsmenu hidden" style="padding-bottom: 0px;" onchange="setting_tweaked()">
-							<div class="settingitem">
-								<div class="settinglabel">
+						<div id="settingsmenuadvanced1" className="settingsmenu hidden" style="padding-bottom: 0px;" onchange="setting_tweaked()">
+							<div className="settingitem">
+								<div className="settinglabel">
 
-									<div class="justifyleft settingsmall">Advanced Sampler Config <span class="helpicon">?<span class="helptext">These settings control alternative samplers configurations. They are inactive by default, you usually do not need to change them.</span></span></div>
-									<table class="settingsmall text-center" style="border-spacing: 3px 2px;
+									<div className="justifyleft settingsmall">Advanced Sampler Config <span className="helpicon">?<span className="helptext">These settings control alternative samplers configurations. They are inactive by default, you usually do not need to change them.</span></span></div>
+									<table className="settingsmall text-center" style="border-spacing: 3px 2px;
 									border-collapse: separate;">
 										<tr>
 										<th title="Top-K Sampling. 0 to Deactivate.">Top-K</th>
@@ -13521,13 +13534,13 @@ export default function Chat() {
 										<th title="Tail-Free Sampling. 1 to Deactivate.">TFS</th>
 										</tr>
 										<tr>
-										<td><input class="" type="text" inputmode="decimal" placeholder="0" value="0"
+										<td><input className="" type="text" inputmode="decimal" placeholder="0" value="0"
 										id="top_k"/></td>
-										<td><input class="" type="text" inputmode="decimal" placeholder="0" value="0"
+										<td><input className="" type="text" inputmode="decimal" placeholder="0" value="0"
 										id="top_a"/></td>
-										<td><input class="" type="text" inputmode="decimal" placeholder="0" value="0"
+										<td><input className="" type="text" inputmode="decimal" placeholder="0" value="0"
 										id="typ_s"/></td>
-										<td><input class="" type="text" inputmode="decimal" placeholder="0" value="0"
+										<td><input className="" type="text" inputmode="decimal" placeholder="0" value="0"
 										id="tfs_s"/></td>
 										</tr>
 
@@ -13539,13 +13552,13 @@ export default function Chat() {
 										</tr>
 										<tr>
 
-										<td><input class="" type="text" inputmode="decimal" placeholder="0" value="0"
+										<td><input className="" type="text" inputmode="decimal" placeholder="0" value="0"
 										id="sampler_seed"/></td>
-										<td><input class="" type="text" inputmode="decimal" placeholder="0" value="0"
+										<td><input className="" type="text" inputmode="decimal" placeholder="0" value="0"
 										id="min_p"/></td>
-										<td><input class="" type="text" inputmode="decimal" placeholder="0" value="0"
+										<td><input className="" type="text" inputmode="decimal" placeholder="0" value="0"
 										id="presence_penalty"/></td>
-										<td><button type="button" class="btn btn-primary" style="padding:1px 3px;font-size:8px;" onclick="show_dynatemp()"><span id="dynatemp_overview">OFF</span></button></td>
+										<td><button type="button" className="btn btn-primary" style="padding:1px 3px;font-size:8px;" onclick="show_dynatemp()"><span id="dynatemp_overview">OFF</span></button></td>
 										</tr>
 
 
@@ -13554,12 +13567,12 @@ export default function Chat() {
 								</div>
 							</div>
 
-							<div class="settingitem">
-								<div class="settinglabel">
+							<div className="settingitem">
+								<div className="settinglabel">
 
-									<div class="justifyleft settingsmall">Mirostat (If supported) <span class="helpicon">?<span class="helptext">Replaces your samplers with mirostat, an alternative sampling method. May not be available depending on backend, not supported on Horde.</span></span></div>
+									<div className="justifyleft settingsmall">Mirostat (If supported) <span className="helpicon">?<span className="helptext">Replaces your samplers with mirostat, an alternative sampling method. May not be available depending on backend, not supported on Horde.</span></span></div>
 									<div id="mirosupporteddiv">
-										<table class="settingsmall text-center" style="border-spacing: 3px 2px;
+										<table className="settingsmall text-center" style="border-spacing: 3px 2px;
 										border-collapse: separate;">
 											<tr>
 											<th title="Mirostat Type 0/1/2">Mode</th>
@@ -13567,170 +13580,170 @@ export default function Chat() {
 											<th title="Mirostat Eta Value">Eta</th>
 											</tr>
 											<tr>
-											<td><select style="padding:1px; height:auto; width: 27px; appearance: none; font-size: 7pt;" class="form-control" id="miro_type">
+											<td><select style="padding:1px; height:auto; width: 27px; appearance: none; font-size: 7pt;" className="form-control" id="miro_type">
 												<option value="0">Off</option>
 												<option value="1">1</option>
 												<option value="2">2</option>
 											</select></td>
-											<td><input class="" type="text" placeholder="0.0" value="0."
+											<td><input className="" type="text" placeholder="0.0" value="0."
 											id="miro_tau"/></td>
-											<td><input class="" type="text" placeholder="0.0" value="0."
+											<td><input className="" type="text" placeholder="0.0" value="0."
 											id="miro_eta"/></td>
 											</tr>
 										</table>
 									</div>
-									<div id="mirounsupporteddiv" class="color_red" style="font-weight:bold;padding:3px;font-size:12px">Mirostat Not Supported</div>
-									<div class="settinglabel">
-										<div class="justifyleft settingsmall">User Mods <span class="helpicon">?<span class="helptext">Allows you to load third-party user created mods (caution).</span></span></div>
-										<button id="loadusermod" type="button" class="btn btn-primary" style="padding:2px 3px;margin-top:2px;font-size:11px;" onclick="apply_user_mod()">Apply User Mod</button>
+									<div id="mirounsupporteddiv" className="color_red" style="font-weight:bold;padding:3px;font-size:12px">Mirostat Not Supported</div>
+									<div className="settinglabel">
+										<div className="justifyleft settingsmall">User Mods <span className="helpicon">?<span className="helptext">Allows you to load third-party user created mods (caution).</span></span></div>
+										<button id="loadusermod" type="button" className="btn btn-primary" style="padding:2px 3px;margin-top:2px;font-size:11px;" onclick="apply_user_mod()">Apply User Mod</button>
 									</div>
 								</div>
 							</div>
 
-							<div class="settingitem">
-								<div class="settinglabel">
-									<table class="settingsmall text-center" style="border-spacing: 3px 2px;
+							<div className="settingitem">
+								<div className="settinglabel">
+									<table className="settingsmall text-center" style="border-spacing: 3px 2px;
 									border-collapse: separate;">
 										<tr>
 										<th title="Repetition Penalty Range">RpRng.</th>
 										<th title="Repetition Penalty Slope">RpSlp.</th>
-										<th style="width:80px;">Smp.Order <span class="helpicon">?<span
-											class="helptext">The order by which all 7 samplers are applied, separated by commas. 0=top_k, 1=top_a, 2=top_p, 3=tfs, 4=typ, 5=temp, 6=rep_pen</span></span></th>
+										<th style="width:80px;">Smp.Order <span className="helpicon">?<span
+											className="helptext">The order by which all 7 samplers are applied, separated by commas. 0=top_k, 1=top_a, 2=top_p, 3=tfs, 4=typ, 5=temp, 6=rep_pen</span></span></th>
 										</tr>
 										<tr>
-										<td><input class="" type="text" placeholder="0" value="0"
+										<td><input className="" type="text" placeholder="0" value="0"
 										id="rep_pen_range" title="Repetition Penalty Range"/></td>
-										<td><input class="" type="text" placeholder="0" value="0"
+										<td><input className="" type="text" placeholder="0" value="0"
 										id="rep_pen_slope" title="Repetition Penalty Slope"/></td>
-										<td><input class="" type="text" placeholder="CSV" value="" id="sampler_order" style="width:70px;" title="Valid values are: 0=top_k, 1=top_a, 2=top_p, 3=tfs, 4=typ, 5=temp, 6=rep_pen" onblur="validate_samplers()"/></td>
+										<td><input className="" type="text" placeholder="CSV" value="" id="sampler_order" style="width:70px;" title="Valid values are: 0=top_k, 1=top_a, 2=top_p, 3=tfs, 4=typ, 5=temp, 6=rep_pen" onblur="validate_samplers()"/></td>
 										</tr>
 									</table>
 								</div>
 
 							</div>
 
-							<div class="settingitem">
-								<div class="settinglabel">
-									<div class="justifyleft settingsmall">Additional Configs <span class="helpicon">?<span class="helptext">Grammar Sampling (KCPP) - Allows you to constrain output to fit specific structures. Resets grammar state every generation unless Retain is checked.</span></span></div>
-									<button id="setgrammar" type="button" class="btn btn-primary" style="padding:2px 3px;margin-top:2px;font-size:11px;" onclick="selectGrammar()">Set Grammar</button>
-									<div class="settingsmall" style="padding:2px 3px;margin-top:4px;" title="Do not reset grammar on generate. May not work with multiple users.">Retain </div>
+							<div className="settingitem">
+								<div className="settinglabel">
+									<div className="justifyleft settingsmall">Additional Configs <span className="helpicon">?<span className="helptext">Grammar Sampling (KCPP) - Allows you to constrain output to fit specific structures. Resets grammar state every generation unless Retain is checked.</span></span></div>
+									<button id="setgrammar" type="button" className="btn btn-primary" style="padding:2px 3px;margin-top:2px;font-size:11px;" onclick="selectGrammar()">Set Grammar</button>
+									<div className="settingsmall" style="padding:2px 3px;margin-top:4px;" title="Do not reset grammar on generate. May not work with multiple users.">Retain </div>
 									<input type="checkbox" id="grammar_retain_state" style="padding:2px 3px;margin-top:6px;height: max-content;"/>
 								</div>
 							</div>
 						</div>
 						{/* <!--advanced settings menu bottom--> */}
-						<div id="settingsmenuadvanced2" class="settingsmenu hidden" style="padding-top: 0px;" onchange="">
-							<div class="settingitem">
-								<div class="settinglabel">
-									<div class="justifyleft settingsmall">Generate Images <span class="helpicon">?<span class="helptext">Use the AI Horde or a local A1111 instance to insert AI generated images into your story.</span></span></div>
+						<div id="settingsmenuadvanced2" className="settingsmenu hidden" style="padding-top: 0px;" onchange="">
+							<div className="settingitem">
+								<div className="settinglabel">
+									<div className="justifyleft settingsmall">Generate Images <span className="helpicon">?<span className="helptext">Use the AI Horde or a local A1111 instance to insert AI generated images into your story.</span></span></div>
 								</div>
-									<select class="form-control" id="generate_images_mode" style="height:20px;padding:0;margin:0px 0 0;" onchange="toggle_generate_images_mode(true)">
+									<select className="form-control" id="generate_images_mode" style="height:20px;padding:0;margin:0px 0 0;" onchange="toggle_generate_images_mode(true)">
 										<option value="0">[Disabled]</option>
 										<option value="1">AI Horde</option>
 										<option value="2">Local A1111</option>
 										<option value="3">OpenAI DALL-E</option>
 									</select>
-									<div id="generate_images_model_container" class="hidden">
-										<select class="form-control" id="generate_images_model" style="font-size: 12px;height:20px;padding:2px;margin:0px 0 0;" onblur="validate_sd_model()" title="Select a stable diffusion model to generate images with">
+									<div id="generate_images_model_container" className="hidden">
+										<select className="form-control" id="generate_images_model" style="font-size: 12px;height:20px;padding:2px;margin:0px 0 0;" onblur="validate_sd_model()" title="Select a stable diffusion model to generate images with">
 										</select>
-										<button id="generate_images_horde_setkey" type="button" class="btn btn-primary" style="width:100%; padding:2px 3px;margin-top:2px;font-size:11px;" onclick="set_horde_key()">Set Horde Key</button>
-										<div class="settinglabel">
-											<div class="justifyleft settingsmall"  title="If NSFW is disabled, explicit images will be censored">Allow NSFW </div>
+										<button id="generate_images_horde_setkey" type="button" className="btn btn-primary" style="width:100%; padding:2px 3px;margin-top:2px;font-size:11px;" onclick="set_horde_key()">Set Horde Key</button>
+										<div className="settinglabel">
+											<div className="justifyleft settingsmall"  title="If NSFW is disabled, explicit images will be censored">Allow NSFW </div>
 										<input type="checkbox" id="img_allownsfw" style="margin:0px 0 0;"/>
 										</div>
 									</div>
 
-									<div id="generate_images_local_model_container" class="settinglabel hidden">
-									<select class="form-control" id="generate_images_local_model" style="height:20px;padding:0;margin:0px 0 0; width:calc(100% - 30px)">
+									<div id="generate_images_local_model_container" className="settinglabel hidden">
+									<select className="form-control" id="generate_images_local_model" style="height:20px;padding:0;margin:0px 0 0; width:calc(100% - 30px)">
 										<option value="">[None]</option>
 									</select>
-									<button type="button" class="btn btn-primary" onclick="set_a1111_endpoint()" style="height: 20px; padding: 0px 2px; margin: 0px 0px 0px 3px;">⚙️</button>
-									<div class="settinglabel">
-										<div class="justifyleft settingsmall"  title="Save images remotely on A1111 host (caution)">Save In A1111 </div>
+									<button type="button" className="btn btn-primary" onclick="set_a1111_endpoint()" style="height: 20px; padding: 0px 2px; margin: 0px 0px 0px 3px;">⚙️</button>
+									<div className="settinglabel">
+										<div className="justifyleft settingsmall"  title="Save images remotely on A1111 host (caution)">Save In A1111 </div>
 									<input type="checkbox" id="save_remote_images" style="margin:0px 0 0;"/>
 									</div>
 									</div>
-									<div id="generate_images_dalle_container" class="settinglabel hidden">
+									<div id="generate_images_dalle_container" className="settinglabel hidden">
 										<table width="100%"><tr>
-										<td><button id="generate_images_dalle_setkey" type="button" class="btn btn-primary" style="width:100%; padding:2px 3px;margin-top:2px;font-size:11px;" onclick="set_dalle_url()">Set URL</button></td>
-										<td><button id="generate_images_dalle_seturl" type="button" class="btn btn-primary" style="width:100%; padding:2px 3px;margin-top:2px;font-size:11px;" onclick="set_dalle_key()">Set Key</button></td>
+										<td><button id="generate_images_dalle_setkey" type="button" className="btn btn-primary" style="width:100%; padding:2px 3px;margin-top:2px;font-size:11px;" onclick="set_dalle_url()">Set URL</button></td>
+										<td><button id="generate_images_dalle_seturl" type="button" className="btn btn-primary" style="width:100%; padding:2px 3px;margin-top:2px;font-size:11px;" onclick="set_dalle_key()">Set Key</button></td>
 										</tr></table>
 									</div>
 
-									<div id="genimgopt" class="">
+									<div id="genimgopt" className="">
 										<table>
 										<tr><td>
-										<div class="settinglabel">
-											<div class="justifyleft settingsmall"  title="Automatically generates images periodically as you write">Autogenerate </div>
+										<div className="settinglabel">
+											<div className="justifyleft settingsmall"  title="Automatically generates images periodically as you write">Autogenerate </div>
 										<input type="checkbox" id="img_autogen" style="margin:0px 0 0;"/>
 										</div>
-										<div class="settinglabel">
-											<div class="justifyleft settingsmall"  title="Includes images when saving to json file">Save Images </div>
+										<div className="settinglabel">
+											<div className="justifyleft settingsmall"  title="Includes images when saving to json file">Save Images </div>
 										<input type="checkbox" id="save_images" style="margin:0px 0 0;"/>
 										</div>
 										</td>
-										<td class="settingsmall">
-											<button type="button" class="btn btn-primary" onclick="selectImgStyle()" style="font-size:11px; padding: 0px 4px; margin: 0px 1px 0px 1px;">Setup<br/>🎨</button>
+										<td className="settingsmall">
+											<button type="button" className="btn btn-primary" onclick="selectImgStyle()" style="font-size:11px; padding: 0px 4px; margin: 0px 1px 0px 1px;">Setup<br/>🎨</button>
 										</td>
 										</tr>
 										</table>
 									</div>
 							</div>
 
-							<div class="settingitem">
-								<div class="settinglabel">
-									<div class="justifyleft settingsmall">TTS <span class="helpicon">?<span class="helptext">Enable Text-To-Speech to have your story automatically read to you.</span></span></div>
-									<select class="form-control" id="ttsselect" style="font-size:12px;height:20px;padding:0;margin:0px 0 0;width:calc(100% - 32px);" onchange="toggle_tts_mode()">
+							<div className="settingitem">
+								<div className="settinglabel">
+									<div className="justifyleft settingsmall">TTS <span className="helpicon">?<span className="helptext">Enable Text-To-Speech to have your story automatically read to you.</span></span></div>
+									<select className="form-control" id="ttsselect" style="font-size:12px;height:20px;padding:0;margin:0px 0 0;width:calc(100% - 32px);" onchange="toggle_tts_mode()">
 									</select>
-									<button id="test_tts" type="button" class="bg_green btn btn-primary" style="height:20px; width:30px; padding:2px 3px;font-size:11px;" onclick="test_tts()">Test</button>
-									<div id="xtts_container" class="settinglabel hidden">
+									<button id="test_tts" type="button" className="bg_green btn btn-primary" style="height:20px; width:30px; padding:2px 3px;font-size:11px;" onclick="test_tts()">Test</button>
+									<div id="xtts_container" className="settinglabel hidden">
 										<table width="100%"><tr>
-										<td><button id="xtts_url" type="button" class="btn btn-primary" style="width:100%; padding:2px 3px;margin-top:2px;font-size:11px;" onclick="set_xtts_url()">Set URL</button></td>
-										<td><select class="form-control" id="xtts_voices" style="font-size:12px;height:20px;padding:0;margin:0px 0 0;">
+										<td><button id="xtts_url" type="button" className="btn btn-primary" style="width:100%; padding:2px 3px;margin-top:2px;font-size:11px;" onclick="set_xtts_url()">Set URL</button></td>
+										<td><select className="form-control" id="xtts_voices" style="font-size:12px;height:20px;padding:0;margin:0px 0 0;">
 										<option value="female_calm" selected>female_calm</option><option value="female">female</option><option value="male">male</option>
 										</select></td>
-										</tr><tr style="font-size:12px;padding:2px;margin:0px 0 0;"><td>Language </td><td><input class="settinglabel miniinput" type="text" value="EN" id="xtts_lang" style="margin-left:3px; height:18px; width: 40px; padding: 2px;"/></td></tr>
+										</tr><tr style="font-size:12px;padding:2px;margin:0px 0 0;"><td>Language </td><td><input className="settinglabel miniinput" type="text" value="EN" id="xtts_lang" style="margin-left:3px; height:18px; width: 40px; padding: 2px;"/></td></tr>
 										</table>
 									</div>
 								</div>
-								<div class="settinglabel">
-									<div class="justifyleft settingsmall"  title="If unchecked, only speak AI replies, not other text.">Narrate Both Sides </div>
+								<div className="settinglabel">
+									<div className="justifyleft settingsmall"  title="If unchecked, only speak AI replies, not other text.">Narrate Both Sides </div>
 								<input type="checkbox" id="narrate_both_sides" style="margin:0px 0 0;"/>
 								</div>
-								<div class="settinglabel">
-									<div class="justifyleft settingsmall"  title="If unchecked, only speak AI replies, not other text.">Narrate Only Dialog </div>
+								<div className="settinglabel">
+									<div className="justifyleft settingsmall"  title="If unchecked, only speak AI replies, not other text.">Narrate Only Dialog </div>
 								<input type="checkbox" id="narrate_only_dialog" style="margin:0px 0 0;"/>
 								</div>
-								<div class="settinglabel">
-									<div class="justifyleft settingsmall"  title="Play a sound when generation is complete">Beep on Done </div>
+								<div className="settinglabel">
+									<div className="justifyleft settingsmall"  title="Play a sound when generation is complete">Beep on Done </div>
 								<input type="checkbox" id="beep_on" style="margin:0px 0 0;"/>
 								</div>
-								<div class="settinglabel">
-									<div class="justifyleft settingsmall"  title="Show notification when generation is complete">Notify on Done </div>
+								<div className="settinglabel">
+									<div className="justifyleft settingsmall"  title="Show notification when generation is complete">Notify on Done </div>
 								<input type="checkbox" id="notify_on" style="margin:0px 0 0;"/>
 								</div>
-								<div class="settinglabel">
-									<div class="justifyleft settingsmall" title="">VoiceKeyboard Mode <span class="helpicon">?<span
-										class="helptext">Designed to work with a Speech-To-Text voice keyboard input. Automatically submits text after input.</span></span></div>
+								<div className="settinglabel">
+									<div className="justifyleft settingsmall" title="">VoiceKeyboard Mode <span className="helpicon">?<span
+										className="helptext">Designed to work with a Speech-To-Text voice keyboard input. Automatically submits text after input.</span></span></div>
 								<input type="checkbox" id="voice_keyboard_mode" style="margin:0px 0px 0px auto;"/>
 								</div>
-								<button id="resetallsettings" type="button" class="btn btn-primary bg_red" style="padding:2px 3px;margin-top:2px;font-size:11px;" onclick="reset_all_settings()">Reset ALL Settings</button>
+								<button id="resetallsettings" type="button" className="btn btn-primary bg_red" style="padding:2px 3px;margin-top:2px;font-size:11px;" onclick="reset_all_settings()">Reset ALL Settings</button>
 							</div>
 
-							<div class="settingitem">
-								<div class="settinglabel">
-									<div class="justifyleft settingsmall" id="tokenstreaminglabel" title="">Token Streaming <span class="helpicon">?<span
-										class="helptext">Use token streaming for partial responses. SSE is smoother but less well-supported. Poll is chunkier but more reliable. Not available on Horde.</span></span></div>
-								<select style="padding:1px; height:auto; width: 34px; appearance: none; font-size: 7pt; margin:0px 0px 0px auto;" class="form-control" id="tokenstreammode">
+							<div className="settingitem">
+								<div className="settinglabel">
+									<div className="justifyleft settingsmall" id="tokenstreaminglabel" title="">Token Streaming <span className="helpicon">?<span
+										className="helptext">Use token streaming for partial responses. SSE is smoother but less well-supported. Poll is chunkier but more reliable. Not available on Horde.</span></span></div>
+								<select style="padding:1px; height:auto; width: 34px; appearance: none; font-size: 7pt; margin:0px 0px 0px auto;" className="form-control" id="tokenstreammode">
 										<option value="0">Off</option>
 										<option value="1">Poll</option>
 										<option value="2">SSE</option>
 									</select>
 								</div>
 
-								<div id="idlesection" class="settinglabel">
-									<div class="justifyleft settingsmall" title="Allow the AI to send more responses if you are idle.">Idle Responses&nbsp;</div>
-									<select style="padding:1px; height:auto; width: 27px; appearance: none; font-size: 7pt; margin:0px 0px 0px auto;" class="form-control" id="idle_responses">
+								<div id="idlesection" className="settinglabel">
+									<div className="justifyleft settingsmall" title="Allow the AI to send more responses if you are idle.">Idle Responses&nbsp;</div>
+									<select style="padding:1px; height:auto; width: 27px; appearance: none; font-size: 7pt; margin:0px 0px 0px auto;" className="form-control" id="idle_responses">
 										<option value="0">Off</option>
 										<option value="1">1x</option>
 										<option value="2">2x</option>
@@ -13739,7 +13752,7 @@ export default function Chat() {
 										<option value="8">8x</option>
 										<option value="10">10x</option>
 									</select>
-									<select style="padding:1px; height:auto; width: 27px; appearance: none; font-size: 7pt;" class="form-control" id="idle_duration">
+									<select style="padding:1px; height:auto; width: 27px; appearance: none; font-size: 7pt;" className="form-control" id="idle_duration">
 										<option value="15">15s</option>
 										<option value="30">30s</option>
 										<option value="60">60s</option>
@@ -13751,163 +13764,163 @@ export default function Chat() {
 								</div>
 
 
-								<div class="settinglabel">
-									<div class="justifyleft settingsmall" title="">Trim Sentences <span class="helpicon">?<span
-										class="helptext">Trims incomplete sentences in AI output.</span></span></div>
+								<div className="settinglabel">
+									<div className="justifyleft settingsmall" title="">Trim Sentences <span className="helpicon">?<span
+										className="helptext">Trims incomplete sentences in AI output.</span></span></div>
 								<input type="checkbox" id="trimsentences" style="margin:0px 0px 0px auto;"/>
 								</div>
-								<div class="settinglabel">
-									<div class="justifyleft settingsmall" title="">Trim Whitespace <span class="helpicon">?<span
-										class="helptext">Removes trailing whitespace in AI output.</span></span></div>
+								<div className="settinglabel">
+									<div className="justifyleft settingsmall" title="">Trim Whitespace <span className="helpicon">?<span
+										className="helptext">Removes trailing whitespace in AI output.</span></span></div>
 								<input type="checkbox" id="trimwhitespace" style="margin:0px 0px 0px auto;"/>
 								</div>
-								<div class="settinglabel">
-									<div class="justifyleft settingsmall" title="">Compress Newlines <span class="helpicon">?<span
-										class="helptext">Compresses multiple newlines into one newline in AI output.</span></span></div>
+								<div className="settinglabel">
+									<div className="justifyleft settingsmall" title="">Compress Newlines <span className="helpicon">?<span
+										className="helptext">Compresses multiple newlines into one newline in AI output.</span></span></div>
 								<input type="checkbox" id="compressnewlines" style="margin:0px 0px 0px auto;"/>
 								</div>
-								<div class="settinglabel">
-									<div class="justifyleft settingsmall" title="">EOS Token Ban <span class="helpicon">?<span
-										class="helptext">Allow the End-Of-Stream (EOS) token and potentially other restricted special tokens to be generated.</span></span></div>
-								<select style="padding:1px; height:auto; width: 34px; appearance: none; font-size: 7pt; margin:0px 0px 0px auto;" class="form-control" id="eos_ban_mode">
+								<div className="settinglabel">
+									<div className="justifyleft settingsmall" title="">EOS Token Ban <span className="helpicon">?<span
+										className="helptext">Allow the End-Of-Stream (EOS) token and potentially other restricted special tokens to be generated.</span></span></div>
+								<select style="padding:1px; height:auto; width: 34px; appearance: none; font-size: 7pt; margin:0px 0px 0px auto;" className="form-control" id="eos_ban_mode">
 										<option value="0">Auto</option>
 										<option value="1">Unban</option>
 										<option value="2">Ban</option>
 										<option value="3">Bypass</option>
 									</select>
 								</div>
-								<div class="settinglabel">
-									<div class="justifyleft settingsmall">Placeholder Tags <span class="helpicon">?<span
-										class="helptext">If enabled, uses universal {{user}} and {[INPUT]} placeholders that get swapped on submit. If disabled, uses plaintext chat or instruct tags verbatim.</span></span></div>
+								<div className="settinglabel">
+									<div className="justifyleft settingsmall">Placeholder Tags <span className="helpicon">?<span
+										className="helptext">If enabled, uses universal {{user}} and {[INPUT]} placeholders that get swapped on submit. If disabled, uses plaintext chat or instruct tags verbatim.</span></span></div>
 								<input type="checkbox" id="placeholder_tags" style="margin:0px 0px 0px auto;"/>
 								</div>
-								<div class="settinglabel">
-									<div class="justifyleft settingsmall">Render Sp.Tags <span class="helpicon">?<span
-										class="helptext">If enabled, renders special tags like EOS and padding tokens. Not recommended.</span></span></div>
+								<div className="settinglabel">
+									<div className="justifyleft settingsmall">Render Sp.Tags <span className="helpicon">?<span
+										className="helptext">If enabled, renders special tags like EOS and padding tokens. Not recommended.</span></span></div>
 								<input type="checkbox" id="render_special_tags" style="margin:0px 0px 0px auto;"/>
 								</div>
-								<div class="settinglabel">
-									<div class="justifyleft settingsmall">Run In Background <span class="helpicon">?<span
-										class="helptext">Prevents the browser from suspending Kobold Lite by playing a silent audio track. This setting cannot be saved.</span></span></div>
+								<div className="settinglabel">
+									<div className="justifyleft settingsmall">Run In Background <span className="helpicon">?<span
+										className="helptext">Prevents the browser from suspending Kobold Lite by playing a silent audio track. This setting cannot be saved.</span></span></div>
 								<input type="checkbox" id="run_in_background" style="margin:0px 0px 0px auto;"/>
 								</div>
 							</div>
 
 
-							<div class="settingitem">
-								<div class="settinglabel">
-									<div class="justifyleft settingsmall">Autosave Session <span class="helpicon">?<span
-										class="helptext">Autosaves your current story and settings on exit, reloads when you return</span></span></div>
+							<div className="settingitem">
+								<div className="settinglabel">
+									<div className="justifyleft settingsmall">Autosave Session <span className="helpicon">?<span
+										className="helptext">Autosaves your current story and settings on exit, reloads when you return</span></span></div>
 									<input type="checkbox" id="persist_session" style="margin:0px 0px 0px auto;"/>
 								</div>
-								<div class="settinglabel">
-									<div class="justifyleft settingsmall">Embed Settings File <span class="helpicon">?<span
-										class="helptext">Includes your current settings when saving or sharing your story</span></span></div>
+								<div className="settinglabel">
+									<div className="justifyleft settingsmall">Embed Settings File <span className="helpicon">?<span
+										className="helptext">Includes your current settings when saving or sharing your story</span></span></div>
 								<input type="checkbox" id="export_settings" style="margin:0px 0px 0px auto;"/>
 								</div>
-								<div class="settinglabel">
-									<div class="justifyleft settingsmall">Rename Save File <span class="helpicon">?<span
-										class="helptext">Prompts to input a different filename when saving file.</span></span></div>
+								<div className="settinglabel">
+									<div className="justifyleft settingsmall">Rename Save File <span className="helpicon">?<span
+										className="helptext">Prompts to input a different filename when saving file.</span></span></div>
 								<input type="checkbox" id="prompt_for_savename" style="margin:0px 0px 0px auto;"/>
 								</div>
-								<div class="settinglabel">
-									<div class="justifyleft settingsmall">Show Advanced Load <span class="helpicon">?<span
-										class="helptext">If enabled, allows you to select additional configurations during file load</span></span></div>
+								<div className="settinglabel">
+									<div className="justifyleft settingsmall">Show Advanced Load <span className="helpicon">?<span
+										className="helptext">If enabled, allows you to select additional configurations during file load</span></span></div>
 								<input type="checkbox" id="show_advanced_load" style="margin:0px 0px 0px auto;"/>
 								</div>
-								<div class="settinglabel">
-									<div class="justifyleft settingsmall">Autoscroll Text <span class="helpicon">?<span
-										class="helptext">Automatically scrolls the text window down when new text is generated</span></span></div>
+								<div className="settinglabel">
+									<div className="justifyleft settingsmall">Autoscroll Text <span className="helpicon">?<span
+										className="helptext">Automatically scrolls the text window down when new text is generated</span></span></div>
 								<input type="checkbox" id="autoscroll" style="margin:0px 0px 0px auto;"/>
 								</div>
-								<div class="settinglabel">
-									<div class="justifyleft settingsmall">Unlock Scroll Height <span class="helpicon">?<span
-										class="helptext">Unlocks the text viewport, allowing for infinite height without scrolling</span></span></div>
+								<div className="settinglabel">
+									<div className="justifyleft settingsmall">Unlock Scroll Height <span className="helpicon">?<span
+										className="helptext">Unlocks the text viewport, allowing for infinite height without scrolling</span></span></div>
 								<input type="checkbox" id="printer_view" style="margin:0px 0px 0px auto;"/>
 								</div>
-								<div class="settinglabel">
-									<div class="justifyleft settingsmall" title="">Viewport Width <span class="helpicon">?<span
-										class="helptext">Controls horizontal scaling of the viewport window</span></span></div>
-								<select style="padding:1px; height:auto; width: 34px; appearance: none; font-size: 7pt; margin:0px 0px 0px auto;" class="form-control" id="viewport_width_mode">
+								<div className="settinglabel">
+									<div className="justifyleft settingsmall" title="">Viewport Width <span className="helpicon">?<span
+										className="helptext">Controls horizontal scaling of the viewport window</span></span></div>
+								<select style="padding:1px; height:auto; width: 34px; appearance: none; font-size: 7pt; margin:0px 0px 0px auto;" className="form-control" id="viewport_width_mode">
 										<option value="0">Adapt</option>
 										<option value="1">Clamp</option>
 										<option value="2">HDClamp</option>
 										<option value="3">Unlock</option>
 									</select>
 								</div>
-								<div class="settinglabel">
-									<div class="justifyleft settingsmall">Inverted Colors <span class="helpicon">?<span
-										class="helptext">Inverts all colors, simple light mode</span></span></div>
+								<div className="settinglabel">
+									<div className="justifyleft settingsmall">Inverted Colors <span className="helpicon">?<span
+										className="helptext">Inverts all colors, simple light mode</span></span></div>
 								<input type="checkbox" id="invert_colors" style="margin:0px 0px 0px auto;"/>
 								</div>
-								<div class="settinglabel">
+								<div className="settinglabel">
 									<input type="file" id="loadbgimg" accept="image/png,image/webp,.webp,.jpg,.jpeg,.png,*.*,*" onchange="load_bg_img(event)" style="display:none;"/>
-									<div class="justifyleft settingsmall">Background Img</div>
-									<button type="button" class="btn btn-primary bg_green" style="padding:2px 2px;margin:1px;font-size:10px;" onclick="load_bgimg_button()">Set</button>
-									<button type="button" class="btn btn-primary bg_red" style="padding:2px 2px;margin:1px;font-size:10px;" onclick="clear_bg_img()">Clear</button>
+									<div className="justifyleft settingsmall">Background Img</div>
+									<button type="button" className="btn btn-primary bg_green" style="padding:2px 2px;margin:1px;font-size:10px;" onclick="load_bgimg_button()">Set</button>
+									<button type="button" className="btn btn-primary bg_red" style="padding:2px 2px;margin:1px;font-size:10px;" onclick="clear_bg_img()">Clear</button>
 								</div>
 							</div>
 
 						</div>
 
 					</div>
-					<div class="popupfooter">
-						<button type="button" class="btn btn-primary" id="btn_settingsaccept"
+					<div className="popupfooter">
+						<button type="button" className="btn btn-primary" id="btn_settingsaccept"
 							onclick="confirm_settings()">OK</button>
-						<button type="button" class="btn btn-primary" id="btn_settingsclose"
+						<button type="button" className="btn btn-primary" id="btn_settingsclose"
 							onclick="hide_popups()">Cancel</button>
 					</div>
 				</div>
 			</div>
 
-			<div class="popupcontainer flex hidden" id="memorycontainer">
-				<div class="popupbg flex"></div>
-				<div class="nspopup flexsizebig evenhigher">
-					<div class="popuptitlebar">
-						<div class="popuptitletext">Context Data</div>
+			<div className="popupcontainer flex hidden" id="memorycontainer">
+				<div className="popupbg flex"></div>
+				<div className="nspopup flexsizebig evenhigher">
+					<div className="popuptitlebar">
+						<div className="popuptitletext">Context Data</div>
 					</div>
-					<div><ul class="nav nav-tabs settingsnav">
-						<li id="memory_tab" class="active"><a class="" href="#" onclick="display_memory_tab(0)">Memory</a></li>
-						<li id="wi_tab"><a class="" href="#" onclick="display_memory_tab(1)">World Info</a></li>
-						<li id="token_tab"><a class="" href="#" onclick="display_memory_tab(2)">Tokens</a></li>
+					<div><ul className="nav nav-tabs settingsnav">
+						<li id="memory_tab" className="active"><a className="" href="#" onclick="display_memory_tab(0)">Memory</a></li>
+						<li id="wi_tab"><a className="" href="#" onclick="display_memory_tab(1)">World Info</a></li>
+						<li id="token_tab"><a className="" href="#" onclick="display_memory_tab(2)">Tokens</a></li>
 					</ul></div>
 
-					<div class="memtabcontainer" id="memory_tab_container">
-						<div class="settinglabel">
-							<span class="justifyleft">Memory<span class="helpicon">?<span
-								class="helptext">Put the information you want the AI to always remember. It will be inserted into the top of every request sent to the AI.</span></span></span>
-							<span class="justifyright flex-push-right" >
-								<div class="settinglabel" style="padding-top: 4px;">
-									<div class="justifyleft settingsmall" title="Add newline after injecting memory text">Newline After Memory </div>
+					<div className="memtabcontainer" id="memory_tab_container">
+						<div className="settinglabel">
+							<span className="justifyleft">Memory<span className="helpicon">?<span
+								className="helptext">Put the information you want the AI to always remember. It will be inserted into the top of every request sent to the AI.</span></span></span>
+							<span className="justifyright flex-push-right" >
+								<div className="settinglabel" style="padding-top: 4px;">
+									<div className="justifyleft settingsmall" title="Add newline after injecting memory text">Newline After Memory </div>
 								<input type="checkbox" id="newlineaftermemory" style="margin:0px 0 0;" checked/>
 								</div>
 							</span>
 						</div>
-						<textarea class="form-control" id="memorytext" style="height: 120px;"
+						<textarea className="form-control" id="memorytext" style="height: 120px;"
 							placeholder="Edit the memory to be sent with each request to the AI."></textarea>
-						<div class="settinglabel">
-							<div class="justifyleft"><br/>Author's Note<span class="helpicon">?<span
-								class="helptext">Similar to Memory, but inserted near the end of the text instead of the start. A good way to control the mood/behavior of the AI.</span></span></div>
-							<span class="justifyright flex-push-right" >
-								<button type="button" class="btn btn-primary" style="padding:4px 6px;margin-top:4px;" id="btnnotes" onclick="set_personal_notes()">Notes</button>
-								<button type="button" class="btn btn-primary" style="padding:4px 6px;margin-top:4px;" id="btnautogenmem" onclick="autogenerate_summary_memory()">AutoGenerate Memory</button>
+						<div className="settinglabel">
+							<div className="justifyleft"><br/>Author's Note<span className="helpicon">?<span
+								className="helptext">Similar to Memory, but inserted near the end of the text instead of the start. A good way to control the mood/behavior of the AI.</span></span></div>
+							<span className="justifyright flex-push-right" >
+								<button type="button" className="btn btn-primary" style="padding:4px 6px;margin-top:4px;" id="btnnotes" onclick="set_personal_notes()">Notes</button>
+								<button type="button" className="btn btn-primary" style="padding:4px 6px;margin-top:4px;" id="btnautogenmem" onclick="autogenerate_summary_memory()">AutoGenerate Memory</button>
 							</span>
 						</div>
-						<textarea class="form-control" id="anotetext"
+						<textarea className="form-control" id="anotetext"
 							placeholder="Author's Note will be inserted close to end of context."></textarea>
 						<br/>
-						<div class="settinglabel">
-							<span class="justifyleft">Author's Note Template<span class="helpicon">?<span
-								class="helptext">A placeholder, will be inserted with the author's note replacing the &lt;|&gt;. You generally don't need to change this.</span></span></span>
-							<span class="justifyright flex-push-right" >
-								A/N Strength<span class="helpicon">?<span
-									class="helptext">Controls how far back to insert the Author's Note. Notes injected closer to the end have a stronger effect.</span></span>
+						<div className="settinglabel">
+							<span className="justifyleft">Author's Note Template<span className="helpicon">?<span
+								className="helptext">A placeholder, will be inserted with the author's note replacing the &lt;|&gt;. You generally don't need to change this.</span></span></span>
+							<span className="justifyright flex-push-right" >
+								A/N Strength<span className="helpicon">?<span
+									className="helptext">Controls how far back to insert the Author's Note. Notes injected closer to the end have a stronger effect.</span></span>
 							</span>
 						</div>
 						<div style="display: flex; column-gap: 4px;">
-						<input class="form-control anotetempbox inlineinput" type="text"
+						<input className="form-control anotetempbox inlineinput" type="text"
 							placeholder="(the &lt;|&gt; will be replaced with the Author's Note text)" value="" id="anotetemplate"/>
-							<select style="padding:4px;" class="anotetempscale form-control" id="anote_strength">
+							<select style="padding:4px;" className="anotetempscale form-control" id="anote_strength">
 								<option value="480">Weak</option>
 								<option value="320">Medium</option>
 								<option value="160">Strong</option>
@@ -13916,24 +13929,24 @@ export default function Chat() {
 						</div>
 					</div>
 
-					<div class="memtabcontainer" id="wi_tab_container">
+					<div className="memtabcontainer" id="wi_tab_container">
 						<div style="text-align: right;">
-						<button type="button" style="padding:4px;margin:4px" class="btn btn-info widelbtn" id="wiadd" onclick="add_wi()">+Add</button>
+						<button type="button" style="padding:4px;margin:4px" className="btn btn-info widelbtn" id="wiadd" onclick="add_wi()">+Add</button>
 						</div>
-						<div class="wilist" id="wilist">
+						<div className="wilist" id="wilist">
 						</div>
 
-						<div class="settinglabel" style="padding: 4px;">
-							<div class="justifyleft settingsmall">WI Insert Location <span class="helpicon">?<span
-								class="helptext">Controls where the world info should be inserted</span></span></div>
-						<select style="height:16px;padding:0px;margin:0px 4px 0; width:90px;font-size:10px;" class="form-control" id="wi_insertlocation">
+						<div className="settinglabel" style="padding: 4px;">
+							<div className="justifyleft settingsmall">WI Insert Location <span className="helpicon">?<span
+								className="helptext">Controls where the world info should be inserted</span></span></div>
+						<select style="height:16px;padding:0px;margin:0px 4px 0; width:90px;font-size:10px;" className="form-control" id="wi_insertlocation">
 							<option value="0">After Memory</option>
 							<option value="1">Before A/N</option>
 						</select></div>
-						<div class="settinglabel" style="padding: 4px;">
-							<div class="justifyleft settingsmall">WI Search Depth <span class="helpicon">?<span
-								class="helptext">Controls how far back in the text to search for World Info Keys</span></span></div>
-						<select style="height:16px;padding:0px;margin:0px 4px 0; width:90px;font-size:10px;" class="form-control" id="wi_searchdepth">
+						<div className="settinglabel" style="padding: 4px;">
+							<div className="justifyleft settingsmall">WI Search Depth <span className="helpicon">?<span
+								className="helptext">Controls how far back in the text to search for World Info Keys</span></span></div>
+						<select style="height:16px;padding:0px;margin:0px 4px 0; width:90px;font-size:10px;" className="form-control" id="wi_searchdepth">
 							<option value="0">Full Context</option>
 							<option value="1024">Last 1024</option>
 							<option value="512">Last 512</option>
@@ -13942,217 +13955,217 @@ export default function Chat() {
 
 
 						<div style="float:right;">
-							<input class="settinglabel miniinput" style="margin: 3px; width: 90px;" type="text" placeholder="Quick Search" value="" id="wiquicksearch" oninput="wi_quick_search()"/>
+							<input className="settinglabel miniinput" style="margin: 3px; width: 90px;" type="text" placeholder="Quick Search" value="" id="wiquicksearch" oninput="wi_quick_search()"/>
 						</div>
-						<div class="settinglabel" style="padding: 4px;">
-							<div class="justifyleft settingsmall" title="Controls whether the world info keys are matched in a case-sensitive way.">Case Sensitive Keys </div>
+						<div className="settinglabel" style="padding: 4px;">
+							<div className="justifyleft settingsmall" title="Controls whether the world info keys are matched in a case-sensitive way.">Case Sensitive Keys </div>
 						<input type="checkbox" id="case_sensitive_wi" style="margin:0px 0 0;"/>
 						</div>
 					</div>
 
-					<div class="memtabcontainer" id="token_tab_container">
-						<div class="justifyleft settinglabel">Extra Stopping Sequences <span class="helpicon">?<span
-							class="helptext">Triggers the text generator to stop generating early if this sequence appears, in addition to default stop sequences. If you want multiple sequences, separate them with the following delimiter: ||$||</span></span></div>
-							<div class="color_red hidden" id="noextrastopseq">Stop Sequences may be unavailable.</div>
+					<div className="memtabcontainer" id="token_tab_container">
+						<div className="justifyleft settinglabel">Extra Stopping Sequences <span className="helpicon">?<span
+							className="helptext">Triggers the text generator to stop generating early if this sequence appears, in addition to default stop sequences. If you want multiple sequences, separate them with the following delimiter: ||$||</span></span></div>
+							<div className="color_red hidden" id="noextrastopseq">Stop Sequences may be unavailable.</div>
 							<div style="display: flex; column-gap: 4px; margin-bottom: 4px;">
-							<input class="form-control stopseqbox inlineinput" type="text" placeholder="None" value="" id="extrastopseq"/>
-							<button type="button" class="btn btn-primary" style="width:90px;padding:6px 6px;" onclick="add_stop_seq()">Add New</button>
+							<input className="form-control stopseqbox inlineinput" type="text" placeholder="None" value="" id="extrastopseq"/>
+							<button type="button" className="btn btn-primary" style="width:90px;padding:6px 6px;" onclick="add_stop_seq()">Add New</button>
 						</div>
 
-						<div style="padding:3px;" class="justifyleft settinglabel">Logit Biases <span class="helpicon">?<span
-							class="helptext">Specify a dictionary of token IDs to modify the probability of occuring.</span></span>
-							<button type="button" class="btn btn-primary" style="font-size:12px;padding:2px 2px;" onclick="expand_tokens_section('expandlogitbias')">Expand Section</button>
+						<div style="padding:3px;" className="justifyleft settinglabel">Logit Biases <span className="helpicon">?<span
+							className="helptext">Specify a dictionary of token IDs to modify the probability of occuring.</span></span>
+							<button type="button" className="btn btn-primary" style="font-size:12px;padding:2px 2px;" onclick="expand_tokens_section('expandlogitbias')">Expand Section</button>
 						</div>
-						<div id="expandlogitbias" class="hidden">
-							<div class="color_red hidden" id="nologitbias">Logit bias may be unavailable.</div>
-							<div style="color:#ffffff;">Enter OpenAI-formatted logit bias dictionary. Each key is the integer token IDs and their values are the biases (-100.0 to 100.0). Leave blank to disable.<br/><a href='https://platform.openai.com/docs/api-reference/chat/create#chat-create-logit_bias' target='_blank' class='color_blueurl'>Input is a JSON object, reference here.</a><br/></div>
-							<textarea class="form-control" style="line-height:1.1;margin-bottom: 4px;padding:3px" id="logitbiastxtarea" placeholder="" rows="5"></textarea>
+						<div id="expandlogitbias" className="hidden">
+							<div className="color_red hidden" id="nologitbias">Logit bias may be unavailable.</div>
+							<div style="color:#ffffff;">Enter OpenAI-formatted logit bias dictionary. Each key is the integer token IDs and their values are the biases (-100.0 to 100.0). Leave blank to disable.<br/><a href='https://platform.openai.com/docs/api-reference/chat/create#chat-create-logit_bias' target='_blank' className='color_blueurl'>Input is a JSON object, reference here.</a><br/></div>
+							<textarea className="form-control" style="line-height:1.1;margin-bottom: 4px;padding:3px" id="logitbiastxtarea" placeholder="" rows="5"></textarea>
 							<div style="display: flex; column-gap: 4px; margin-bottom: 4px;">
-							<input style="padding:2px" class="form-control stopseqbox inlineinput" inputmode="numeric" type="text" placeholder="Token ID" value="" id="newlogitbiasid"/>
-							<input style="padding:2px" class="form-control stopseqbox inlineinput" inputmode="text" type="text" placeholder="Bias Value" value="" id="newlogitbiasval"/>
-							<button type="button" class="btn btn-primary" style="width:90px;padding:6px 6px;" onclick="add_logit_bias()">Add New</button>
+							<input style="padding:2px" className="form-control stopseqbox inlineinput" inputmode="numeric" type="text" placeholder="Token ID" value="" id="newlogitbiasid"/>
+							<input style="padding:2px" className="form-control stopseqbox inlineinput" inputmode="text" type="text" placeholder="Bias Value" value="" id="newlogitbiasval"/>
+							<button type="button" className="btn btn-primary" style="width:90px;padding:6px 6px;" onclick="add_logit_bias()">Add New</button>
 							</div>
 						</div>
 
-						<div style="padding:3px;" class="justifyleft settinglabel">Token Filter <span class="helpicon">?<span
-							class="helptext">Outright removal for ANY tokens containing a specific substring from model vocab. If you want multiple sequences, separate them with the following delimiter: ||$||</span></span>
-							<button type="button" class="btn btn-primary" style="font-size:12px;padding:2px 2px;" onclick="expand_tokens_section('expandtokenbans')">Expand Section</button>
+						<div style="padding:3px;" className="justifyleft settinglabel">Token Filter <span className="helpicon">?<span
+							className="helptext">Outright removal for ANY tokens containing a specific substring from model vocab. If you want multiple sequences, separate them with the following delimiter: ||$||</span></span>
+							<button type="button" className="btn btn-primary" style="font-size:12px;padding:2px 2px;" onclick="expand_tokens_section('expandtokenbans')">Expand Section</button>
 						</div>
-						<div id="expandtokenbans" class="hidden">
-							<div class="color_red hidden" id="notokenbans">Token filter may be unavailable.</div>
+						<div id="expandtokenbans" className="hidden">
+							<div className="color_red hidden" id="notokenbans">Token filter may be unavailable.</div>
 							<div style="color:#ffffff;">Outright removal for ANY tokens containing a specific substring from model vocab. If you want multiple sequences, separate them with the following delimiter: ||$||<br/><em>Note: If you're trying to ban a specific token ID, you should use Logit Bias instead!</em><br/></div>
 							<div style="display: flex; column-gap: 4px; margin-bottom: 4px;">
-							<input class="form-control stopseqbox inlineinput" type="text" placeholder="None" value="" id="tokenbans"/>
-							<button type="button" class="btn btn-primary" style="width:90px;padding:6px 6px;" onclick="add_token_ban()">Add New</button>
+							<input className="form-control stopseqbox inlineinput" type="text" placeholder="None" value="" id="tokenbans"/>
+							<button type="button" className="btn btn-primary" style="width:90px;padding:6px 6px;" onclick="add_token_ban()">Add New</button>
 							</div>
 						</div>
 
-						<div style="padding:3px;" class="justifyleft settinglabel">Regex Replace <span class="helpicon">?<span
-							class="helptext">Allows transforming incoming text with regex patterns, modifying all matches. Replacements will be applied in sequence.</span></span>
-							<button type="button" class="btn btn-primary" style="font-size:12px;padding:2px 2px;" onclick="expand_tokens_section('expandregexreplace')">Expand Section</button>
+						<div style="padding:3px;" className="justifyleft settinglabel">Regex Replace <span className="helpicon">?<span
+							className="helptext">Allows transforming incoming text with regex patterns, modifying all matches. Replacements will be applied in sequence.</span></span>
+							<button type="button" className="btn btn-primary" style="font-size:12px;padding:2px 2px;" onclick="expand_tokens_section('expandregexreplace')">Expand Section</button>
 						</div>
-						<div id="expandregexreplace" class="hidden">
-							<table id="regex_replace_table" class="settinglabel text-center" style="border-spacing: 3px 2px; border-collapse: separate;">
+						<div id="expandregexreplace" className="hidden">
+							<table id="regex_replace_table" className="settinglabel text-center" style="border-spacing: 3px 2px; border-collapse: separate;">
 							</table>
 						</div>
 
-						<div style="padding:3px;" class="justifyleft settinglabel">Placeholder Tags <span class="helpicon">?<span
-							class="helptext">Configure automatic substitutions for placeholders in text.</span></span>
-							<button type="button" class="btn btn-primary" style="font-size:12px;padding:2px 2px;" onclick="expand_tokens_section('expandplaceholdertags')">Expand Section</button>
+						<div style="padding:3px;" className="justifyleft settinglabel">Placeholder Tags <span className="helpicon">?<span
+							className="helptext">Configure automatic substitutions for placeholders in text.</span></span>
+							<button type="button" className="btn btn-primary" style="font-size:12px;padding:2px 2px;" onclick="expand_tokens_section('expandplaceholdertags')">Expand Section</button>
 						</div>
-						<div id="expandplaceholdertags" class="hidden">
-							<div class="settinglabel justifyleft">Stories can use placeholders like {{user}} and {[INPUT]} that require dynamic substitution. If disabled, uses plaintext tags verbatim.</div>
-							<div class="settinglabel">
-								<div class="justifyleft settingsmall">Enable Placeholder Tags <span class="helpicon">?<span
-									class="helptext">If enabled, uses placeholders that get swapped on submit. If disabled, uses plaintext verbatim.</span></span></div>
+						<div id="expandplaceholdertags" className="hidden">
+							<div className="settinglabel justifyleft">Stories can use placeholders like {{user}} and {[INPUT]} that require dynamic substitution. If disabled, uses plaintext tags verbatim.</div>
+							<div className="settinglabel">
+								<div className="justifyleft settingsmall">Enable Placeholder Tags <span className="helpicon">?<span
+									className="helptext">If enabled, uses placeholders that get swapped on submit. If disabled, uses plaintext verbatim.</span></span></div>
 							<input type="checkbox" id="placeholder_tags2"/>
 							</div>
-							<table id="placeholder_replace_table" class="settinglabel text-center" style="border-spacing: 3px 2px; border-collapse: separate;">
+							<table id="placeholder_replace_table" className="settinglabel text-center" style="border-spacing: 3px 2px; border-collapse: separate;">
 							</table>
 						</div>
 
-						{/* // <!-- <div style="padding:3px;" class="justifyleft settinglabel">Repetition Exclusions <span class="helpicon">?<span
-							class="helptext">Configure specific tokens that will be excluded from repetition and presence penalties.</span></span>
-							<button type="button" class="btn btn-primary" style="font-size:12px;padding:2px 2px;" onclick="expand_tokens_section('')">Expand Section</button>
+						{/* // <!-- <div style="padding:3px;" className="justifyleft settinglabel">Repetition Exclusions <span className="helpicon">?<span
+							className="helptext">Configure specific tokens that will be excluded from repetition and presence penalties.</span></span>
+							<button type="button" className="btn btn-primary" style="font-size:12px;padding:2px 2px;" onclick="expand_tokens_section('')">Expand Section</button>
 						</div> --> */}
 
 					</div>
 
-					<div class="popupfooter">
-						<button type="button" class="btn btn-primary" onclick="confirm_memory();save_wi();render_gametext();hide_popups()">OK</button>
-						<button type="button" class="btn btn-primary" onclick="revert_wi();hide_popups()">Cancel</button>
+					<div className="popupfooter">
+						<button type="button" className="btn btn-primary" onclick="confirm_memory();save_wi();render_gametext();hide_popups()">OK</button>
+						<button type="button" className="btn btn-primary" onclick="revert_wi();hide_popups()">Cancel</button>
 					</div>
 				</div>
 			</div>
 
-			<div class="popupcontainer flex hidden" id="workercontainer">
-				<div class="popupbg flex"></div>
-				<div class="workerpopup">
-					<div class="popuptitlebar">
+			<div className="popupcontainer flex hidden" id="workercontainer">
+				<div className="popupbg flex"></div>
+				<div className="workerpopup">
+					<div className="popuptitlebar">
 						<div><span style="float:right;">
-							<input class="settinglabel miniinput" style="margin: 3px; width: 90px;" type="text" placeholder="Quick Search" value="" id="workerlistquicksearch" oninput="worker_list_quick_search()"/>
+							<input className="settinglabel miniinput" style="margin: 3px; width: 90px;" type="text" placeholder="Quick Search" value="" id="workerlistquicksearch" oninput="worker_list_quick_search()"/>
 						</span></div>
-						<div class="popuptitletext" id="worktitlecount">Worker List</div>
+						<div className="popuptitletext" id="worktitlecount">Worker List</div>
 					</div>
-					<div class="workerTableDiv">
-					<table class="table text-center workerTable">
-					<thead class="sticky-top bg-white">
-					<tr><th><a class="color_blueurl" href="#" onclick="sort_display_workers('name')">Name</a></th><th><a class="color_blueurl" href="#" onclick="sort_display_workers('defaultmodel')">Model</a></th><th><a class="color_blueurl" href="#" onclick="sort_display_workers('tokenspersec')">Capabilities</a></th><th><a class="color_blueurl" href="#" onclick="sort_display_workers('uptime')">Uptime</a></th><th><a class="color_blueurl" href="#" onclick="sort_display_workers('kudos_rewards')">Kudos</a></th></tr>
+					<div className="workerTableDiv">
+					<table className="table text-center workerTable">
+					<thead className="sticky-top bg-white">
+					<tr><th><a className="color_blueurl" href="#" onclick="sort_display_workers('name')">Name</a></th><th><a className="color_blueurl" href="#" onclick="sort_display_workers('defaultmodel')">Model</a></th><th><a className="color_blueurl" href="#" onclick="sort_display_workers('tokenspersec')">Capabilities</a></th><th><a className="color_blueurl" href="#" onclick="sort_display_workers('uptime')">Uptime</a></th><th><a className="color_blueurl" href="#" onclick="sort_display_workers('kudos_rewards')">Kudos</a></th></tr>
 					</thead>
 					<tbody id="workertable">
 					</tbody>
 					</table>
 					</div>
-					<div class="popupfooter">
-						<button type="button" class="btn btn-primary" onclick="hide_workertable()">OK</button>
+					<div className="popupfooter">
+						<button type="button" className="btn btn-primary" onclick="hide_workertable()">OK</button>
 					</div>
 				</div>
 			</div>
 
-			<div class="popupcontainer flex hidden" id="myownworkercontainer">
-				<div class="popupbg flex"></div>
-				<div class="workerpopup">
-					<div class="popuptitlebar">
-						<div class="popuptitletext" id="myownworktitlecount">My Worker List</div>
+			<div className="popupcontainer flex hidden" id="myownworkercontainer">
+				<div className="popupbg flex"></div>
+				<div className="workerpopup">
+					<div className="popuptitlebar">
+						<div className="popuptitletext" id="myownworktitlecount">My Worker List</div>
 					</div>
-					<div class="workerTableDiv">
-					<table class="table text-center workerTable">
-					<thead class="sticky-top bg-white">
+					<div className="workerTableDiv">
+					<table className="table text-center workerTable">
+					<thead className="sticky-top bg-white">
 					<tr><th>Name</th><th>Description</th><th>Uptime</th><th>Kudos</th><th>Maint.</th><th>Del.</th></tr>
 					</thead>
 					<tbody id="myownworkertable">
 					</tbody>
 					</table>
 					</div>
-					<div class="popupfooter">
-						<button type="button" class="btn btn-primary" onclick="update_my_workers();hide_workertable()">OK</button>
+					<div className="popupfooter">
+						<button type="button" className="btn btn-primary" onclick="update_my_workers();hide_workertable()">OK</button>
 					</div>
 				</div>
 			</div>
 
-			<div class="popupcontainer flex hidden" id="sharecontainer">
-				<div class="popupbg flex"></div>
-				<div class="nspopup fixsize moderate">
-					<div class="popuptitlebar">
-						<div class="popuptitletext" id="sharecontainertitle">Share Story</div>
+			<div className="popupcontainer flex hidden" id="sharecontainer">
+				<div className="popupbg flex"></div>
+				<div className="nspopup fixsize moderate">
+					<div className="popuptitlebar">
+						<div className="popuptitletext" id="sharecontainertitle">Share Story</div>
 					</div>
-					<div class="aidgpopuplistheader anotelabel shareStory" id="sharestorytext" style=" word-wrap: break-word;">
+					<div className="aidgpopuplistheader anotelabel shareStory" id="sharestorytext" style=" word-wrap: break-word;">
 
 					</div>
-					<div class="popupfooter">
-						<button type="button" class="btn btn-primary" onclick="copy_share_url()">Copy</button>
-						<button type="button" class="btn btn-primary" onclick="hide_popups()">Close</button>
+					<div className="popupfooter">
+						<button type="button" className="btn btn-primary" onclick="copy_share_url()">Copy</button>
+						<button type="button" className="btn btn-primary" onclick="hide_popups()">Close</button>
 					</div>
-					<div class="box-label hidden" id="sharewarning">Warning: This story is very long. It may not load in some browsers. You should save it as a file instead.</div>
+					<div className="box-label hidden" id="sharewarning">Warning: This story is very long. It may not load in some browsers. You should save it as a file instead.</div>
 				</div>
 			</div>
 
-			<div class="popupcontainer flex hidden" id="dynatempcontainer">
-				<div class="popupbg flex"></div>
-				<div class="nspopup fixsize">
-					<div class="popuptitlebar">
-						<div class="popuptitletext">Dynamic Temperature Wizard</div>
+			<div className="popupcontainer flex hidden" id="dynatempcontainer">
+				<div className="popupbg flex"></div>
+				<div className="nspopup fixsize">
+					<div className="popuptitlebar">
+						<div className="popuptitletext">Dynamic Temperature Wizard</div>
 					</div>
-					<div class="inlinelabel">
+					<div className="inlinelabel">
 					Dynamic temperature is specified by a Temperature Value and a Temperature Range. Actual temperature is allowed to be automatically adjusted dynamically between (DynaTemp ± DynaRange).<br/><br/>
 					For ease of use, a simple converter is provided here. Setting both values to the same temperature disables DynaTemp.<br/><br/>
 					</div>
 
-					<div class="inlinelabel">
-						<div class="justifyleft" style="padding:4px">Minimum Temperature: </div>
+					<div className="inlinelabel">
+						<div className="justifyleft" style="padding:4px">Minimum Temperature: </div>
 						<input type="text" oninput="preview_dynatemp(false)" inputmode="decimal" id="dynatemp_min" style="width:60px"/>
 					</div>
-					<div class="inlinelabel">
-						<div class="justifyleft" style="padding:4px">Maximum Temperature: </div>
+					<div className="inlinelabel">
+						<div className="justifyleft" style="padding:4px">Maximum Temperature: </div>
 						<input type="text" oninput="preview_dynatemp(false)" inputmode="decimal" id="dynatemp_max" style="width:60px"/>
 					</div>
 					<hr/>
-					<div class="inlinelabel">
-						<div class="justifyleft" style="padding:4px">Temperature:</div>
+					<div className="inlinelabel">
+						<div className="justifyleft" style="padding:4px">Temperature:</div>
 						<input type="text" oninput="preview_dynatemp(true)" inputmode="decimal" id="dynatemp_outtemp" style="width:60px" />
 					</div>
-					<div class="inlinelabel">
-						<div class="justifyleft" style="padding:4px">DynaTemp-Range:</div>
+					<div className="inlinelabel">
+						<div className="justifyleft" style="padding:4px">DynaTemp-Range:</div>
 						<input type="text" oninput="preview_dynatemp(true)" inputmode="decimal" id="dynatemp_range" style="width:60px" />
 					</div>
 					<hr/>
-					<div class="inlinelabel">
-						<div class="justifyleft" style="padding:4px">DynaTemp-Exponent:</div>
+					<div className="inlinelabel">
+						<div className="justifyleft" style="padding:4px">DynaTemp-Exponent:</div>
 						<input type="text" oninput="preview_dynatemp(false)" inputmode="decimal" id="dynatemp_exponent" style="width:60px" />
 					</div>
-					<div class="inlinelabel">
-						<div class="justifyleft" style="padding:4px">Smoothing-Factor:</div>
+					<div className="inlinelabel">
+						<div className="justifyleft" style="padding:4px">Smoothing-Factor:</div>
 						<input type="text" oninput="preview_dynatemp(false)" inputmode="decimal" id="smoothing_factor" style="width:60px" />
 					</div>
 
-					<div class="popupfooter">
-						<button type="button" class="btn btn-primary" onclick="confirm_dynatemp()">Ok</button>
+					<div className="popupfooter">
+						<button type="button" className="btn btn-primary" onclick="confirm_dynatemp()">Ok</button>
 					</div>
 				</div>
 			</div>
 
-			<div class="popupcontainer flex hidden" id="imagestylecontainer">
-				<div class="popupbg flex"></div>
-				<div class="nspopup flexsizesmall higher">
-					<div class="popuptitlebar">
-						<div class="popuptitletext">Image Generation Settings</div>
+			<div className="popupcontainer flex hidden" id="imagestylecontainer">
+				<div className="popupbg flex"></div>
+				<div className="nspopup flexsizesmall higher">
+					<div className="popuptitlebar">
+						<div className="popuptitletext">Image Generation Settings</div>
 					</div>
-					<div class="aidgpopuplistheader anotelabel">Style tags to use for generating images:<br/>(E.g. Sketch, Realistic, Anime, 3D Render, Drawing)<br/></div>
-					<input class="form-control" type="text" placeholder="Default Style" value="" id="imagestyleinput"/>
-					<div class="aidgpopuplistheader anotelabel">Negative Prompt<br/></div>
-					<input class="form-control" type="text" placeholder="Default Negative Prompt. Put &quot;none&quot; to skip" value="" id="negpromptinput"/>
+					<div className="aidgpopuplistheader anotelabel">Style tags to use for generating images:<br/>(E.g. Sketch, Realistic, Anime, 3D Render, Drawing)<br/></div>
+					<input className="form-control" type="text" placeholder="Default Style" value="" id="imagestyleinput"/>
+					<div className="aidgpopuplistheader anotelabel">Negative Prompt<br/></div>
+					<input className="form-control" type="text" placeholder="Default Negative Prompt. Put &quot;none&quot; to skip" value="" id="negpromptinput"/>
 
-					<div class="inlinelabel">
-						<div class="justifyleft" style="padding:4px">Number of Steps: </div>
+					<div className="inlinelabel">
+						<div className="justifyleft" style="padding:4px">Number of Steps: </div>
 						<input type="text" inputmode="decimal" id="img_steps" style="width:60px"/>
 					</div>
-					<div class="inlinelabel">
-						<div class="justifyleft" style="padding:4px">Cfg. Scale: </div>
+					<div className="inlinelabel">
+						<div className="justifyleft" style="padding:4px">Cfg. Scale: </div>
 						<input type="text" inputmode="decimal" id="img_cfgscale" style="width:60px"/>
 					</div>
-					<div class="inlinelabel">
-						<div class="justifyleft" style="padding:4px">Sampler: </div>
-						<select style="padding:1px; height:23px; width: 100px;" class="form-control" id="img_sampler">
+					<div className="inlinelabel">
+						<div className="justifyleft" style="padding:4px">Sampler: </div>
+						<select style="padding:1px; height:23px; width: 100px;" className="form-control" id="img_sampler">
 							<option value="Euler a">Euler A</option>
 							<option value="Euler">Euler</option>
 							<option value="Heun">Heun</option>
@@ -14161,148 +14174,148 @@ export default function Chat() {
 							<option value="DPM++ 2M">DPM++ 2M</option>
 						</select>
 					</div>
-					<div class="inlinelabel">
-						<div class="justifyleft" style="padding:4px">Aspect Ratio <span class="helpicon">?
-							<span class="helptext">Square is recommended. Changing aspect ratio will affect the resolution used to generate. This may impact quality or memory usage.</span>
+					<div className="inlinelabel">
+						<div className="justifyleft" style="padding:4px">Aspect Ratio <span className="helpicon">?
+							<span className="helptext">Square is recommended. Changing aspect ratio will affect the resolution used to generate. This may impact quality or memory usage.</span>
 						</span>: </div>
-						<select style="padding:1px; height:23px; width: 100px;" class="form-control" id="img_aspect">
+						<select style="padding:1px; height:23px; width: 100px;" className="form-control" id="img_aspect">
 							<option value="0">Square</option>
 							<option value="1">Portrait</option>
 							<option value="2">Landscape</option>
 						</select>
 					</div>
-					<div class="inlinelabel">
-						<div class="justifyleft" style="padding:4px">Img2Img Strength <span class="helpicon">?
-							<span class="helptext">Higher values lead to a more different image.</span>
+					<div className="inlinelabel">
+						<div className="justifyleft" style="padding:4px">Img2Img Strength <span className="helpicon">?
+							<span className="helptext">Higher values lead to a more different image.</span>
 						</span>: </div>
 						<input type="text" inputmode="decimal" id="img_img2imgstr" style="width:60px"/>
 					</div>
-					<div class="inlinelabel">
-						<div class="justifyleft" style="padding:4px">Save Higher-Res <span class="helpicon">?
-							<span class="helptext">This option will result in larger save files which may be slower. Changing this setting only applies to NEW images.</span>
+					<div className="inlinelabel">
+						<div className="justifyleft" style="padding:4px">Save Higher-Res <span className="helpicon">?
+							<span className="helptext">This option will result in larger save files which may be slower. Changing this setting only applies to NEW images.</span>
 						</span>: </div>
 						<input type="checkbox" id="img_allowhd" style="margin:0px 0 0;"/>
 					</div>
 
 
-					<div class="popupfooter">
-						<button type="button" class="btn btn-primary" onclick="confirmImgStyle()">Ok</button>
+					<div className="popupfooter">
+						<button type="button" className="btn btn-primary" onclick="confirmImgStyle()">Ok</button>
 					</div>
 				</div>
 			</div>
 
-			<div class="popupcontainer flex hidden" id="addimgcontainer">
-				<div class="popupbg flex"></div>
-				<div class="nspopup fixsize">
-					<div class="popuptitlebar">
-						<div class="popuptitletext">Add New Image</div>
+			<div className="popupcontainer flex hidden" id="addimgcontainer">
+				<div className="popupbg flex"></div>
+				<div className="nspopup fixsize">
+					<div className="popuptitlebar">
+						<div className="popuptitletext">Add New Image</div>
 					</div>
-					<div class="aidgpopuplistheader anotelabel">
-						<button type="button" class="btn btn-primary bg_green" id="btn_inner_genimg_auto" onclick="add_img_btn_auto()">Generate Image (Automatic)</button>
+					<div className="aidgpopuplistheader anotelabel">
+						<button type="button" className="btn btn-primary bg_green" id="btn_inner_genimg_auto" onclick="add_img_btn_auto()">Generate Image (Automatic)</button>
 					</div>
-					<div class="aidgpopuplistheader anotelabel">
-						<button type="button" class="btn btn-primary bg_green" id="btn_inner_genimg_custom" onclick="add_img_btn_custom()">Generate Image (Custom Prompt)</button>
+					<div className="aidgpopuplistheader anotelabel">
+						<button type="button" className="btn btn-primary bg_green" id="btn_inner_genimg_custom" onclick="add_img_btn_custom()">Generate Image (Custom Prompt)</button>
 					</div>
-					<div class="aidgpopuplistheader anotelabel">
-						<button type="button" class="btn btn-primary bg_green" onclick="add_img_btn_upload()">Upload Image File</button>
+					<div className="aidgpopuplistheader anotelabel">
+						<button type="button" className="btn btn-primary bg_green" onclick="add_img_btn_upload()">Upload Image File</button>
 					</div>
-					<div class="aidgpopuplistheader anotelabel">
-						<button type="button" class="btn btn-primary bg_green" onclick="add_img_btn_paste()">Paste from Clipboard</button>
+					<div className="aidgpopuplistheader anotelabel">
+						<button type="button" className="btn btn-primary bg_green" onclick="add_img_btn_paste()">Paste from Clipboard</button>
 					</div>
-					<div class="aidgpopuplistheader anotelabel">
-						<button type="button" class="btn btn-primary" onclick="hide_popups();display_settings();selectImgStyle();">Customize Settings</button>
+					<div className="aidgpopuplistheader anotelabel">
+						<button type="button" className="btn btn-primary" onclick="hide_popups();display_settings();selectImgStyle();">Customize Settings</button>
 					</div>
-					<div class="aidgpopuplistheader anotelabel hidden" id="btn_open_stableui">
-						<button type="button" class="btn btn-primary bg_purple" onclick="go_to_stableui()">Go To StableUI</button>
+					<div className="aidgpopuplistheader anotelabel hidden" id="btn_open_stableui">
+						<button type="button" className="btn btn-primary bg_purple" onclick="go_to_stableui()">Go To StableUI</button>
 					</div>
 					<br/>
 					<input type="file" id="addimgfileinput" style="display:none" accept="image/*"/>
-					<div class="popupfooter">
-						<button type="button" class="btn btn-primary" onclick="hide_popups()">Cancel</button>
+					<div className="popupfooter">
+						<button type="button" className="btn btn-primary" onclick="hide_popups()">Cancel</button>
 					</div>
 				</div>
 			</div>
 
-			<div class="popupcontainer flex hidden" id="pasteimgcontainer">
-				<div class="popupbg flex"></div>
-				<div class="nspopup fixsize">
-					<div class="popuptitlebar">
-						<div class="popuptitletext">Paste Image From Clipboard</div>
+			<div className="popupcontainer flex hidden" id="pasteimgcontainer">
+				<div className="popupbg flex"></div>
+				<div className="nspopup fixsize">
+					<div className="popuptitlebar">
+						<div className="popuptitletext">Paste Image From Clipboard</div>
 					</div>
 					<input type="text" id="pasteimgwin" style="width:100%; height:100px; text-align: center;" oninput="clear_paste_window()" onpaste="return img_paste_event(event)" value="" placeholder="[Paste Image Here]"/>
 					<br/>
-					<div class="popupfooter">
-						<button type="button" class="btn btn-primary" onclick="hide_popups()">Cancel</button>
+					<div className="popupfooter">
+						<button type="button" className="btn btn-primary" onclick="hide_popups()">Cancel</button>
 					</div>
 				</div>
 			</div>
 
-			<div class="popupcontainer flex hidden" id="choosesharecontainer">
-				<div class="popupbg flex"></div>
-				<div class="nspopup fixsize">
-					<div class="popuptitlebar">
-						<div class="popuptitletext">Share Story Import / Export</div>
+			<div className="popupcontainer flex hidden" id="choosesharecontainer">
+				<div className="popupbg flex"></div>
+				<div className="nspopup fixsize">
+					<div className="popuptitlebar">
+						<div className="popuptitletext">Share Story Import / Export</div>
 					</div>
-					<div class="aidgpopuplistheader anotelabel">
-						<button type="button" class="btn btn-primary bg_green" onclick="export_share_story(false)">Export Share as TextData</button>
+					<div className="aidgpopuplistheader anotelabel">
+						<button type="button" className="btn btn-primary bg_green" onclick="export_share_story(false)">Export Share as TextData</button>
 					</div>
-					<div class="aidgpopuplistheader anotelabel">
-						<button type="button" class="btn btn-primary bg_green" onclick="export_share_story(true)">Export Share as Web URL</button>
+					<div className="aidgpopuplistheader anotelabel">
+						<button type="button" className="btn btn-primary bg_green" onclick="export_share_story(true)">Export Share as Web URL</button>
 					</div>
-					<div class="aidgpopuplistheader anotelabel">
-						<button type="button" class="btn btn-primary" onclick="import_share_story()">Import Share from TextData</button>
+					<div className="aidgpopuplistheader anotelabel">
+						<button type="button" className="btn btn-primary" onclick="import_share_story()">Import Share from TextData</button>
 					</div>
 					<br/>
-					<div class="popupfooter">
-						<button type="button" class="btn btn-primary" onclick="hide_popups()">Cancel</button>
+					<div className="popupfooter">
+						<button type="button" className="btn btn-primary" onclick="hide_popups()">Cancel</button>
 					</div>
 				</div>
 			</div>
 
-			<div class="popupcontainer flex hidden" id="groupselectcontainer">
-				<div class="popupbg flex"></div>
-				<div class="nspopup fixsize">
-					<div class="popuptitlebar">
-						<div class="popuptitletext">Chat Selectors</div>
+			<div className="popupcontainer flex hidden" id="groupselectcontainer">
+				<div className="popupbg flex"></div>
+				<div className="nspopup fixsize">
+					<div className="popuptitlebar">
+						<div className="popuptitletext">Chat Selectors</div>
 					</div>
-					<div class="aidgpopuplistheader anotelabel">
+					<div className="aidgpopuplistheader anotelabel">
 						<div id="groupselectitems">
 						</div>
 					</div>
-					<div class="popupfooter">
-						<button type="button" class="btn btn-primary" onclick="confirm_groupchat_select()">Ok</button>
-						<button type="button" class="btn btn-primary" onclick="hide_popups()">Cancel</button>
+					<div className="popupfooter">
+						<button type="button" className="btn btn-primary" onclick="confirm_groupchat_select()">Ok</button>
+						<button type="button" className="btn btn-primary" onclick="hide_popups()">Cancel</button>
 					</div>
 				</div>
 			</div>
 
-			<div class="popupcontainer flex hidden" id="aestheticsettingscontainer">
-				<div class="popupbg flex"></div>
-				<div class="nspopup evenhigher" style="margin-left: 20px; margin-right: 20px;">
-					<div class="popuptitlebar" id="aesthetic_customization_panel">
-						<div class="popuptitletext">Aesthetic UI customization panel</div>
+			<div className="popupcontainer flex hidden" id="aestheticsettingscontainer">
+				<div className="popupbg flex"></div>
+				<div className="nspopup evenhigher" style="margin-left: 20px; margin-right: 20px;">
+					<div className="popuptitlebar" id="aesthetic_customization_panel">
+						<div className="popuptitletext">Aesthetic UI customization panel</div>
 					</div>
-					<div class="aidgpopuplistheader" style="display: flex; flex-direction: row; height:max(70vh, 480px);">
+					<div className="aidgpopuplistheader" style="display: flex; flex-direction: row; height:max(70vh, 480px);">
 						{/* <!-- Settings panel --> */}
 						<div style="background-color: #122b40;" onchange="refreshPreview()">
 							<div style="padding: 10px; width:350px; height:100%">
 
 								{/* <!-- BACKGROUND STYLE SETTINGS --> */}
 								<div>
-									<div class="settinglabel" style="display: flex;flex-direction: column; margin-top:5px; border-top: solid 1px rgba(180, 180, 255, 0.2);">
+									<div className="settinglabel" style="display: flex;flex-direction: column; margin-top:5px; border-top: solid 1px rgba(180, 180, 255, 0.2);">
 										{/* <!-- Background style header --> */}
-										<div class="justifyleft settingsmall" style="font-size: 14px; margin-bottom: 2px;">Background Style</div>
+										<div className="justifyleft settingsmall" style="font-size: 14px; margin-bottom: 2px;">Background Style</div>
 
 										{/* <!-- Background style main settings --> */}
 										<div style="margin-left: 12px;">
-											<div class="ui-settings-inline">
+											<div className="ui-settings-inline">
 												<div style="margin-right: 5px">Bubble Color: </div>
-												<div class="enhancedStandardColorPicker" id="sys-bubble-colorselector">System 🖌️</div>
-												<div class="enhancedStandardColorPicker" id="you-bubble-colorselector">You 🖌️</div>
-												<div class="enhancedStandardColorPicker" id="AI-bubble-colorselector">AI 🖌️</div>
+												<div className="enhancedStandardColorPicker" id="sys-bubble-colorselector">System 🖌️</div>
+												<div className="enhancedStandardColorPicker" id="you-bubble-colorselector">You 🖌️</div>
+												<div className="enhancedStandardColorPicker" id="AI-bubble-colorselector">AI 🖌️</div>
 											</div>
 
-											<div class="ui-settings-inline" style="font-size: 10px; margin-left: 10px">
+											<div className="ui-settings-inline" style="font-size: 10px; margin-left: 10px">
 												<div style="padding-top: 2px;">Rounded Bubbles: </div>
 												<input id="aui_rounded_bubbles"  type="checkbox" style="height: 10px"/>
 
@@ -14310,27 +14323,27 @@ export default function Chat() {
 												<input id="aui_match_background"  type="checkbox" style="height: 10px"/>
 											</div>
 
-											<div class="ui-settings-inline">
+											<div className="ui-settings-inline">
 												<div style="margin-right:20px;">Min Height: </div>
-												<div class="instruct-settings-input"><input id ="instruct-min-backgroundHeight" type="number"/> px</div>
-												<div class="ui-settings-inline">
+												<div className="instruct-settings-input"><input id ="instruct-min-backgroundHeight" type="number"/> px</div>
+												<div className="ui-settings-inline">
 													<div style="padding-top: 4px; font-size: 10px; margin-left: 10px;">Horizontally-centered text:</div>
 													<input id="instructModeCenterHorizontally" type="checkbox" style="height: 10px; margin-top: 6px;"/>
 												</div>
 											</div>
-											<div class="ui-settings-inline">
+											<div className="ui-settings-inline">
 												<div style="margin-right:20px;">Margin (px): </div>
-												<div class="instruct-settings-input" data-type="margin" data-side="left"  >L: <input type="number"/></div>
-												<div class="instruct-settings-input" data-type="margin" data-side="right" >R: <input type="number"/></div>
-												<div class="instruct-settings-input" data-type="margin" data-side="top"   >T: <input type="number"/></div>
-												<div class="instruct-settings-input" data-type="margin" data-side="bottom">B: <input type="number"/></div>
+												<div className="instruct-settings-input" data-type="margin" data-side="left"  >L: <input type="number"/></div>
+												<div className="instruct-settings-input" data-type="margin" data-side="right" >R: <input type="number"/></div>
+												<div className="instruct-settings-input" data-type="margin" data-side="top"   >T: <input type="number"/></div>
+												<div className="instruct-settings-input" data-type="margin" data-side="bottom">B: <input type="number"/></div>
 											</div>
-											<div class="ui-settings-inline">
+											<div className="ui-settings-inline">
 												<div style="margin-right:13px">Padding (px): </div>
-												<div class="instruct-settings-input" data-type="padding" data-side="left"  >L: <input type="number"/></div>
-												<div class="instruct-settings-input" data-type="padding" data-side="right" >R: <input type="number"/></div>
-												<div class="instruct-settings-input" data-type="padding" data-side="top"   >T: <input type="number"/></div>
-												<div class="instruct-settings-input" data-type="padding" data-side="bottom">B: <input type="number"/></div>
+												<div className="instruct-settings-input" data-type="padding" data-side="left"  >L: <input type="number"/></div>
+												<div className="instruct-settings-input" data-type="padding" data-side="right" >R: <input type="number"/></div>
+												<div className="instruct-settings-input" data-type="padding" data-side="top"   >T: <input type="number"/></div>
+												<div className="instruct-settings-input" data-type="padding" data-side="bottom">B: <input type="number"/></div>
 											</div>
 										</div>
 									</div>
@@ -14338,42 +14351,42 @@ export default function Chat() {
 
 								{/* <!-- PORTRAIT STYLE SETTINGS --> */}
 								<div>
-									<div class="settinglabel" style="display: flex;flex-direction: column; margin-top:5px; border-top: solid 1px rgba(180, 180, 255, 0.2);">
+									<div className="settinglabel" style="display: flex;flex-direction: column; margin-top:5px; border-top: solid 1px rgba(180, 180, 255, 0.2);">
 										{/* <!-- Portrait style header --> */}
-										<div class="justifyleft settingsmall" style="font-size: 15px; margin-bottom: 5px;">Portrait Style</div>
+										<div className="justifyleft settingsmall" style="font-size: 15px; margin-bottom: 5px;">Portrait Style</div>
 
 										{/* <!-- Portrait style main settings --> */}
 										<div style="margin-left: 12px;">
-											<div class="ui-settings-inline">
+											<div className="ui-settings-inline">
 												<div style="margin-right: 27px">Portraits: </div>
 												<div id="you-portrait">🖼️ Your Portrait</div>
 												<div id="AI-portrait">🖼️ AI's Portrait</div>
 											</div>
 										</div>
 										<div style="margin-left: 12px;">
-											<div class="ui-settings-inline">
+											<div className="ui-settings-inline">
 												<div style="margin-right:17px;">Portrait Style: </div>
-												<select class="form-control" id="instructBorderStyle" style="width:70px;height:16px;padding:0; font-size: 10px;">
+												<select className="form-control" id="instructBorderStyle" style="width:70px;height:16px;padding:0; font-size: 10px;">
 													<option value="None">None</option>
 													<option value="Circle">Circle</option>
 													<option value="Rounded">Rounded</option>
 													<option value="Rect">Rect</option>
 												</select>
-												<div style="margin-left: 10px;"><a href="#" id="reset-portrait" class="color_blueurl">(Reset Image)</a></div>
+												<div style="margin-left: 10px;"><a href="#" id="reset-portrait" className="color_blueurl">(Reset Image)</a></div>
 											</div>
-											<div class="ui-settings-inline">
+											<div className="ui-settings-inline">
 												<div style="margin-right:18px;">User Portrait: </div>
-												<div>						 <span class="rectPortraitMode">Size: </span><input id="portrait_width_you"  type="number" placeholder="100" value="100" style='width:40px;height:20px;font-size:10px;'/></div>
+												<div>						 <span className="rectPortraitMode">Size: </span><input id="portrait_width_you"  type="number" placeholder="100" value="100" style='width:40px;height:20px;font-size:10px;'/></div>
 												<div style="align-self: left;">px</div>
-												<div style="margin-left:20px"><span class="rectPortraitMode">A/R: </span><input id="portrait_ratio_you" type="number" placeholder="1.0" step="0.01" value="1.0" style='width:46px;height:20px;font-size:10px;' class="rectPortraitMode"/></div>
+												<div style="margin-left:20px"><span className="rectPortraitMode">A/R: </span><input id="portrait_ratio_you" type="number" placeholder="1.0" step="0.01" value="1.0" style='width:46px;height:20px;font-size:10px;' className="rectPortraitMode"/></div>
 											</div>
-											<div class="ui-settings-inline">
+											<div className="ui-settings-inline">
 												<div style="margin-right:32px;">AI Portrait: </div>
-												<div>						 <span class="rectPortraitMode">Size: </span><input id="portrait_width_AI"  type="number" placeholder="100" value="100" style='width:40px;height:20px;font-size:10px;'/></div>
+												<div>						 <span className="rectPortraitMode">Size: </span><input id="portrait_width_AI"  type="number" placeholder="100" value="100" style='width:40px;height:20px;font-size:10px;'/></div>
 												<div style="align-self: left;">px</div>
-												<div style="margin-left:20px"><span class="rectPortraitMode">A/R: </span><input id="portrait_ratio_AI" type="number" placeholder="1.0" step="0.01" value="1.0" style='width:46px;height:20px;font-size:10px;' class="rectPortraitMode"/></div>
+												<div style="margin-left:20px"><span className="rectPortraitMode">A/R: </span><input id="portrait_ratio_AI" type="number" placeholder="1.0" step="0.01" value="1.0" style='width:46px;height:20px;font-size:10px;' className="rectPortraitMode"/></div>
 											</div>
-											<div class="ui-settings-inline" style="font-size: 10px; margin-left: 10px">
+											<div className="ui-settings-inline" style="font-size: 10px; margin-left: 10px">
 												<div style="padding-top: 2px;">Show Names (Chat Mode): </div>
 												<input id="aui_show_chat_names" type="checkbox" style="height: 10px"/>
 											</div>
@@ -14383,66 +14396,66 @@ export default function Chat() {
 
 								{/* <!-- FONT STYLE SETTINGS --> */}
 								<div>
-									<div class="settinglabel" style="display: flex;flex-direction: column; margin-top:5px; border-top: solid 1px rgba(180, 180, 255, 0.2);">
+									<div className="settinglabel" style="display: flex;flex-direction: column; margin-top:5px; border-top: solid 1px rgba(180, 180, 255, 0.2);">
 										{/* <!-- Font style header --> */}
-										<div class="justifyleft settingsmall" style="font-size: 15px; margin-bottom:5px;">Font Style</div>
+										<div className="justifyleft settingsmall" style="font-size: 15px; margin-bottom:5px;">Font Style</div>
 
 										{/* <!-- Font style main settings --> */}
 										<div style="margin-left: 12px;">
-											<div class="ui-settings-inline">
+											<div className="ui-settings-inline">
 												<div style="margin-right:20px;text-align: center;">Font Size: </div>
 												<div style="margin: 0px 10px"><input id="instruct-font-size" type="number" min="8" max="40" style='width:40px;height:20px;font-size:10px;'/> px</div>
 											</div>
-											<div class="ui-settings-inline">
+											<div className="ui-settings-inline">
 												<div style="font-size: 12px; margin-right:27px; text-align: center;">Customize: </div>
-												<div class="ui-settings-inline" style="font-size: 10px">
+												<div className="ui-settings-inline" style="font-size: 10px">
 													<div style="padding-top: 2px;">Per-entity: </div>
 													<input id="instructModeCustomized" type="checkbox" style="height: 10px;"/>
 												</div>
-												<div class="ui-settings-inline" style="font-size: 10px; margin-left: 10px">
+												<div className="ui-settings-inline" style="font-size: 10px; margin-left: 10px">
 													<div style="padding-top: 2px;">Style Text: </div>
 													<input id="instructModeMarkdown"  type="checkbox" style="height: 10px"/>
 												</div>
 											</div>
-											<div class="ui-settings-inline uniform-mode-font">
+											<div className="ui-settings-inline uniform-mode-font">
 												<div style="margin-right:48px; text-align: center;">Colors: </div>
-												<div class="enhancedcolorPicker" id="uniform-text-colorselector">text🖌️</div>
-												<div class="enhancedcolorPicker instruct-markdown-user" id="uniform-speech-colorselector">"speech"🖌️</div>
-												<div class="enhancedcolorPicker instruct-markdown-user" id="uniform-action-colorselector">*action*🖌️</div>
+												<div className="enhancedcolorPicker" id="uniform-text-colorselector">text🖌️</div>
+												<div className="enhancedcolorPicker instruct-markdown-user" id="uniform-speech-colorselector">"speech"🖌️</div>
+												<div className="enhancedcolorPicker instruct-markdown-user" id="uniform-action-colorselector">*action*🖌️</div>
 											</div>
-											<div class="ui-settings-inline custom-mode-font">
+											<div className="ui-settings-inline custom-mode-font">
 												<div style="margin-right:58px; text-align: center;">You: </div>
-												<div class="enhancedcolorPicker" id="you-text-colorselector">text🖌️</div>
-												<div class="enhancedcolorPicker instruct-markdown-user" id="you-speech-colorselector">"speech"🖌️</div>
-												<div class="enhancedcolorPicker instruct-markdown-user" id="you-action-colorselector">*action*🖌️</div>
+												<div className="enhancedcolorPicker" id="you-text-colorselector">text🖌️</div>
+												<div className="enhancedcolorPicker instruct-markdown-user" id="you-speech-colorselector">"speech"🖌️</div>
+												<div className="enhancedcolorPicker instruct-markdown-user" id="you-action-colorselector">*action*🖌️</div>
 											</div>
-											<div class="ui-settings-inline custom-mode-font">
+											<div className="ui-settings-inline custom-mode-font">
 												<div style="margin-right:67px; text-align: center;">AI: </div>
-												<div class="enhancedcolorPicker" id="AI-text-colorselector">text🖌️</div>
-												<div class="enhancedcolorPicker instruct-markdown-user" id="AI-speech-colorselector">"speech"🖌️</div>
-												<div class="enhancedcolorPicker instruct-markdown-user" id="AI-action-colorselector">*action*🖌️</div>
+												<div className="enhancedcolorPicker" id="AI-text-colorselector">text🖌️</div>
+												<div className="enhancedcolorPicker instruct-markdown-user" id="AI-speech-colorselector">"speech"🖌️</div>
+												<div className="enhancedcolorPicker instruct-markdown-user" id="AI-action-colorselector">*action*🖌️</div>
 											</div>
-											<div class="ui-settings-inline custom-mode-font">
+											<div className="ui-settings-inline custom-mode-font">
 												<div style="margin-right:38px; text-align: center;">System: </div>
-												<div class="enhancedcolorPicker" id="sys-text-colorselector">text🖌️</div>
-												<div class="enhancedcolorPicker instruct-markdown-user" id="sys-speech-colorselector">"speech"🖌️</div>
-												<div class="enhancedcolorPicker instruct-markdown-user" id="sys-action-colorselector">*action*🖌️</div>
+												<div className="enhancedcolorPicker" id="sys-text-colorselector">text🖌️</div>
+												<div className="enhancedcolorPicker instruct-markdown-user" id="sys-speech-colorselector">"speech"🖌️</div>
+												<div className="enhancedcolorPicker instruct-markdown-user" id="sys-action-colorselector">*action*🖌️</div>
 											</div>
-											<div class="ui-settings-inline instruct-markdown-user">
+											<div className="ui-settings-inline instruct-markdown-user">
 												<div style="margin-right:11px; text-align: center;">Code blocks: </div>
-												<div class="enhancedcolorPicker" id="code-block-background-colorselector">background🖌️</div>
-												<div class="enhancedcolorPicker" id="code-block-foreground-colorselector">foreground🖌️</div>
+												<div className="enhancedcolorPicker" id="code-block-background-colorselector">background🖌️</div>
+												<div className="enhancedcolorPicker" id="code-block-foreground-colorselector">foreground🖌️</div>
 											</div>
 										</div>
 										<br/>
-											<div style="margin-left: 10px;"><a href="#" id="reset-all-aesthetic-instruct" class="color_blueurl">(Reset All Styles)</a></div>
+											<div style="margin-left: 10px;"><a href="#" id="reset-all-aesthetic-instruct" className="color_blueurl">(Reset All Styles)</a></div>
 									</div>
 								</div>
 
 							</div>
-							<div class="popupfooter" id="aesthetic_instruct_footer" style="margin-top: -55px;height:55px;">
-								<button type="button" class="btn btn-primary" id="btn_settingsaccept" onclick="hideAestheticUISettingsMenu(true)">OK</button>
-								<button type="button" class="btn btn-primary" id="btn_settingsclose" onclick="hideAestheticUISettingsMenu(false)">Cancel</button>
+							<div className="popupfooter" id="aesthetic_instruct_footer" style="margin-top: -55px;height:55px;">
+								<button type="button" className="btn btn-primary" id="btn_settingsaccept" onclick="hideAestheticUISettingsMenu(true)">OK</button>
+								<button type="button" className="btn btn-primary" id="btn_settingsclose" onclick="hideAestheticUISettingsMenu(false)">Cancel</button>
 							</div>
 						</div>
 						<div id="aesthetic_text_preview_panel" style="background-color: black; padding: 10px; height:100%; overflow-y: auto; ">
@@ -14454,53 +14467,53 @@ export default function Chat() {
 				</div>
 			</div>
 
-			<div class="popupcontainer flex hidden" id="yesnocontainer">
-				<div class="popupbg flex"></div>
-				<div class="nspopup fixsize">
-					<div class="popuptitlebar">
-						<div class="popuptitletext" id="yesnocontainertitle"></div>
+			<div className="popupcontainer flex hidden" id="yesnocontainer">
+				<div className="popupbg flex"></div>
+				<div className="nspopup fixsize">
+					<div className="popuptitlebar">
+						<div className="popuptitletext" id="yesnocontainertitle"></div>
 					</div>
-					<div class="aidgpopuplistheader anotelabel" id="yesnocontainertext">
+					<div className="aidgpopuplistheader anotelabel" id="yesnocontainertext">
 					</div>
-					<div class="aidgpopuplistheader anotelabel hidden" id="yesnocontainercheckboxdiv"><span style="vertical-align: middle; margin:4px" id="yesnocontainercheckboxtext"></span><input type="checkbox" id="yesnocontainercheckbox" style=" vertical-align: top;" checked/></div>
-					<div class="popupfooter">
-						<button type="button" class="btn btn-primary" onclick="onYesFn()">Yes</button>
-						<button type="button" class="btn btn-primary" onclick="onNoFn()">No</button>
+					<div className="aidgpopuplistheader anotelabel hidden" id="yesnocontainercheckboxdiv"><span style="vertical-align: middle; margin:4px" id="yesnocontainercheckboxtext"></span><input type="checkbox" id="yesnocontainercheckbox" style=" vertical-align: top;" checked/></div>
+					<div className="popupfooter">
+						<button type="button" className="btn btn-primary" onclick="onYesFn()">Yes</button>
+						<button type="button" className="btn btn-primary" onclick="onNoFn()">No</button>
 					</div>
 				</div>
 			</div>
 
-			<div class="popupcontainer flex hidden" id="inputboxcontainer">
-				<div class="popupbg flex"></div>
-				<div class="nspopup flexsize">
-					<div class="popuptitlebar">
-						<div class="popuptitletext" id="inputboxcontainertitle"></div>
+			<div className="popupcontainer flex hidden" id="inputboxcontainer">
+				<div className="popupbg flex"></div>
+				<div className="nspopup flexsize">
+					<div className="popuptitlebar">
+						<div className="popuptitletext" id="inputboxcontainertitle"></div>
 					</div>
-					<div class="aidgpopuplistheader anotelabel" id="inputboxcontainertext">
+					<div className="aidgpopuplistheader anotelabel" id="inputboxcontainertext">
 
 					</div>
-					<input class="form-control" type="text" placeholder="" value=""
+					<input className="form-control" type="text" placeholder="" value=""
 					id="inputboxcontainerinput" onfocus="inputboxfocus()" onblur="inputboxblur()"/>
-					<textarea class="form-control hidden" style="line-height:1.1" id="inputboxcontainerinputarea" placeholder="" rows="5"></textarea>
+					<textarea className="form-control hidden" style="line-height:1.1" id="inputboxcontainerinputarea" placeholder="" rows="5"></textarea>
 
-					<div class="popupfooter">
-						<button type="button" class="btn btn-primary" onclick="onInputboxOk()">OK</button>
-						<button type="button" id="inputboxcancel" class="btn btn-primary hidden" onclick="onInputboxCancel()">Cancel</button>
+					<div className="popupfooter">
+						<button type="button" className="btn btn-primary" onclick="onInputboxOk()">OK</button>
+						<button type="button" id="inputboxcancel" className="btn btn-primary hidden" onclick="onInputboxCancel()">Cancel</button>
 					</div>
 				</div>
 			</div>
 
-			<div class="popupcontainer flex hidden" id="msgboxcontainer">
-				<div class="popupbg flex"></div>
-				<div class="nspopup flexsizesmall moderate">
-					<div class="popuptitlebar">
-						<div class="popuptitletext" id="msgboxtitle"></div>
+			<div className="popupcontainer flex hidden" id="msgboxcontainer">
+				<div className="popupbg flex"></div>
+				<div className="nspopup flexsizesmall moderate">
+					<div className="popuptitlebar">
+						<div className="popuptitletext" id="msgboxtitle"></div>
 					</div>
-					<div class="aidgpopuplistheader anotelabel msgboxtxt" id="msgboxtxt">
+					<div className="aidgpopuplistheader anotelabel msgboxtxt" id="msgboxtxt">
 
 					</div>
-					<div class="popupfooter">
-						<button id="msgboxbtnok" type="button" class="btn btn-primary" onclick="msgboxOnDone()">OK</button>
+					<div className="popupfooter">
+						<button id="msgboxbtnok" type="button" className="btn btn-primary" onclick="msgboxOnDone()">OK</button>
 					</div>
 				</div>
 			</div>

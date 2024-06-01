@@ -12,10 +12,10 @@ const nextConfig = {
             key: 'Strict-Transport-Security',
             value: 'max-age=31536000; includeSubDomains'
           },
-          {
-            key: 'Content-Security-Policy',
-            value: "script-src 'self' https://aipowergrid.io 'unsafe-inline';"
-          },
+          // {
+          //   key: 'Content-Security-Policy',
+          //   value: "script-src 'self' https://aipowergrid.io 'unsafe-inline';"
+          // },
           {
             key: 'X-Frame-Options',
             value: 'SAMEORIGIN'

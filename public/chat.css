@@ -9,25 +9,36 @@
 	--img_download: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAAAXNSR0IB2cksfwAAAAlwSFlzAAAOxAAADsQBlSsOGwAAADxQTFRFAAAA////////////+f783ffv/v//3ffv3ffv5Pnz8fz56vr16/r23ffv9v377/v4////3vfw5Pny3ffvbBfD6AAAABR0Uk5TAP+TRfsGWm8m6uDv0U/LfyiIepVDO0gQAAAAbElEQVR4nNWPuQ6AIBAFF+S+j///V0FjWJTEwsqpyEzxFoBXKGnQvwcuQw9B8kkLIRzrgbn2ROGQFwwFbYe3GgUfR4gejyRqzg1D0+2q2gszdb6ql9x2bH54AFW0Lmrxc1BSPvw2gQKZ+BQW7MaRAtfJQ2l0AAAAAElFTkSuQmCC");
 }
 
-body {
-	background-color: #303030;
-	background-image: none;
+.maincontainer {
+	background-image: url(squared-bg-element.svg);
 	background-size: cover;
 	background-position: center center;
 	background-attachment: fixed;
+    position: relative;
+    overflow: hidden;
+	padding-right: 4px;
+	padding-left: 4px;
+	padding-top: 100px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+
+.maincontainer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    background: url('squared-bg-element.svg') no-repeat top;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    transform: translateX(-50%);
 }
 
 .invert_colors {
 	filter: invert(1);
 }
-
-.maincontainer {
-	padding-right: 4px;
-	padding-left: 4px;
-	margin-right: auto;
-	margin-left: auto;
-}
-
 
 @media (min-width: 768px) {
 	.adaptivecontainer {
